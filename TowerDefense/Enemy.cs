@@ -135,11 +135,9 @@ namespace TowerDefense
         {
             List<Node> available = new List<Node>();
             HashSet<Node> visited = new HashSet<Node>();
-            HashSet<Node> iPortaled = new HashSet<Node>();
-            HashSet<Node> beenHerePortal = new HashSet<Node>();
             List<Node> temp = new List<Node>();
             List<Node> destinations = new List<Node>();
-            List<Node> bestPath = new List<Node>();
+
             for (int i = 0; i < 17; i++)
                 for (int j = 0; j < 21; j++)
                 {
@@ -163,84 +161,67 @@ namespace TowerDefense
                     {
                         destinations.Add(n);
                     }
-                    if (n.portal && !iPortaled.Contains(n) && n.portalsTo != null && !n.parent.portal)
-                    {
 
-                        iPortaled.Add(n);
-                        temp.Add(n.portalsTo);
-                        if (n.portalsTo.parent == null)
+                    if (n.portal)
+                    {
+                        if (n.portalsTo.cost > n.cost + 1)
                         {
-                            n.portalsTo.cost = 150;
+                            temp.Add(n.portalsTo);
                             n.portalsTo.parent = n;
-                        }
-                        else
-                        {
                             n.portalsTo.cost = n.cost + 1;
-                            n.portalsTo.parent = n;
-
-                            visited.Remove(n.portalsTo);
                         }
-                        
                     }
-                    else if (!n.portal || n.parent.portal )
+
+                    if (((int)n.simplePos.Y + 1) < 21 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].wall)
                     {
-                        if (((int)n.simplePos.Y + 1) < 21 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].wall)
+                        Node tempNode = nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1];
+                        if (tempNode.cost > n.cost + 1)
                         {
-                            if (nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].cost > n.cost + 1)
-                            {
-                                temp.Add(nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1]);
-                                nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].parent = n;
-                                nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].cost = nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].parent.cost + 1;
-                                visited.Remove(nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1]);
-                            }
+                            temp.Add(tempNode);
+                            tempNode.parent = n;
+                            tempNode.cost = n.cost + 1;
                         }
-                        if (((int)n.simplePos.Y - 1) >= 0 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].wall)
+                    }
+                    if (((int)n.simplePos.Y - 1) >= 0 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].wall)
+                    {
+                        Node tempNode = nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1];
+                        if (tempNode.cost > n.cost + 1)
                         {
-                            if (nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].cost > n.cost + 1)
-                            {
-                                temp.Add(nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1]);
-                                nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].parent = n;
-                                nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].cost = nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].parent.cost + 1;
-                                visited.Remove(nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1]);
-                            }
+                            temp.Add(tempNode);
+                            tempNode.parent = n;
+                            tempNode.cost = n.cost + 1;
                         }
-                        if (((int)n.simplePos.X + 1) < 17 && !nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].wall)
+                    }
+                    if (((int)n.simplePos.X + 1) < 17 && !nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].wall)
+                    {
+                        Node tempNode = nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y];
+                        if (tempNode.cost > n.cost + 1)
                         {
-                            if (nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].cost > n.cost + 1)
-                            {
-                                temp.Add(nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y]);
-                                nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].parent = n;
-                                nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].cost = nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].parent.cost + 1;
-                                visited.Remove(nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y]);
-                            }
+                            temp.Add(tempNode);
+                            tempNode.parent = n;
+                            tempNode.cost = n.cost + 1;
                         }
-                        if (((int)n.simplePos.X - 1) >= 0 && !nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].wall)
+                    }
+                    if (((int)n.simplePos.X - 1) >= 0 && !nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].wall)
+                    {
+                        Node tempNode = nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y];
+                        if (tempNode.cost > n.cost + 1)
                         {
-                            if (nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].cost > n.cost + 1)
-                            {
-                                temp.Add(nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y]);
-                                nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].parent = n;
-                                nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].cost = nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].parent.cost + 1;
-                                visited.Remove(nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y]);
-                            }
+                            temp.Add(tempNode);
+                            tempNode.parent = n;
+                            tempNode.cost = n.cost + 1;
                         }
                     }
                     visited.Add(n);
                 }
-                foreach (Node n in temp)
-                {
-                    available.Add(n);
-                }
-                foreach (Node n in visited)
-                {
-                    available.Remove(n);
-                    available.Remove(n);
-                    available.Remove(n);
-                }
+                available.AddRange(temp);
+                available.RemoveAll(a=>visited.Contains(a));
                 
                 temp.Clear();
             }
-            int bestCost = 1000;
+
+            List<Node> bestPath = new List<Node>();
+            int bestCost = 10000000;
             Node bestDest = null;
             foreach (Node n in destinations)
             {

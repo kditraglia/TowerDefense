@@ -14,20 +14,19 @@ namespace TowerDefense
         public Texture2D tex;
         public Texture2D tex2;
         public int cost;
-        public int truecost;
         public Node parent;
         public bool wall = false;
         public bool hovering;
         public bool portal = false;
         public Color color = Color.White;
         public Node portalsTo = null;
-        public Node(Vector2 actualPos, Vector2 simplePos, Texture2D tex) //Our constructor
+        public Node(Vector2 actualPos, Vector2 simplePos, Texture2D tex) 
         {
-            this.actualPos = actualPos; //Position in 2D
+            this.actualPos = actualPos;
             this.simplePos = simplePos;
-            this.tex = tex; //Our texture to draw
+            this.tex = tex; 
         }
-        public void Draw(SpriteBatch batch) //Draw function, same as mousehandler one.
+        public void Draw(SpriteBatch batch) 
         {
             batch.Draw(tex, actualPos, null, color);
             if ( tex2 != null )
