@@ -171,45 +171,47 @@ namespace TowerDefense
                             n.portalsTo.cost = n.cost + 1;
                         }
                     }
-
-                    if (((int)n.simplePos.Y + 1) < 21 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].wall)
+                    if (!n.portal || n.parent.portal)
                     {
-                        Node tempNode = nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1];
-                        if (tempNode.cost > n.cost + 1)
+                        if (((int)n.simplePos.Y + 1) < 21 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].wall)
                         {
-                            temp.Add(tempNode);
-                            tempNode.parent = n;
-                            tempNode.cost = n.cost + 1;
+                            Node tempNode = nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1];
+                            if (tempNode.cost > n.cost + 1)
+                            {
+                                temp.Add(tempNode);
+                                tempNode.parent = n;
+                                tempNode.cost = n.cost + 1;
+                            }
                         }
-                    }
-                    if (((int)n.simplePos.Y - 1) >= 0 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].wall)
-                    {
-                        Node tempNode = nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1];
-                        if (tempNode.cost > n.cost + 1)
+                        if (((int)n.simplePos.Y - 1) >= 0 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].wall)
                         {
-                            temp.Add(tempNode);
-                            tempNode.parent = n;
-                            tempNode.cost = n.cost + 1;
+                            Node tempNode = nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1];
+                            if (tempNode.cost > n.cost + 1)
+                            {
+                                temp.Add(tempNode);
+                                tempNode.parent = n;
+                                tempNode.cost = n.cost + 1;
+                            }
                         }
-                    }
-                    if (((int)n.simplePos.X + 1) < 17 && !nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].wall)
-                    {
-                        Node tempNode = nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y];
-                        if (tempNode.cost > n.cost + 1)
+                        if (((int)n.simplePos.X + 1) < 17 && !nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].wall)
                         {
-                            temp.Add(tempNode);
-                            tempNode.parent = n;
-                            tempNode.cost = n.cost + 1;
+                            Node tempNode = nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y];
+                            if (tempNode.cost > n.cost + 1)
+                            {
+                                temp.Add(tempNode);
+                                tempNode.parent = n;
+                                tempNode.cost = n.cost + 1;
+                            }
                         }
-                    }
-                    if (((int)n.simplePos.X - 1) >= 0 && !nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].wall)
-                    {
-                        Node tempNode = nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y];
-                        if (tempNode.cost > n.cost + 1)
+                        if (((int)n.simplePos.X - 1) >= 0 && !nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].wall)
                         {
-                            temp.Add(tempNode);
-                            tempNode.parent = n;
-                            tempNode.cost = n.cost + 1;
+                            Node tempNode = nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y];
+                            if (tempNode.cost > n.cost + 1)
+                            {
+                                temp.Add(tempNode);
+                                tempNode.parent = n;
+                                tempNode.cost = n.cost + 1;
+                            }
                         }
                     }
                     visited.Add(n);

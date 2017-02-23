@@ -571,8 +571,6 @@ namespace TowerDefense
             bool status = false;
             List<Node> available = new List<Node>();
             HashSet<Node> visited = new HashSet<Node>();
-            HashSet<Node> iPortaled = new HashSet<Node>();
-            HashSet<Node> beenHerePortal = new HashSet<Node>();
             List<Node> temp = new List<Node>();
             for (int i = 0; i < 17; i++)
             {
@@ -591,44 +589,24 @@ namespace TowerDefense
                         status = true;
                         break;
                     }
-                    if (n.portal && !iPortaled.Contains(n) && n.portalsTo != null)
+                    if (n.portal)
                     {
                         temp.Add(n.portalsTo);
-                        iPortaled.Add(n);
-                        visited.Remove(n.portalsTo);
-                        visited.Remove(n);
                     }
-                    else
-                    {
-                        if (((int)n.simplePos.Y + 1) < 21 && !visited.Contains(nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1]) && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].wall && !temp.Contains(nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1]))
-                            temp.Add(nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1]);
-                        if (((int)n.simplePos.Y - 1) >= 0 && !visited.Contains(nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1]) && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].wall && !temp.Contains(nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1]))
-                            temp.Add(nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1]);
-                        if (((int)n.simplePos.X + 1) < 17 && !visited.Contains(nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y]) && !nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].wall && !temp.Contains(nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y]))
-                            temp.Add(nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y]);
-                        if (((int)n.simplePos.X - 1) >= 0 && !visited.Contains(nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y]) && !nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].wall && !temp.Contains(nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y]))
-                            temp.Add(nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y]);
-                    }
-                    if (n.portal && beenHerePortal.Contains(n))
-                        visited.Add(n);
-                    else if (n.portal && !beenHerePortal.Contains(n))
-                        beenHerePortal.Add(n);
-                    else
-                        visited.Add(n);
+                    if (((int)n.simplePos.Y + 1) < 21 && !visited.Contains(nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1]) && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].wall && !temp.Contains(nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1]))
+                        temp.Add(nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1]);
+                    if (((int)n.simplePos.Y - 1) >= 0 && !visited.Contains(nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1]) && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].wall && !temp.Contains(nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1]))
+                        temp.Add(nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1]);
+                    if (((int)n.simplePos.X + 1) < 17 && !visited.Contains(nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y]) && !nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].wall && !temp.Contains(nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y]))
+                        temp.Add(nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y]);
+                    if (((int)n.simplePos.X - 1) >= 0 && !visited.Contains(nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y]) && !nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].wall && !temp.Contains(nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y]))
+                        temp.Add(nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y]);
+                    visited.Add(n);
                 }
-                if ( status )
-                    break;
-                foreach (Node n in temp)
-                {
-                    available.Add(n);
-                }
-                foreach (Node n in visited)
-                {
-                    available.Remove(n);
-                    available.Remove(n);
-                    available.Remove(n);
-                }
-                
+                if ( status ) break;
+
+                available.AddRange(temp);
+                available.RemoveAll(a => visited.Contains(a));
                 temp.Clear();
             }
             nodes[x, y].wall = false;
