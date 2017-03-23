@@ -19,12 +19,11 @@ namespace TowerDefense
         public int cost = 15;
         SoundEffect attackSound;
 
-        public BatteryTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound)
+        public BatteryTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base(position, tex)
         {
             this.tex = tex;
             this.position = position;
             this.proj = proj;
-            this.ID = ID;
             this.attackSound = attackSound;
         }
 
