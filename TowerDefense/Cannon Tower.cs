@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 
 namespace TowerDefense
 {
@@ -35,7 +33,7 @@ namespace TowerDefense
             {
                 if ((int)Math.Sqrt(Math.Pow(this.position.X - e.pos.X, 2) + Math.Pow(this.position.Y - e.pos.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed * 100 && e.spawned && !e.dead)
                 {
-                    projectilelist.Add(new Cannon_Ball(position, e.pos, enemylist, proj, damage, areaofeffect));
+                    projectilelist.Add(new Cannon_Ball(position, proj, e.pos, enemylist, damage, areaofeffect));
                     cooldown = elapsedTime;
                     attackSound.Play();
                 }

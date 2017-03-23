@@ -11,13 +11,13 @@ namespace TowerDefense
     {
         Enemy target;
         int damage;
-         public Bullet(Vector2 position, Texture2D tex, Enemy target, int damage)
+
+         public Bullet(Vector2 position, Texture2D tex, Enemy target, int damage) : base(position, tex)
         {
-            this.position = position;
-            this.tex = tex;
             this.target = target;
             this.damage = damage;
         }
+
          public override bool Move()
          {
              float rise = (Math.Abs(position.Y - target.pos.Y));
@@ -40,11 +40,10 @@ namespace TowerDefense
              else
                  return false;
          }
+
          public override void Damage()
          {
              target.damage( damage );
          }
-
-
     }
 }

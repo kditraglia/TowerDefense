@@ -9,6 +9,7 @@ namespace TowerDefense
 {
     class Blast: Projectile
     {
+        Vector2 dest;
         int damage;
         int areaofeffect;
         List<Enemy> enemylist;
@@ -17,11 +18,9 @@ namespace TowerDefense
         float run;
         float x;
         float y;
-        public Blast (Vector2 position, Vector2 dest, List<Enemy> enemylist, Texture2D tex, int damage, int areaofeffect)
+        public Blast (Vector2 position, Texture2D tex, Vector2 dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(position, tex)
         {
-            this.position = position;
             this.dest = dest;
-            this.tex = tex;
             this.damage = damage;
             this.areaofeffect = areaofeffect;
             this.enemylist = enemylist;

@@ -11,10 +11,8 @@ namespace TowerDefense
     {
         int damage;
         Enemy target;
-        public Lightning_Bolt(Vector2 position, Texture2D tex, Enemy target, int damage)
+        public Lightning_Bolt(Vector2 position, Texture2D tex, Enemy target, int damage) : base(position, tex)
         {
-            this.position = position;
-            this.tex = tex;
             this.target = target;
             this.damage = damage;
         }

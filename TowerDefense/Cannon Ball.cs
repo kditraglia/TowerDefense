@@ -9,10 +9,11 @@ namespace TowerDefense
 {
     class Cannon_Ball: Projectile
     {
+        Vector2 dest;
         int damage;
         int areaofeffect;
         List<Enemy> enemylist;
-        public Cannon_Ball (Vector2 position, Vector2 dest, List<Enemy> enemylist, Texture2D tex, int damage, int areaofeffect)
+        public Cannon_Ball (Vector2 position, Texture2D tex, Vector2 dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(position, tex)
         {
             this.position = position;
             this.dest = dest;
@@ -51,9 +52,5 @@ namespace TowerDefense
                     e.damage( damage );
             }
         }
-
-
-
-
     }
 }
