@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 
 namespace TowerDefense
 {
@@ -14,42 +12,27 @@ namespace TowerDefense
         int areaofeffect;
         List<Enemy> enemylist;
         HashSet<int> damaged = new HashSet<int>();
-        float rise;
-        float run;
-        float x;
-        float y;
+        Vector2 direction;
         public Blast (Vector2 position, Texture2D tex, Vector2 dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(position, tex)
         {
             this.dest = dest;
             this.damage = damage;
             this.areaofeffect = areaofeffect;
             this.enemylist = enemylist;
-        }
-        public void findDest()
-        {
-            rise = (Math.Abs(position.Y - dest.Y));
-            run = Math.Abs(position.X - dest.X);
-            x = (float)Math.Sqrt(speed * (run / rise));
-            y = (float)Math.Sqrt(speed * (rise / run));
-            if (dest.X < position.X && dest.Y > position.Y)
-                x = 0 - x;
-            else if (dest.X > position.X && dest.Y < position.Y)
-                y = 0 - y;
-            else if (dest.X <= position.X && dest.Y <= position.Y)
+
+            direction = position - dest;
+            if (direction != Vector2.Zero)
             {
-                x = 0 - x;
-                y = 0 - y;
+                direction.Normalize();
             }
         }
+
         public override bool Move()
         {
             Damage();
-            position = new Vector2(position.X + x, position.Y + y);
+            position -= direction * speed;
 
-            if ( position.X > 704 || position.X < 128 || position.Y > 724 || position.Y < 64 )
-                return true;
-            else
-                return false;
+            return position.X > 704 || position.X < 128 || position.Y > 724 || position.Y < 64;
         }
         public override void Damage()
         {

@@ -36,7 +36,6 @@ namespace TowerDefense
                 if ((int)Math.Sqrt(Math.Pow(this.position.X - e.pos.X, 2) + Math.Pow(this.position.Y - e.pos.Y, 2)) <= range && (elapsedTime - cooldown) > (attackspeed * 100) && e.spawned && !e.dead)
                 {
                     tempBlast = new Blast(position, proj, e.pos, enemylist, damage, areaofeffect);
-                    tempBlast.findDest();
                     projectilelist.Add(tempBlast);
 
                     cooldown = elapsedTime;
