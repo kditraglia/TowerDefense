@@ -56,17 +56,14 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-
-                    if ((int)Math.Sqrt(Math.Pow(this.position.X - e.pos.X, 2) + Math.Pow(this.position.Y - e.pos.Y, 2)) <= areaofeffect && e.spawned && !e.dead)
+                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.pos.X, 2) + Math.Pow(this.position.Y - e.pos.Y, 2)) <= areaofeffect && e.spawned && !e.dead)
+                {
+                    if (!damaged.Contains(e.ID))
                     {
-                        if (!damaged.Contains(e.ID))
-                        {
-                            e.damage(damage);
-                            damaged.Add(e.ID);
-                        }
+                        e.damage(damage);
+                        damaged.Add(e.ID);
                     }
-                    
-                
+                }
             }
         }
     }

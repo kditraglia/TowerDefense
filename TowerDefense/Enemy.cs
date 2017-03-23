@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Storage;
+using System;
+using System.Collections.Generic;
 
 namespace TowerDefense
 {
     class Enemy
     {
-        public String name;
+        public string name;
         public int HP;
         public int maxHP;
         public int speed;
@@ -223,7 +217,7 @@ namespace TowerDefense
             }
 
             List<Node> bestPath = new List<Node>();
-            int bestCost = 10000000;
+            int bestCost = int.MaxValue;
             Node bestDest = null;
             foreach (Node n in destinations)
             {
