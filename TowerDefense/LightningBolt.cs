@@ -7,11 +7,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TowerDefense
 {
-    class Lightning_Bolt: Projectile
+    class LightningBolt: Projectile
     {
         int damage;
         Enemy target;
-        public Lightning_Bolt(Vector2 position, Texture2D tex, Enemy target, int damage) : base(position, tex)
+        public LightningBolt(Vector2 position, Texture2D tex, Enemy target, int damage) : base(position, tex)
         {
             this.target = target;
             this.damage = damage;

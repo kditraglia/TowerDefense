@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace TowerDefense
 {
-    class Battery_Tower: Tower
+    class BatteryTower: Tower
     {
         public String name = "Bug Zapper";
         public int damage = 5;
@@ -19,7 +19,7 @@ namespace TowerDefense
         public int cost = 15;
         SoundEffect attackSound;
 
-        public Battery_Tower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound)
+        public BatteryTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound)
         {
             this.tex = tex;
             this.position = position;

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace TowerDefense
 {
-    class Blast_Tower: Tower
+    class BlastTower: Tower
     {
         public String name = "Education Tower";
         public int damage = 10;
@@ -21,7 +21,7 @@ namespace TowerDefense
         SoundEffect attackSound;
         Blast tempBlast;
 
-        public Blast_Tower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound)
+        public BlastTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound)
         {
             this.tex = tex;
             this.position = position;

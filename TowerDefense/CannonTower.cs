@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace TowerDefense
 {
-    class Cannon_Tower: Tower
+    class CannonTower: Tower
     {
         public String name = "Malaria Net";
         public int damage = 18;
@@ -18,7 +18,7 @@ namespace TowerDefense
         public int cost = 15;
         SoundEffect attackSound;
 
-        public Cannon_Tower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound)
+        public CannonTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound)
         {
             this.tex = tex;
             this.position = position;
@@ -33,7 +33,7 @@ namespace TowerDefense
             {
                 if ((int)Math.Sqrt(Math.Pow(this.position.X - e.pos.X, 2) + Math.Pow(this.position.Y - e.pos.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed * 100 && e.spawned && !e.dead)
                 {
-                    projectilelist.Add(new Cannon_Ball(position, proj, e.pos, enemylist, damage, areaofeffect));
+                    projectilelist.Add(new CannonBall(position, proj, e.pos, enemylist, damage, areaofeffect));
                     cooldown = elapsedTime;
                     attackSound.Play();
                 }

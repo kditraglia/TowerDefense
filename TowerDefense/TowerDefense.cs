@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace TowerDefense
 {
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class TowerDefense : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch batch;
@@ -39,7 +39,7 @@ namespace TowerDefense
         int towerID = 100;
         int gold;
 
-        public Game1()
+        public TowerDefense()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -425,16 +425,16 @@ namespace TowerDefense
                             switch (ourMouse.towerID)
                             {
                                 case 1:
-                                    ourMouse.towerSelected = new Generic_Tower(ourMouse.pos, ourMouse.tex, proj[0], towerID, sound[0]);
+                                    ourMouse.towerSelected = new GenericTower(ourMouse.pos, ourMouse.tex, proj[0], towerID, sound[0]);
                                     break;
                                 case 2:
-                                    ourMouse.towerSelected = new Cannon_Tower(ourMouse.pos, ourMouse.tex, proj[1], towerID, sound[1]);
+                                    ourMouse.towerSelected = new CannonTower(ourMouse.pos, ourMouse.tex, proj[1], towerID, sound[1]);
                                     break;
                                 case 3:
-                                    ourMouse.towerSelected = new Battery_Tower(ourMouse.pos, ourMouse.tex, proj[2], towerID, sound[2]);
+                                    ourMouse.towerSelected = new BatteryTower(ourMouse.pos, ourMouse.tex, proj[2], towerID, sound[2]);
                                     break;
                                 case 4:
-                                    ourMouse.towerSelected = new Blast_Tower(ourMouse.pos, ourMouse.tex, proj[3], towerID, sound[3]);
+                                    ourMouse.towerSelected = new BlastTower(ourMouse.pos, ourMouse.tex, proj[3], towerID, sound[3]);
                                     break;
                                 case 5:
                                     ourMouse.wallClicked = true;
