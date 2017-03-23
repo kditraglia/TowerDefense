@@ -70,13 +70,5 @@ namespace TowerDefense
                     0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
             }
         }
-
-        public override int getCost()
-        {
-            return cost;
-        }
-
-
-
     }
 }

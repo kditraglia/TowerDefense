@@ -9,8 +9,9 @@ namespace TowerDefense
 {
     abstract class Tower
     {
-        protected Texture2D tex;
+        public Texture2D tex;
         protected Texture2D proj;
+        public int cost;
         public Vector2 position { get; set; }
         public bool hovering;
         public Color color = Color.White;
@@ -30,10 +31,6 @@ namespace TowerDefense
 
         public abstract void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport);
 
-        public abstract int getCost();
-
         public abstract void upgrade();
-
-
     }
 }

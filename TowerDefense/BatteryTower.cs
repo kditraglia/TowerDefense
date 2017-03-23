@@ -16,7 +16,6 @@ namespace TowerDefense
         public int range = 100;
         public String description = "multiple targets";
         public double cooldown = 0;
-        public int cost = 15;
         SoundEffect attackSound;
 
         public BatteryTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base(position, tex)
@@ -25,6 +24,8 @@ namespace TowerDefense
             this.position = position;
             this.proj = proj;
             this.attackSound = attackSound;
+
+            cost = 15;
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, int elapsedTime)
@@ -73,11 +74,5 @@ namespace TowerDefense
                     0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
             }
         }
-        public override int getCost()
-        {
-            return cost;
-        }
- 
-
     }
 }

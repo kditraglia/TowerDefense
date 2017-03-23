@@ -411,9 +411,9 @@ namespace TowerDefense
 
                     if (mouseState.LeftButton == ButtonState.Pressed)
                     {
-                        if ( ourMouse.ButtonClick(upgradeButton) && ourMouse.towerClicked != null && gold >= ourMouse.towerClicked.getCost() && !ourMouse.clicking )
+                        if ( ourMouse.ButtonClick(upgradeButton) && ourMouse.towerClicked != null && gold >= ourMouse.towerClicked.cost && !ourMouse.clicking )
                         {
-                            gold = gold - ourMouse.towerClicked.getCost();
+                            gold = gold - ourMouse.towerClicked.cost;
                             ourMouse.towerClicked.upgrade();
                             ourMouse.clicking = true;
                         }
@@ -450,11 +450,11 @@ namespace TowerDefense
                         }
                         else if (ourMouse.nodeHovered != null && !ourMouse.highlight && ourMouse.towerSelected != null && !ourMouse.clicking && ourMouse.pos.X <= 641 && ourMouse.pos.Y <= 679 )
                         {
-                            if (gold >= ourMouse.towerSelected.getCost())
+                            if (gold >= ourMouse.towerSelected.cost)
                             {
-                                gold = gold - ourMouse.towerSelected.getCost();
+                                gold = gold - ourMouse.towerSelected.cost;
                                 towerlist.Add(ourMouse.towerSelected);
-                                ourMouse.towerSelected.setPos(ourMouse.pos);
+                                ourMouse.towerSelected.position = ourMouse.pos;
                                 ourMouse.towerSelected = null;
                                 ourMouse.UpdateTex(defaultMouse);
                                 ourMouse.highlight = true;
@@ -505,7 +505,7 @@ namespace TowerDefense
                     {
                         if (ourMouse.towerHovered != null  )
                         {
-                            gold = gold + ourMouse.towerHovered.getCost();
+                            gold = gold + ourMouse.towerHovered.cost;
                             towerlist.Remove(ourMouse.towerHovered);
                             sound[5].Play();
                         }
