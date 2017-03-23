@@ -38,18 +38,18 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Battery Tower.cs" />
-    <Compile Include="Blast Tower.cs" />
+    <Compile Include="BatteryTower.cs" />
+    <Compile Include="BlastTower.cs" />
     <Compile Include="Blast.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="Button.cs" />
-    <Compile Include="Cannon Ball.cs" />
-    <Compile Include="Cannon Tower.cs" />
+    <Compile Include="CannonBall.cs" />
+    <Compile Include="CannonTower.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="Game1.cs" />
-    <Compile Include="Generic Tower.cs" />
-    <Compile Include="Lightning Bolt.cs" />
+    <Compile Include="TowerDefense.cs" />
+    <Compile Include="GenericTower.cs" />
+    <Compile Include="LightningBolt.cs" />
     <Compile Include="MessageLog.cs" />
     <Compile Include="MouseHandler.cs" />
     <Compile Include="Node.cs" />

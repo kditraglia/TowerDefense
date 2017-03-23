@@ -9,7 +9,7 @@ namespace TowerDefense
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (TowerDefense game = new TowerDefense())
             {
                 game.Run();
             }
