@@ -15,15 +15,15 @@ namespace TowerDefense
         public bool highlight;
         public int ID;
         public Color color = Color.White;
-        //Set up variables
-        public Button(Vector2 position, Texture2D tex, bool highlight, int ID) //Our constructor
+
+        public Button(Vector2 position, Texture2D tex, bool highlight, int ID)
         {
-            this.position = position; //Position in 2D
-            this.tex = tex; //Our texture to draw
+            this.position = position;
+            this.tex = tex;
             this.highlight = highlight;
             this.ID = ID;
         }
-        public void Draw(SpriteBatch batch) //Draw function, same as mousehandler one.
+        public void Draw(SpriteBatch batch)
         {
             batch.Draw(tex, position, null, color);
         }
