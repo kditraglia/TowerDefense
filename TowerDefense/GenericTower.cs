@@ -16,7 +16,7 @@ namespace TowerDefense
         public int range = 200;
         public String description = "Hits 1 Target";
         public double cooldown = 0;
-        public int cost = 12;
+
         SoundEffect attackSound;
 
         public GenericTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base(position, tex)
@@ -25,6 +25,8 @@ namespace TowerDefense
             this.position = position;
             this.proj = proj;
             this.attackSound = attackSound;
+
+            cost = 12;
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, int elapsedTime)

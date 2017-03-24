@@ -17,7 +17,6 @@ namespace TowerDefense
         public int areaofeffect = 20;
         public String description = "Line damage";
         public double cooldown = 0;
-        public int cost = 15;
         SoundEffect attackSound;
         Blast tempBlast;
 
@@ -27,6 +26,8 @@ namespace TowerDefense
             this.position = position;
             this.proj = proj;
             this.attackSound = attackSound;
+
+            cost = 15;
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, int elapsedTime)

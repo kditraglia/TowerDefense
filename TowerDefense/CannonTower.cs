@@ -15,7 +15,6 @@ namespace TowerDefense
         public int range = 175;
         public String description = "AOE damage";
         public double cooldown = 0;
-        public int cost = 15;
         SoundEffect attackSound;
 
         public CannonTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base (position, tex)
@@ -24,6 +23,8 @@ namespace TowerDefense
             this.position = position;
             this.proj = proj;
             this.attackSound = attackSound;
+
+            cost = 15;
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, int elapsedTime)
