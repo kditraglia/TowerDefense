@@ -11,17 +11,29 @@ namespace TowerDefense
     [DebuggerDisplay("{simplePos}")]
     class Node : GameObject
     {
-        public Vector2 actualPos;
-        public Vector2 simplePos;
+        public Point actualPos;
+        public Point simplePos;
         public Texture2D tex2;
         public int gScore;
         public int fScore;
         public Node parent;
         public bool wall = false;
-        public bool hovering;
         public bool portal = false;
         public Node portalsTo = null;
-        public Node(Vector2 actualPos, Vector2 simplePos, Texture2D tex) : base(tex, actualPos)
+
+        public override Color Color
+        {
+            get
+            {
+                if (portalsTo != null && portalsTo.Hovering)
+                {
+                    return Color.Green;
+                }
+                return base.Color;
+            }
+        }
+
+        public Node(Point actualPos, Point simplePos, Texture2D tex) : base(tex, actualPos)
         {
             this.actualPos = actualPos;
             this.simplePos = simplePos;
@@ -30,7 +42,7 @@ namespace TowerDefense
         {
             base.Draw(batch);
             if ( tex2 != null )
-                batch.Draw(tex2, actualPos, null, color);
+                batch.Draw(tex2, actualPos.ToVector2(), null, Color);
         }
         public void UpdateTex(Texture2D tex)
         {
@@ -49,24 +61,24 @@ namespace TowerDefense
             }
             else
             {
-                if (((int)simplePos.Y + 1) <= Constants.Y && !nodes[(int)simplePos.X, (int)simplePos.Y + 1].wall)
+                if ((simplePos.Y + 1) <= Constants.MapSize.Y && !nodes[simplePos.X, simplePos.Y + 1].wall)
                 {
-                    Node tempNode = nodes[(int)simplePos.X, (int)simplePos.Y + 1];
+                    Node tempNode = nodes[simplePos.X, simplePos.Y + 1];
                     neighbors.Add(tempNode);
                 }
-                if (((int)simplePos.Y - 1) >= 0 && !nodes[(int)simplePos.X, (int)simplePos.Y - 1].wall)
+                if ((simplePos.Y - 1) >= 0 && !nodes[simplePos.X, simplePos.Y - 1].wall)
                 {
-                    Node tempNode = nodes[(int)simplePos.X, (int)simplePos.Y - 1];
+                    Node tempNode = nodes[simplePos.X, simplePos.Y - 1];
                     neighbors.Add(tempNode);
                 }
-                if (((int)simplePos.X + 1) <= Constants.X && !nodes[(int)simplePos.X + 1, (int)simplePos.Y].wall)
+                if ((simplePos.X + 1) <= Constants.MapSize.X && !nodes[simplePos.X + 1, simplePos.Y].wall)
                 {
-                    Node tempNode = nodes[(int)simplePos.X + 1, (int)simplePos.Y];
+                    Node tempNode = nodes[simplePos.X + 1, simplePos.Y];
                     neighbors.Add(tempNode);
                 }
-                if (((int)simplePos.X - 1) >= 0 && !nodes[(int)simplePos.X - 1, (int)simplePos.Y].wall)
+                if ((simplePos.X - 1) >= 0 && !nodes[simplePos.X - 1, simplePos.Y].wall)
                 {
-                    Node tempNode = nodes[(int)simplePos.X - 1, (int)simplePos.Y];
+                    Node tempNode = nodes[simplePos.X - 1, simplePos.Y];
                     neighbors.Add(tempNode);
                 }
             }

@@ -1,45 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace TowerDefense
 {
+    public enum HoveringContext
+    {
+        None,
+        ButtonStart,
+        ButtonUpgrade,
+        ButtonGenericTower,
+        ButtonCannonTower,
+        ButtonBatteryTower,
+        ButtonBlastTower,
+        ButtonWall,
+        ButtonPortal,
+        EmptyNode,
+        FilledNode,
+        Tower,
+        Enemy
+    }
+    public enum SelectionContext
+    {
+        None,
+        PlacingTower,
+        PlacingWall,
+        PlacingPortalEntrance,
+        PlacingPortalExit,
+        TowerSelected
+    }
     class MouseHandler
     {
-        public Vector2 pos;
         public Texture2D tex;
-        public MouseState mouseState;
-        public int towerID = 0;
-        public bool highlight = true;
-        public bool hovering = false;
-        public bool clicking = false;
-        public bool clicked = false;
-        public bool wallClicked = false;
-        public bool portalClicked = false;
-        public bool rClicking = false;
-        public bool portalComplete = true;
-        public Tower towerSelected = null;
-        public Tower towerClicked = null;
-        public Tower towerHovered = null;
-        public Button buttonHovered = null;
-        public Node nodeHovered = null;
-        public Node portalLocation = null;
-        public Enemy enemyHovered = null;
+        public Point pos;
+        public MouseState MouseState { get; set; }
+        public bool MouseClicked { get; set; }
+        public GameObject HoveredObject { get; set; }
+        public HoveringContext HoveringContext { get; set; }
+        public GameObject SelectedObject { get; set; }
+        public SelectionContext SelectionContext { get; set; }
 
-        public MouseHandler(Vector2 pos, Texture2D tex)
+        //This is one thing I'm not sure exactly where to store, but when you make the entrance of a portal, 
+        //I need to hold a reference for when you place the other side to link them together
+        public Node PortalEntrance { get; set; }
+
+        public MouseHandler(Point pos, Texture2D tex)
         {
             this.pos = pos;
             this.tex = tex;
         }
         public void Update()
         {
-            mouseState = Mouse.GetState();
-            this.pos.X = mouseState.X;
-            this.pos.Y = mouseState.Y;
+            MouseState = Mouse.GetState();
+            pos.X = MouseState.X;
+            pos.Y = MouseState.Y;
         }
         public void UpdateTex(Texture2D tex)
         {
@@ -48,7 +62,7 @@ namespace TowerDefense
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(this.tex, this.pos, Color.White);
+            batch.Draw(tex, pos.ToVector2(), Color.White);
         }
     }
 }

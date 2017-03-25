@@ -9,34 +9,33 @@ namespace TowerDefense
 {
     class CannonBall: Projectile
     {
-        Vector2 dest;
+        Point dest;
         int damage;
         int areaofeffect;
         List<Enemy> enemylist;
-        public CannonBall (Vector2 position, Texture2D tex, Vector2 dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(tex, position)
+        public CannonBall (Point position, Texture2D tex, Point dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(tex, position)
         {
-            this.position = position;
             this.dest = dest;
-            this.tex = tex;
+            this.Tex = tex;
             this.damage = damage;
             this.areaofeffect = areaofeffect;
             this.enemylist = enemylist;
         }
         public override bool Move()
         {
-            float rise = (Math.Abs(position.Y - dest.Y));
-            float run = Math.Abs(position.X - dest.X);
-            float x = (float)Math.Sqrt(speed * (run / rise));
-            float y = (float)Math.Sqrt(speed * (rise / run));
-            if (dest.X >= position.X && dest.Y >= position.Y)
-                position = new Vector2(position.X + x, position.Y + y);
-            else if (dest.X < position.X && dest.Y > position.Y)
-                position = new Vector2(position.X - x, position.Y + y);
-            else if (dest.X > position.X && dest.Y < position.Y)
-                position = new Vector2(position.X + x, position.Y - y);
-            else if (dest.X <= position.X && dest.Y <= position.Y)
-                position = new Vector2(position.X - x, position.Y - y);
-            if (-10 < (position.X - dest.X) && (position.X - dest.X) < 10 && -10 < (position.Y - dest.Y) && (position.Y - dest.Y) < 10)
+            int rise = (Math.Abs(Position.Y - dest.Y));
+            int run = Math.Abs(Position.X - dest.X);
+            int x = (int)Math.Sqrt(speed * (run / rise));
+            int y = (int)Math.Sqrt(speed * (rise / run));
+            if (dest.X >= Position.X && dest.Y >= Position.Y)
+                Position = new Point(Position.X + x, Position.Y + y);
+            else if (dest.X < Position.X && dest.Y > Position.Y)
+                Position = new Point(Position.X - x, Position.Y + y);
+            else if (dest.X > Position.X && dest.Y < Position.Y)
+                Position = new Point(Position.X + x, Position.Y - y);
+            else if (dest.X <= Position.X && dest.Y <= Position.Y)
+                Position = new Point(Position.X - x, Position.Y - y);
+            if (-10 < (Position.X - dest.X) && (Position.X - dest.X) < 10 && -10 < (Position.Y - dest.Y) && (Position.Y - dest.Y) < 10)
             {
                 Damage();
                 return true;
@@ -48,7 +47,7 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= areaofeffect && e.spawned && !e.dead )
+                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= areaofeffect && e.spawned && !e.dead )
                     e.damage( damage );
             }
         }

@@ -14,10 +14,10 @@ namespace TowerDefense
         public String description = "multiple targets";
         public double cooldown = 0;
 
-        public BatteryTower(Vector2 position, Texture2D tex) : base(tex, position)
+        public BatteryTower(Point position, Texture2D tex) : base(tex, position)
         {
-            this.tex = tex;
-            this.position = position;
+            this.Tex = tex;
+            this.Position = position;
 
             cost = 15;
         }
@@ -29,9 +29,9 @@ namespace TowerDefense
                 bool attacked = false;
                 foreach (Enemy e in enemylist)
                 {
-                    if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && e.spawned && !e.dead)
+                    if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range && e.spawned && !e.dead)
                     {
-                        projectilelist.Add(new Bullet(position, ResourceManager.LightningBolt, e, damage));
+                        projectilelist.Add(new Bullet(Position, ResourceManager.LightningBolt, e, damage));
                         cooldown = elapsedTime;
                         attacked = true;
                     }

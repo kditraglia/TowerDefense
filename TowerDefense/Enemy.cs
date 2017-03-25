@@ -16,14 +16,13 @@ namespace TowerDefense
         List<Node> bestPath = new List<Node>();
         Node temp;
         public bool spawned = false;
-        Vector2 currentDest;
+        Point currentDest;
         public bool dead = false;
-        public bool hovering = false;
         public bool lose = false;
         public float scale;
         public double spawnRate;
 
-        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate) : base(tex, Vector2.Zero)
+        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate) : base(tex, Point.Zero)
         {
             this.name = name;
             this.HP = HP;
@@ -34,7 +33,7 @@ namespace TowerDefense
             this.bestPath = TowerDefense.findBestPath(nodes);
             this.bestPath.Reverse();
             this.temp = bestPath[0];
-            this.position = temp.actualPos;
+            this.Position = temp.actualPos;
             this.bestPath.Remove(temp);
             this.temp = bestPath[0];
             currentDest = temp.actualPos;
@@ -54,14 +53,14 @@ namespace TowerDefense
         {
             if (spawned)
             {
-                if (position.Y > currentDest.Y)
-                    position = new Vector2(position.X, position.Y - speed);
-                else if (position.Y < currentDest.Y)
-                    position = new Vector2(position.X, position.Y + speed);
-                else if (position.X > currentDest.X)
-                    position = new Vector2(position.X - speed, position.Y);
-                else if (position.X < currentDest.X)
-                    position = new Vector2(position.X + speed, position.Y);
+                if (Position.Y > currentDest.Y)
+                    Position = new Point(Position.X, Position.Y - speed);
+                else if (Position.Y < currentDest.Y)
+                    Position = new Point(Position.X, Position.Y + speed);
+                else if (Position.X > currentDest.X)
+                    Position = new Point(Position.X - speed, Position.Y);
+                else if (Position.X < currentDest.X)
+                    Position = new Point(Position.X + speed, Position.Y);
 
                 else
                 {
@@ -70,7 +69,7 @@ namespace TowerDefense
                     {
                         if (temp.portal)
                         {
-                            position = temp.portalsTo.actualPos;
+                            Position = temp.portalsTo.actualPos;
                             temp = bestPath[0];
                             bestPath.Remove(temp);
                             temp = bestPath[0];
@@ -82,7 +81,7 @@ namespace TowerDefense
                     }
                     else
                     {
-                        currentDest = new Vector2(350, 750);
+                        currentDest = new Point(350, 750);
                         lose = true;
                     }
                 }
