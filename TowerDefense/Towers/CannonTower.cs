@@ -18,8 +18,8 @@ namespace TowerDefense
 
         public CannonTower(Vector2 position, Texture2D tex) : base (tex, position)
         {
-            this.tex = tex;
-            this.position = position;
+            this.Tex = tex;
+            this.Position = position;
 
             cost = 15;
         }
@@ -28,9 +28,9 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed && e.spawned && !e.dead)
+                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed && e.spawned && !e.dead)
                 {
-                    projectilelist.Add(new CannonBall(position, ResourceManager.CannonBall, e.position, enemylist, damage, areaofeffect));
+                    projectilelist.Add(new CannonBall(Position, ResourceManager.CannonBall, e.Position, enemylist, damage, areaofeffect));
                     cooldown = elapsedTime;
                     ResourceManager.CannonSound.Play();
                 }

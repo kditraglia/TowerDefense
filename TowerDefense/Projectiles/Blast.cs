@@ -30,15 +30,15 @@ namespace TowerDefense
         public override bool Move()
         {
             Damage();
-            position -= direction * speed;
+            Position -= direction * speed;
 
-            return position.X > 704 || position.X < 128 || position.Y > 724 || position.Y < 64;
+            return Position.X > 704 || Position.X < 128 || Position.Y > 724 || Position.Y < 64;
         }
         public override void Damage()
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= areaofeffect && e.spawned && !e.dead)
+                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= areaofeffect && e.spawned && !e.dead)
                 {
                     if (!damaged.Contains(e))
                     {

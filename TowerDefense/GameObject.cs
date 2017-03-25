@@ -5,32 +5,35 @@ namespace TowerDefense
 {
     abstract class GameObject
     {
-        public Texture2D tex { get; set; }
-        public Vector2 position { get; set; }
+        public Texture2D Tex { get; set; }
+        public Vector2 Position { get; set; }
+        public HoveringContext HoveringContext { get; set; }
+
         private bool _hovering;
         public bool hovering
         {
             get { return _hovering; }
-            set { _hovering = value; color = _hovering ? Color.Green : Color.White; }
+            set { _hovering = value; Color = _hovering ? Color.Green : Color.White; }
         }
-        public Color color { get; set; }
+        public Color Color { get; set; }
 
-        public GameObject(Texture2D tex, Vector2 position)
+        public GameObject(Texture2D tex, Vector2 position, HoveringContext hoveringContext = HoveringContext.None)
         {
-            this.tex = tex;
-            this.position = position;
-            this.color = Color.White;
+            Tex = tex;
+            Position = position;
+            HoveringContext = hoveringContext;
+            Color = Color.White;
         }
 
         public virtual void Draw(SpriteBatch batch)
         {
-            batch.Draw(tex, position, null, color);
+            batch.Draw(Tex, Position, null, Color);
         }
 
         public Rectangle BoundingBox()
         {
             //Assumes the texture isn't scaled
-            return new Rectangle(position.ToPoint(), new Point(tex.Width, tex.Height));
+            return new Rectangle(Position.ToPoint(), new Point(Tex.Width, Tex.Height));
         }
 
         public bool ContainsPoint(Vector2 point)

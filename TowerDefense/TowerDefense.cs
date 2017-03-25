@@ -322,43 +322,48 @@ namespace TowerDefense
             //}
             if (mouse.HoveredObject != null)
             {
-                mouse.UpdateTex(mouse.HoveredObject.tex);
                 switch (mouse.HoveredContext)
                 {
                     case HoveringContext.ButtonGenericTower:
+                        mouse.UpdateTex(mouse.HoveredObject.Tex);
                         mouse.SelectedObject = new GenericTower(mouse.pos, mouse.tex);
                         mouse.SelectionContext = SelectionContext.PlacingTower;
                         break;
                     case HoveringContext.ButtonCannonTower:
+                        mouse.UpdateTex(mouse.HoveredObject.Tex);
                         mouse.SelectedObject = new CannonTower(mouse.pos, mouse.tex);
                         mouse.SelectionContext = SelectionContext.PlacingTower;
                         break;
                     case HoveringContext.ButtonBatteryTower:
+                        mouse.UpdateTex(mouse.HoveredObject.Tex);
                         mouse.SelectedObject = new BatteryTower(mouse.pos, mouse.tex);
                         mouse.SelectionContext = SelectionContext.PlacingTower;
                         break;
                     case HoveringContext.ButtonBlastTower:
+                        mouse.UpdateTex(mouse.HoveredObject.Tex);
                         mouse.SelectedObject = new BlastTower(mouse.pos, mouse.tex);
                         mouse.SelectionContext = SelectionContext.PlacingTower;
                         break;
                     case HoveringContext.ButtonWall:
+                        mouse.UpdateTex(mouse.HoveredObject.Tex);
                         mouse.SelectionContext = SelectionContext.PlacingWall;
                         break;
                     case HoveringContext.ButtonPortal:
+                        mouse.UpdateTex(mouse.HoveredObject.Tex);
                         mouse.SelectionContext = SelectionContext.PlacingPortal;
                         break;
                     default:
                         break;
                 }
             }
-            if (mouse.SelectionContext == SelectionContext.PlacingTower && mouse.pos.X <= 641 && mouse.pos.Y <= 679)
+            if (mouse.SelectionContext == SelectionContext.PlacingTower && MouseInGameBounds())
             {
                 Tower t = mouse.SelectedObject as Tower;
                 if (gold >= t.cost)
                 {
                     gold = gold - t.cost;
                     towerlist.Add(t);
-                    t.position = mouse.pos;
+                    t.Position = mouse.pos;
                     mouse.SelectedObject = null;
                     mouse.SelectionContext = SelectionContext.None;
                     mouse.UpdateTex(ResourceManager.DefaultCursor);

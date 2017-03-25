@@ -33,7 +33,7 @@ namespace TowerDefense
             this.bestPath = TowerDefense.findBestPath(nodes);
             this.bestPath.Reverse();
             this.temp = bestPath[0];
-            this.position = temp.actualPos;
+            this.Position = temp.actualPos;
             this.bestPath.Remove(temp);
             this.temp = bestPath[0];
             currentDest = temp.actualPos;
@@ -53,14 +53,14 @@ namespace TowerDefense
         {
             if (spawned)
             {
-                if (position.Y > currentDest.Y)
-                    position = new Vector2(position.X, position.Y - speed);
-                else if (position.Y < currentDest.Y)
-                    position = new Vector2(position.X, position.Y + speed);
-                else if (position.X > currentDest.X)
-                    position = new Vector2(position.X - speed, position.Y);
-                else if (position.X < currentDest.X)
-                    position = new Vector2(position.X + speed, position.Y);
+                if (Position.Y > currentDest.Y)
+                    Position = new Vector2(Position.X, Position.Y - speed);
+                else if (Position.Y < currentDest.Y)
+                    Position = new Vector2(Position.X, Position.Y + speed);
+                else if (Position.X > currentDest.X)
+                    Position = new Vector2(Position.X - speed, Position.Y);
+                else if (Position.X < currentDest.X)
+                    Position = new Vector2(Position.X + speed, Position.Y);
 
                 else
                 {
@@ -69,7 +69,7 @@ namespace TowerDefense
                     {
                         if (temp.portal)
                         {
-                            position = temp.portalsTo.actualPos;
+                            Position = temp.portalsTo.actualPos;
                             temp = bestPath[0];
                             bestPath.Remove(temp);
                             temp = bestPath[0];

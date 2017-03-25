@@ -29,7 +29,7 @@ namespace TowerDefense
         {
             base.Draw(batch);
             if ( tex2 != null )
-                batch.Draw(tex2, actualPos, null, color);
+                batch.Draw(tex2, actualPos, null, Color);
         }
         public void UpdateTex(Texture2D tex)
         {
