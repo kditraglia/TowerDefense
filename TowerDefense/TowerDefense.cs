@@ -16,16 +16,16 @@ namespace TowerDefense
         Viewport viewport;
         Button startButton;
         Button upgradeButton;
-        List < Button >buttonlist;
-        List< Tower > towerlist;
-        List< Enemy > enemylist;
-        List < Projectile > projectilelist;
+        List<Button> buttonlist = new List<Button>();
+        List<Tower> towerlist = new List<Tower>();
+        List<Enemy> enemylist = new List<Enemy>();
+        List<Projectile> projectilelist = new List<Projectile>();
         MessageLog MessageLog = new MessageLog();
         Node[,] nodes = new Node[Constants.X + 1, Constants.Y + 1];
         bool attackPhase = false;
         bool playerLoses = false;
         int level = 0;
-        int gold;
+        int gold = Constants.STARTINGGOLD;
         double lastSpawnedTime = 0;
 
         public TowerDefense()
@@ -52,8 +52,6 @@ namespace TowerDefense
 
             startButton = new Button(new Vector2(10 + 32, viewport.Height * .2f - 74), ResourceManager.StartButton, false, 0);
             upgradeButton = new Button(new Vector2(viewport.Width - 160, viewport.Height * .55f), ResourceManager.UpgradeButton, false, 0);
-
-            this.buttonlist = new List<Button>();
             this.buttonlist.Add(new Button(new Vector2(10, viewport.Height * .2f), ResourceManager.GenericTower, false, 1));
             this.buttonlist.Add(new Button(new Vector2(10 + 64, viewport.Height * .2f), ResourceManager.CannonTower, false, 2));
             this.buttonlist.Add(new Button(new Vector2(10, (viewport.Height * .2f) + 64), ResourceManager.BatteryTower, false, 3));
@@ -61,19 +59,13 @@ namespace TowerDefense
             this.buttonlist.Add(new Button(new Vector2(10 + 16, (viewport.Height * .5f)), ResourceManager.Wall, true, 5));
             this.buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .5f)), ResourceManager.Portal, true, 6));
 
-            this.towerlist = new List<Tower>();
-            this.projectilelist = new List<Projectile>();
-            this.enemylist = new List<Enemy>();
-
-            gold = Constants.STARTINGGOLD;
-
             int actualY = 64;
             int actualX = 148;
             for (int i = 0; i <= Constants.X; i++)
             {
                 for (int j = 0; j <= Constants.Y; j++)
                 {
-                    nodes[i, j] = new Node(new Vector2(actualX, actualY), new Vector2(i, j), Content.Load<Texture2D>(@"grass"));
+                    nodes[i, j] = new Node(new Vector2(actualX, actualY), new Vector2(i, j), ResourceManager.Grass);
 
                     actualY = actualY + 32;
                     if (actualY > 704)
