@@ -28,7 +28,7 @@ namespace TowerDefense
         List< Enemy > enemylist;
         List < Projectile > projectilelist;
         MessageLog MessageLog = new MessageLog();
-        Node[,] nodes = new Node[17,21];
+        Node[,] nodes = new Node[Constants.X + 1, Constants.Y + 1];
         bool attackPhase = false;
         bool playerLoses = false;
         int level = 0;
@@ -95,9 +95,9 @@ namespace TowerDefense
 
             int actualY = 64;
             int actualX = 148;
-            for (int i = 0; i < 17; i++)
+            for (int i = 0; i <= Constants.X; i++)
             {
-                for (int j = 0; j < 21; j++)
+                for (int j = 0; j <= Constants.Y; j++)
                 {
                     nodes[i, j] = new Node(new Vector2(actualX, actualY), new Vector2(i, j), Content.Load<Texture2D>(@"grass"));
 
@@ -180,8 +180,8 @@ namespace TowerDefense
             GraphicsDevice.Clear(Color.WhiteSmoke);
 
             batch.Begin();
-            for (int i = 0; i < 17; i++)
-                for( int j = 0; j < 21; j++ )
+            for (int i = 0; i <= Constants.X; i++)
+                for( int j = 0; j <= Constants.Y; j++ )
                     nodes[i,j].Draw(batch);
 
             startButton.Draw(batch);
@@ -318,9 +318,9 @@ namespace TowerDefense
                 }
             }
 
-            for (int i = 0; i < 17; i++)
+            for (int i = 0; i <= Constants.X; i++)
             {
-                for (int j = 0; j < 21; j++)
+                for (int j = 0; j <= Constants.Y; j++)
                 {
                     if (nodes[i, j].ContainsPoint(mouse.pos))
                     {
@@ -562,7 +562,7 @@ namespace TowerDefense
 
         private static int heuristic(Node current)
         {
-            return 20 - (int)current.simplePos.Y;
+            return Constants.Y - (int)current.simplePos.Y;
         }
 
         internal static List<Node> findBestPath(Node[,] nodes)
@@ -570,13 +570,13 @@ namespace TowerDefense
             List<Node> available = new List<Node>();
             HashSet<Node> visited = new HashSet<Node>();
 
-            for (int i = 0; i < 17; i++)
-                for (int j = 0; j < 21; j++)
+            for (int i = 0; i <= Constants.X; i++)
+                for (int j = 0; j <= Constants.Y; j++)
                 {
                     nodes[i, j].parent = null;
                     nodes[i, j].fScore = int.MaxValue;
                 }
-            for (int i = 0; i < 17; i++)
+            for (int i = 0; i <= Constants.X; i++)
             {
                 if (!nodes[i, 0].wall)
                 {
@@ -587,7 +587,7 @@ namespace TowerDefense
             while (available.Count != 0)
             {
                 Node current = available.OrderBy(n => n.fScore).First();
-                if (current.simplePos.Y == 20)
+                if (current.simplePos.Y == Constants.Y)
                 {
                     List<Node> bestPath = new List<Node>();
                     while (current.parent != null)

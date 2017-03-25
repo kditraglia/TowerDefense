@@ -49,7 +49,7 @@ namespace TowerDefense
             }
             else
             {
-                if (((int)simplePos.Y + 1) < 21 && !nodes[(int)simplePos.X, (int)simplePos.Y + 1].wall)
+                if (((int)simplePos.Y + 1) <= Constants.Y && !nodes[(int)simplePos.X, (int)simplePos.Y + 1].wall)
                 {
                     Node tempNode = nodes[(int)simplePos.X, (int)simplePos.Y + 1];
                     neighbors.Add(tempNode);
@@ -59,7 +59,7 @@ namespace TowerDefense
                     Node tempNode = nodes[(int)simplePos.X, (int)simplePos.Y - 1];
                     neighbors.Add(tempNode);
                 }
-                if (((int)simplePos.X + 1) < 17 && !nodes[(int)simplePos.X + 1, (int)simplePos.Y].wall)
+                if (((int)simplePos.X + 1) <= Constants.X && !nodes[(int)simplePos.X + 1, (int)simplePos.Y].wall)
                 {
                     Node tempNode = nodes[(int)simplePos.X + 1, (int)simplePos.Y];
                     neighbors.Add(tempNode);
