@@ -34,6 +34,7 @@ namespace TowerDefense
         public Texture2D tex;
         public Point pos;
         public MouseState MouseState { get; set; }
+        public bool MouseClicked { get; set; }
         public GameObject HoveredObject { get; set; }
         public HoveringContext HoveringContext { get; set; }
         public GameObject SelectedObject { get; set; }

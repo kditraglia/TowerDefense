@@ -208,13 +208,19 @@ namespace TowerDefense
             HandleMouseHover();
             if (!attackPhase)
             {
-                if (mouse.MouseState.LeftButton == ButtonState.Pressed)
+                if (mouse.MouseState.LeftButton == ButtonState.Pressed && !mouse.MouseClicked)
                 {
                     HandleLeftClick();
+                    mouse.MouseClicked = true;
                 }
-                if (mouse.MouseState.RightButton == ButtonState.Pressed)
+                if (mouse.MouseState.RightButton == ButtonState.Pressed && !mouse.MouseClicked)
                 {
                     HandleRightClick();
+                    mouse.MouseClicked = true;
+                }
+                if (mouse.MouseState.LeftButton == ButtonState.Released && mouse.MouseState.RightButton == ButtonState.Released)
+                {
+                    mouse.MouseClicked = false;
                 }
             }
         }
