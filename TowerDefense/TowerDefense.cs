@@ -116,19 +116,7 @@ namespace TowerDefense
                 {
                     projectilelist = t.Attack(enemylist, projectilelist, gameTime.TotalGameTime.TotalSeconds);
                 }
-                List<Projectile> temp2 = new List<Projectile>();
-                foreach (Projectile p in projectilelist)
-                {
-                    if (p.Move())
-                    {
-                        temp2.Add(p);
-                    }
-                    
-                }
-                foreach (Projectile p in temp2)
-                {
-                    projectilelist.Remove(p);
-                }
+                projectilelist.RemoveAll(p => p.Move());
             }
             if (enemylist.Count == 0 && attackPhase)
             {
@@ -147,8 +135,12 @@ namespace TowerDefense
 
             batch.Begin();
             for (int i = 0; i <= Constants.X; i++)
-                for( int j = 0; j <= Constants.Y; j++ )
-                    nodes[i,j].Draw(batch);
+            {
+                for (int j = 0; j <= Constants.Y; j++)
+                {
+                    nodes[i, j].Draw(batch);
+                }
+            }
 
             startButton.Draw(batch);
             enemylist.ForEach(e => e.Draw(batch));
@@ -156,16 +148,15 @@ namespace TowerDefense
             towerlist.ForEach(t => t.Draw(batch));
             projectilelist.ForEach(p => p.Draw(batch));
 
-            if (mouse.towerSelected != null)
-                mouse.towerSelected.ShowStats(batch, ResourceManager.GameFont, viewport);
-            else if (mouse.towerClicked != null)
+            mouse.towerSelected?.ShowStats(batch, ResourceManager.GameFont, viewport);
+
+            if (mouse.towerClicked != null)
             {
                 upgradeButton.Draw(batch);
                 mouse.towerClicked.ShowStats(batch, ResourceManager.GameFont, viewport);
             }
 
-            if (mouse.enemyHovered != null)
-                mouse.enemyHovered.ShowStats(batch, ResourceManager.GameFont, viewport);
+            mouse.enemyHovered?.ShowStats(batch, ResourceManager.GameFont, viewport);
 
             batch.DrawString(ResourceManager.GameFont, "GOLD - " + gold + " $", new Vector2(viewport.Width *.8f, viewport.Height *.1f), Color.Black,
                     0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
