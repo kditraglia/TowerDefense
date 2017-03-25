@@ -9,11 +9,10 @@ using System.Diagnostics;
 namespace TowerDefense
 {
     [DebuggerDisplay("{simplePos}")]
-    public class Node
+    class Node : GameObject
     {
         public Vector2 actualPos;
         public Vector2 simplePos;
-        public Texture2D tex;
         public Texture2D tex2;
         public int gScore;
         public int fScore;
@@ -21,17 +20,15 @@ namespace TowerDefense
         public bool wall = false;
         public bool hovering;
         public bool portal = false;
-        public Color color = Color.White;
         public Node portalsTo = null;
-        public Node(Vector2 actualPos, Vector2 simplePos, Texture2D tex) 
+        public Node(Vector2 actualPos, Vector2 simplePos, Texture2D tex) : base(tex, actualPos)
         {
             this.actualPos = actualPos;
             this.simplePos = simplePos;
-            this.tex = tex; 
         }
-        public void Draw(SpriteBatch batch) 
+        public override void Draw(SpriteBatch batch) 
         {
-            batch.Draw(tex, actualPos, null, color);
+            base.Draw(batch);
             if ( tex2 != null )
                 batch.Draw(tex2, actualPos, null, color);
         }

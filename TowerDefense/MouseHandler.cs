@@ -50,34 +50,5 @@ namespace TowerDefense
         {
             batch.Draw(this.tex, this.pos, Color.White);
         }
-
-        public bool ButtonClick(Button b)
-        {
-            return this.pos.X >= b.position.X
-            && this.pos.X < b.position.X + b.tex.Width
-            && this.pos.Y > b.position.Y
-            && this.pos.Y < b.position.Y + b.tex.Height;
-        }
-        public bool NodeClick(Node n)
-        {
-            return this.pos.X >= n.actualPos.X
-            && this.pos.X < n.actualPos.X + n.tex.Width
-            && this.pos.Y > n.actualPos.Y
-            && this.pos.Y < n.actualPos.Y + n.tex.Height;
-        }
-        public bool TowerClick(Tower t)
-        {
-            return this.pos.X >= t.position.X
-            && this.pos.X < t.position.X + t.tex.Width
-            && this.pos.Y > t.position.Y
-            && this.pos.Y < t.position.Y + t.tex.Height;
-        }
-        public bool EnemyClick(Enemy e)
-        {
-            return this.pos.X >= e.position.X
-            && this.pos.X < e.position.X + e.tex.Width
-            && this.pos.Y > e.position.Y
-            && this.pos.Y < e.position.Y + e.tex.Height;
-        }
     }
 }

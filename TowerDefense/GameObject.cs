@@ -20,5 +20,16 @@ namespace TowerDefense
         {
             batch.Draw(tex, position, null, color);
         }
+
+        public Rectangle BoundingBox()
+        {
+            //Assumes the texture isn't scaled
+            return new Rectangle(position.ToPoint(), new Point(tex.Width, tex.Height));
+        }
+
+        public bool ContainsPoint(Vector2 point)
+        {
+            return BoundingBox().Contains(point);
+        }
     }
 }

@@ -228,7 +228,7 @@ namespace TowerDefense
                 return;
             }
 
-            if (mouse.mouseState.LeftButton == ButtonState.Pressed && mouse.ButtonClick(startButton) && !attackPhase && !mouse.portalClicked)
+            if (mouse.mouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !attackPhase && !mouse.portalClicked)
             {
                 StartLevel();
             }
@@ -265,7 +265,7 @@ namespace TowerDefense
             mouse.enemyHovered = null;
             foreach (Enemy e in enemylist)
             {
-                if (mouse.EnemyClick(e))
+                if (e.ContainsPoint(mouse.pos))
                 {
                     e.hovering = true;
                     mouse.hovering = true;
@@ -292,7 +292,7 @@ namespace TowerDefense
 
             foreach (Button b in buttonlist)
             {
-                if (mouse.ButtonClick(b))
+                if (b.ContainsPoint(mouse.pos))
                 {
                     b.hovering = true;
                     mouse.hovering = true;
@@ -307,7 +307,7 @@ namespace TowerDefense
             }
             foreach (Tower t in towerlist)
             {
-                if (mouse.TowerClick(t) && !mouse.hovering)
+                if (t.ContainsPoint(mouse.pos) && !mouse.hovering)
                 {
                     t.hovering = true;
                     mouse.hovering = true;
@@ -324,7 +324,7 @@ namespace TowerDefense
             {
                 for (int j = 0; j < 21; j++)
                 {
-                    if (mouse.NodeClick(nodes[i, j]))
+                    if (nodes[i, j].ContainsPoint(mouse.pos))
                     {
                         nodes[i, j].hovering = true;
                         mouse.hovering = true;
@@ -415,7 +415,7 @@ namespace TowerDefense
 
         private void HandleLeftClick()
         {
-            if (mouse.ButtonClick(upgradeButton) && mouse.towerClicked != null && gold >= mouse.towerClicked.cost && !mouse.clicking)
+            if (upgradeButton.ContainsPoint(mouse.pos) && mouse.towerClicked != null && gold >= mouse.towerClicked.cost && !mouse.clicking)
             {
                 gold = gold - mouse.towerClicked.cost;
                 mouse.towerClicked.upgrade();
@@ -567,7 +567,7 @@ namespace TowerDefense
             return 20 - (int)current.simplePos.Y;
         }
 
-        public static List<Node> findBestPath(Node[,] nodes)
+        internal static List<Node> findBestPath(Node[,] nodes)
         {
             List<Node> available = new List<Node>();
             HashSet<Node> visited = new HashSet<Node>();
