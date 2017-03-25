@@ -16,13 +16,13 @@ namespace TowerDefense
         List<Node> bestPath = new List<Node>();
         Node temp;
         public bool spawned = false;
-        Vector2 currentDest;
+        Point currentDest;
         public bool dead = false;
         public bool lose = false;
         public float scale;
         public double spawnRate;
 
-        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate) : base(tex, Vector2.Zero)
+        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate) : base(tex, Point.Zero)
         {
             this.name = name;
             this.HP = HP;
@@ -54,13 +54,13 @@ namespace TowerDefense
             if (spawned)
             {
                 if (Position.Y > currentDest.Y)
-                    Position = new Vector2(Position.X, Position.Y - speed);
+                    Position = new Point(Position.X, Position.Y - speed);
                 else if (Position.Y < currentDest.Y)
-                    Position = new Vector2(Position.X, Position.Y + speed);
+                    Position = new Point(Position.X, Position.Y + speed);
                 else if (Position.X > currentDest.X)
-                    Position = new Vector2(Position.X - speed, Position.Y);
+                    Position = new Point(Position.X - speed, Position.Y);
                 else if (Position.X < currentDest.X)
-                    Position = new Vector2(Position.X + speed, Position.Y);
+                    Position = new Point(Position.X + speed, Position.Y);
 
                 else
                 {
@@ -81,7 +81,7 @@ namespace TowerDefense
                     }
                     else
                     {
-                        currentDest = new Vector2(350, 750);
+                        currentDest = new Point(350, 750);
                         lose = true;
                     }
                 }

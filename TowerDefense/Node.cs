@@ -11,8 +11,8 @@ namespace TowerDefense
     [DebuggerDisplay("{simplePos}")]
     class Node : GameObject
     {
-        public Vector2 actualPos;
-        public Vector2 simplePos;
+        public Point actualPos;
+        public Point simplePos;
         public Texture2D tex2;
         public int gScore;
         public int fScore;
@@ -20,7 +20,7 @@ namespace TowerDefense
         public bool wall = false;
         public bool portal = false;
         public Node portalsTo = null;
-        public Node(Vector2 actualPos, Vector2 simplePos, Texture2D tex) : base(tex, actualPos)
+        public Node(Point actualPos, Point simplePos, Texture2D tex) : base(tex, actualPos)
         {
             this.actualPos = actualPos;
             this.simplePos = simplePos;
@@ -29,7 +29,7 @@ namespace TowerDefense
         {
             base.Draw(batch);
             if ( tex2 != null )
-                batch.Draw(tex2, actualPos, null, Color);
+                batch.Draw(tex2, actualPos.ToVector2(), null, Color);
         }
         public void UpdateTex(Texture2D tex)
         {

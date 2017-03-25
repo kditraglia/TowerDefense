@@ -28,14 +28,14 @@ namespace TowerDefense
     class MouseHandler
     {
         public Texture2D tex;
-        public Vector2 pos;
+        public Point pos;
         public MouseState MouseState { get; set; }
         public GameObject HoveredObject { get; set; }
         public HoveringContext HoveredContext { get; set; }
         public GameObject SelectedObject { get; set; }
         public SelectionContext SelectionContext { get; set; }
 
-        public MouseHandler(Vector2 pos, Texture2D tex)
+        public MouseHandler(Point pos, Texture2D tex)
         {
             this.pos = pos;
             this.tex = tex;
@@ -53,7 +53,7 @@ namespace TowerDefense
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(tex, pos, Color.White);
+            batch.Draw(tex, pos.ToVector2(), Color.White);
         }
     }
 }

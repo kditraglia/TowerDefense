@@ -14,7 +14,7 @@ namespace TowerDefense
         public String description = "multiple targets";
         public double cooldown = 0;
 
-        public BatteryTower(Vector2 position, Texture2D tex) : base(tex, position)
+        public BatteryTower(Point position, Texture2D tex) : base(tex, position)
         {
             this.Tex = tex;
             this.Position = position;

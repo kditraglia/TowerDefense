@@ -5,7 +5,7 @@ namespace TowerDefense
 {
     class Button : GameObject
     {
-        public Button(Vector2 position, Texture2D tex, HoveringContext hoveringContext) : base(tex, position, hoveringContext)
+        public Button(Point position, Texture2D tex, HoveringContext hoveringContext) : base(tex, position, hoveringContext)
         {
 
         }

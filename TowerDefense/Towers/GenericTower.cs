@@ -17,7 +17,7 @@ namespace TowerDefense
         public String description = "Hits 1 Target";
         public double cooldown = 0;
 
-        public GenericTower(Vector2 position, Texture2D tex) : base(tex, position)
+        public GenericTower(Point position, Texture2D tex) : base(tex, position)
         {
             this.Tex = tex;
             this.Position = position;

@@ -7,7 +7,7 @@ namespace TowerDefense
     {
         public int speed = 10;
 
-        public Projectile(Texture2D tex, Vector2 position) : base(tex, position) { }
+        public Projectile(Texture2D tex, Point position) : base(tex, position) { }
 
         public abstract bool Move();
 

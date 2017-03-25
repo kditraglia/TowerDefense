@@ -16,7 +16,7 @@ namespace TowerDefense
         public String description = "Line damage";
         public double cooldown = 0;
 
-        public BlastTower(Vector2 position, Texture2D tex) : base(tex, position)
+        public BlastTower(Point position, Texture2D tex) : base(tex, position)
         {
             this.Tex = tex;
             this.Position = position;

@@ -7,20 +7,20 @@ namespace TowerDefense
 {
     class Blast: Projectile
     {
-        Vector2 dest;
+        Point dest;
         int damage;
         int areaofeffect;
         List<Enemy> enemylist;
         HashSet<Enemy> damaged = new HashSet<Enemy>();
         Vector2 direction;
-        public Blast (Vector2 position, Texture2D tex, Vector2 dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(tex, position)
+        public Blast (Point position, Texture2D tex, Point dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(tex, position)
         {
             this.dest = dest;
             this.damage = damage;
             this.areaofeffect = areaofeffect;
             this.enemylist = enemylist;
 
-            direction = position - dest;
+            direction = (position - dest).ToVector2();
             if (direction != Vector2.Zero)
             {
                 direction.Normalize();
@@ -30,7 +30,7 @@ namespace TowerDefense
         public override bool Move()
         {
             Damage();
-            Position -= direction * speed;
+            Position -= (direction * speed).ToPoint();
 
             return Position.X > 704 || Position.X < 128 || Position.Y > 724 || Position.Y < 64;
         }

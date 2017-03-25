@@ -50,18 +50,18 @@ namespace TowerDefense
             batch = new SpriteBatch(GraphicsDevice);
             ResourceManager.InitializeTextures(Content);
 
-            startButton = new Button(new Vector2(10 + 32, viewport.Height * .2f - 74), ResourceManager.StartButton, HoveringContext.ButtonStart);
-            upgradeButton = new Button(new Vector2(viewport.Width - 160, viewport.Height * .55f), ResourceManager.UpgradeButton, HoveringContext.ButtonUpgrade);
-            buttonlist.Add(new Button(new Vector2(10, viewport.Height * .2f), ResourceManager.GenericTower, HoveringContext.ButtonGenericTower));
-            buttonlist.Add(new Button(new Vector2(10 + 64, viewport.Height * .2f), ResourceManager.CannonTower, HoveringContext.ButtonCannonTower));
-            buttonlist.Add(new Button(new Vector2(10, (viewport.Height * .2f) + 64), ResourceManager.BatteryTower, HoveringContext.ButtonBatteryTower));
-            buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .2f) + 64), ResourceManager.BlastTower, HoveringContext.ButtonBlastTower));
-            buttonlist.Add(new Button(new Vector2(10 + 16, (viewport.Height * .5f)), ResourceManager.Wall, HoveringContext.ButtonWall));
-            buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .5f)), ResourceManager.Portal, HoveringContext.ButtonPortal));
+            startButton = new Button(new Point(10 + 32, (int)(viewport.Height * .2f - 74)), ResourceManager.StartButton, HoveringContext.ButtonStart);
+            upgradeButton = new Button(new Point(viewport.Width - 160, (int)(viewport.Height * .55f)), ResourceManager.UpgradeButton, HoveringContext.ButtonUpgrade);
+            buttonlist.Add(new Button(new Point(10, (int)(viewport.Height * .2f)), ResourceManager.GenericTower, HoveringContext.ButtonGenericTower));
+            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .2f)), ResourceManager.CannonTower, HoveringContext.ButtonCannonTower));
+            buttonlist.Add(new Button(new Point(10, (int)(viewport.Height * .2f) + 64), ResourceManager.BatteryTower, HoveringContext.ButtonBatteryTower));
+            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .2f) + 64), ResourceManager.BlastTower, HoveringContext.ButtonBlastTower));
+            buttonlist.Add(new Button(new Point(10 + 16, (int)(viewport.Height * .5f)), ResourceManager.Wall, HoveringContext.ButtonWall));
+            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .5f)), ResourceManager.Portal, HoveringContext.ButtonPortal));
 
             CreateMap();
 
-            mouse = new MouseHandler(Vector2.Zero, ResourceManager.DefaultCursor);
+            mouse = new MouseHandler(Point.Zero, ResourceManager.DefaultCursor);
         }
 
         //This map stuff should eventually live elsewhere
@@ -73,7 +73,7 @@ namespace TowerDefense
             {
                 for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
-                    nodes[i, j] = new Node(new Vector2(actualX, actualY), new Vector2(i, j), ResourceManager.Grass);
+                    nodes[i, j] = new Node(new Point(actualX, actualY), new Point(i, j), ResourceManager.Grass);
                     actualY += Constants.NodeSize.Y;
                 }
                 actualY = Constants.MapStart.Y;

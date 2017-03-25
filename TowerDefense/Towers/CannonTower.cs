@@ -16,7 +16,7 @@ namespace TowerDefense
         public String description = "AOE damage";
         public double cooldown = 0;
 
-        public CannonTower(Vector2 position, Texture2D tex) : base (tex, position)
+        public CannonTower(Point position, Texture2D tex) : base (tex, position)
         {
             this.Tex = tex;
             this.Position = position;
