@@ -12,37 +12,26 @@ namespace TowerDefense
         Enemy target;
         int damage;
         Action<int, Point> damageFunc;
+        Vector2 direction;
 
         public Bullet(Point position, Texture2D tex, Enemy target, int damage, Action<int, Point> damageFunc) : base(tex, position)
         {
             this.target = target;
             this.damage = damage;
             this.damageFunc = damageFunc;
+
+            direction = (position - target.Position).ToVector2();
+            if (direction != Vector2.Zero)
+            {
+                direction.Normalize();
+            }
         }
 
         public override bool Move()
         {
-            int rise = (Math.Abs(Position.Y - target.Position.Y));
-            int run = Math.Abs(Position.X - target.Position.X);
-            int x = (int)Math.Sqrt(speed * (run / rise));
-            int y = (int)Math.Sqrt(speed * (rise / run));
-            if (target.Position.X >= Position.X && target.Position.Y >= Position.Y)
-            {
-                Position = new Point(Position.X + x, Position.Y + y);
-            }
-            else if (target.Position.X < Position.X && target.Position.Y > Position.Y)
-            {
-                Position = new Point(Position.X - x, Position.Y + y);
-            }
-            else if (target.Position.X > Position.X && target.Position.Y < Position.Y)
-            {
-                Position = new Point(Position.X + x, Position.Y - y);
-            }
-            else if (target.Position.X <= Position.X && target.Position.Y <= Position.Y)
-            {
-                Position = new Point(Position.X - x, Position.Y - y);
-            }
-            if (-10 < (Position.X - target.Position.X) && (Position.X - target.Position.X) < 10 && -10 < (Position.Y - target.Position.Y) && (Position.Y - target.Position.Y) < 10)
+            Position -= (direction * speed).ToPoint();
+
+            if (Vector2.Distance(Position.ToVector2(), target.Position.ToVector2()) < 15)
             {
                 Damage();
                 return true;
