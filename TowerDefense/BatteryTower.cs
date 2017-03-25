@@ -32,14 +32,19 @@ namespace TowerDefense
         {
             if ((elapsedTime - cooldown) > attackspeed)
             {
+                bool attacked = false;
                 foreach (Enemy e in enemylist)
                 {
                     if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && e.spawned && !e.dead)
                     {
                         projectilelist.Add(new Bullet(position, proj, e, damage));
                         cooldown = elapsedTime;
-                        attackSound.Play();
+                        attacked = true;
                     }
+                }
+                if (attacked)
+                {
+                    attackSound.Play();
                 }
             }
             return projectilelist;
