@@ -419,9 +419,8 @@ namespace TowerDefense
             {
                 gold = gold - mouse.towerClicked.cost;
                 mouse.towerClicked.upgrade();
-                mouse.clicking = true;
             }
-            if (mouse.buttonHovered != null)
+            if (mouse.buttonHovered != null && !mouse.clicking)
             {
                 mouse.highlight = mouse.buttonHovered.highlight;
                 mouse.towerID = mouse.buttonHovered.ID;
