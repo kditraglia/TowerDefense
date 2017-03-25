@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
+using System;
+using System.Collections.Generic;
 
 namespace TowerDefense
 {
@@ -12,7 +9,7 @@ namespace TowerDefense
     {
         public String name = "Bug Zapper";
         public int damage = 5;
-        public float attackspeed = 0.75f;
+        public float attackspeed = 1.0f;
         public int range = 100;
         public String description = "multiple targets";
         public double cooldown = 0;

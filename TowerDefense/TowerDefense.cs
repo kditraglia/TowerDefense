@@ -346,21 +346,21 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (15 + level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 5, 1, ResourceManager.Enemy, nodes, "Malaria", 1.0f, .25));
+                    enemylist.Add(new Enemy(level * 8, 2, ResourceManager.Enemy, nodes, "Malaria", 1.0f, .4f));
                 }
             }
             else if (num < .6)
             {
                 for (int i = 0; i < (30 + 2 * level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 3, 2, ResourceManager.Enemy, nodes, "Tuberculosis", .75f, .10));
+                    enemylist.Add(new Enemy(level * 4, 3, ResourceManager.Enemy, nodes, "Tuberculosis", .33f, .2f));
                 }
             }
             else
             {
                 for (int i = 0; i < (5 + level / 2); i++)
                 {
-                    enemylist.Add(new Enemy(level * 20, 1, ResourceManager.Enemy, nodes, "AIDS", 1.25f, .50));
+                    enemylist.Add(new Enemy(level * 16, 1, ResourceManager.Enemy, nodes, "AIDS", 1.5f, .8f));
                 }
             }
         }
