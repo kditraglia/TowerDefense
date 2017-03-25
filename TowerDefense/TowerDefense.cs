@@ -228,7 +228,7 @@ namespace TowerDefense
                 return;
             }
 
-            if (mouse.mouseState.LeftButton == ButtonState.Pressed && mouse.ButtonClick(startButton) && !attackPhase)
+            if (mouse.mouseState.LeftButton == ButtonState.Pressed && mouse.ButtonClick(startButton) && !attackPhase && !mouse.portalClicked)
             {
                 StartLevel();
             }
@@ -353,7 +353,7 @@ namespace TowerDefense
             {
                 mouse.towerHovered.color = Color.Green;
             }
-            else if (mouse.highlight && mouse.wallClicked && mouse.nodeHovered != null && !mouse.nodeHovered.portal && !mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y))
+            else if (mouse.highlight && mouse.wallClicked && mouse.nodeHovered != null && !mouse.nodeHovered.portal && !mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
             {
                 mouse.nodeHovered.color = Color.Green;
             }
@@ -371,7 +371,7 @@ namespace TowerDefense
             {
                 mouse.nodeHovered.color = Color.Red;
             }
-            else if (mouse.highlight && mouse.nodeHovered != null && !CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y))
+            else if (mouse.highlight && mouse.nodeHovered != null && !CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
             {
                 mouse.nodeHovered.color = Color.Red;
             }
@@ -464,9 +464,12 @@ namespace TowerDefense
                     mouse.towerClicked = null;
                     sound[6].Play();
                 }
-                else MessageLog.NotEnoughGold();
+                else
+                {
+                    MessageLog.NotEnoughGold();
+                }
             }
-            else if (mouse.nodeHovered != null && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.wallClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y))
+            else if (mouse.nodeHovered != null && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.wallClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
             {
                 if (gold >= 1)
                 {
@@ -475,7 +478,10 @@ namespace TowerDefense
                     gold = gold - 1;
                     sound[6].Play();
                 }
-                else MessageLog.NotEnoughGold();
+                else
+                {
+                    MessageLog.NotEnoughGold();
+                }
 
             }
             else if (mouse.nodeHovered != null && mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked)
@@ -485,7 +491,7 @@ namespace TowerDefense
                 mouse.portalLocation = mouse.nodeHovered;
                 mouse.portalComplete = false;
             }
-            else if (mouse.nodeHovered != null && !mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked)
+            else if (mouse.nodeHovered != null && !mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, false))
             {
                 if (gold >= 20)
                 {
@@ -496,7 +502,10 @@ namespace TowerDefense
                     mouse.portalComplete = true;
                     gold = gold - 20;
                 }
-                else MessageLog.NotEnoughGold();
+                else
+                {
+                    MessageLog.NotEnoughGold();
+                }
             }
             else if (mouse.towerHovered != null && mouse.highlight && mouse.towerSelected == null && !mouse.clicking)
             {
@@ -513,14 +522,14 @@ namespace TowerDefense
                 towerlist.Remove(mouse.towerHovered);
                 sound[5].Play();
             }
-            else if (mouse.nodeHovered.wall)
+            else if (mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, true))
             {
                 gold = gold + 1;
                 mouse.nodeHovered.wall = false;
                 mouse.nodeHovered.defaultSet();
                 sound[6].Play();
             }
-            else if (mouse.nodeHovered.portal)
+            else if (mouse.nodeHovered.portal && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, true))
             {
                 mouse.nodeHovered.portal = false;
                 mouse.nodeHovered.defaultSet();
@@ -536,7 +545,13 @@ namespace TowerDefense
                 {
                     mouse.portalComplete = true;
                 }
-
+            }
+            if (!mouse.portalComplete)
+            {
+                mouse.portalLocation.portal = false;
+                mouse.portalLocation.defaultSet();
+                mouse.portalLocation = null;
+                mouse.portalComplete = true;
             }
             mouse.UpdateTex(defaultMouse);
             mouse.wallClicked = false;
@@ -609,11 +624,47 @@ namespace TowerDefense
             return null;
         }
 
-        public bool CheckForPath( int x, int y )
+        public bool CheckForPath( int x, int y, bool portal, bool remove)
         {
-            nodes[x, y].wall = true;
+            Node portaledTo = nodes[x, y].portalsTo;
+            if (portal)
+            {
+                nodes[x, y].portal = !remove;
+                nodes[x, y].portalsTo = remove ? null : mouse.portalLocation;
+                if (remove)
+                {
+                    portaledTo.portalsTo = null;
+                    portaledTo.portal = false;
+                }
+                else
+                {
+                    mouse.portalLocation.portalsTo = nodes[x, y];
+                }
+
+            }
+            else
+            {
+                nodes[x, y].wall = !remove;
+            }
             List<Node> bestPath = findBestPath(nodes);
-            nodes[x, y].wall = false;
+            if (portal)
+            {
+                nodes[x, y].portal = remove;
+                nodes[x, y].portalsTo = remove ? portaledTo : null;
+                if (remove)
+                {
+                    portaledTo.portalsTo = nodes[x, y];
+                    portaledTo.portal = true;
+                }
+                else
+                {
+                    mouse.portalLocation.portalsTo = null;
+                }
+            }
+            else
+            {
+                nodes[x, y].wall = remove;
+            }
             return bestPath != null;
         }
     }
