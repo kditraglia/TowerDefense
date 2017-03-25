@@ -17,7 +17,8 @@ namespace TowerDefense
         ButtonPortal,
         EmptyNode,
         FilledNode,
-        Tower
+        Tower,
+        Enemy
     }
     public enum SelectionContext
     {

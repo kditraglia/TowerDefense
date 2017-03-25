@@ -199,14 +199,9 @@ namespace TowerDefense
             {
                 StartLevel();
             }
-
-            if (attackPhase)
+            HandleMouseHover();
+            if (!attackPhase)
             {
-                HandleAttackPhase();
-            }
-            else
-            { 
-                HandleMouseHover();
                 if (mouse.MouseState.LeftButton == ButtonState.Pressed)
                 {
                     HandleLeftClick();
@@ -226,30 +221,6 @@ namespace TowerDefense
             }
         }
 
-        private void HandleAttackPhase()
-        {
-            //mouse.hovering = false;
-            //mouse.enemyHovered = null;
-            //foreach (Enemy e in enemylist)
-            //{
-            //    if (e.ContainsPoint(mouse.pos))
-            //    {
-            //        e.hovering = true;
-            //        mouse.hovering = true;
-            //        mouse.enemyHovered = e;
-            //    }
-            //    else
-            //    {
-            //        e.hovering = false;
-            //        e.color = Color.White;
-            //    }
-            //}
-            //if (mouse.enemyHovered != null)
-            //{
-            //    mouse.enemyHovered.color = Color.Yellow;
-            //}
-        }
-
         private void HandleMouseHover()
         {
             mouse.HoveringContext = HoveringContext.None;
@@ -261,34 +232,39 @@ namespace TowerDefense
                 if (e.hovering)
                 {
                     mouse.HoveredObject = e;
+                    mouse.HoveringContext = HoveringContext.Enemy;
                 }
             });
-            buttonlist.ForEach(b =>
+
+            if (!attackPhase)
             {
-                b.hovering = b.BoundingBox().Contains(mouse.pos);
-                if (b.hovering)
+                foreach (Node n in nodes)
                 {
-                    mouse.HoveredObject = b;
-                    mouse.HoveringContext = b.HoveringContext;
+                    n.hovering = n.BoundingBox().Contains(mouse.pos);
+                    if (n.hovering)
+                    {
+                        mouse.HoveredObject = n;
+                        mouse.HoveringContext = n.wall || n.portal ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
+                    }
                 }
-            });
-            towerlist.ForEach(t =>
-            {
-                t.hovering = t.BoundingBox().Contains(mouse.pos);
-                if (t.hovering)
+                buttonlist.ForEach(b =>
                 {
-                    mouse.HoveredObject = t;
-                    mouse.HoveringContext = HoveringContext.Tower;
-                }
-            });
-            foreach(Node n in nodes)
-            {
-                n.hovering = n.BoundingBox().Contains(mouse.pos);
-                if (n.hovering)
+                    b.hovering = b.BoundingBox().Contains(mouse.pos);
+                    if (b.hovering)
+                    {
+                        mouse.HoveredObject = b;
+                        mouse.HoveringContext = b.HoveringContext;
+                    }
+                });
+                towerlist.ForEach(t =>
                 {
-                    mouse.HoveredObject = n;
-                    mouse.HoveringContext = n.wall || n.portal ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
-                }
+                    t.hovering = t.BoundingBox().Contains(mouse.pos);
+                    if (t.hovering)
+                    {
+                        mouse.HoveredObject = t;
+                        mouse.HoveringContext = HoveringContext.Tower;
+                    }
+                });
             }
         }
 
@@ -446,56 +422,48 @@ namespace TowerDefense
 
         private void HandleRightClick()
         {
-            //if (mouse.towerHovered != null)
-            //{
-            //    gold = gold + mouse.towerHovered.cost;
-            //    towerlist.Remove(mouse.towerHovered);
-            //    ResourceManager.SellSound.Play();
-            //}
-            //else if (mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, true))
-            //{
-            //    gold = gold + 1;
-            //    mouse.nodeHovered.wall = false;
-            //    mouse.nodeHovered.defaultSet();
-            //    ResourceManager.SellSound.Play();
-            //}
-            //else if (mouse.nodeHovered.portal && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, true))
-            //{
-            //    mouse.nodeHovered.portal = false;
-            //    mouse.nodeHovered.defaultSet();
-            //    if (mouse.nodeHovered.portalsTo != null)
-            //    {
-            //        mouse.nodeHovered.portalsTo.portal = false;
-            //        mouse.nodeHovered.portalsTo.portalsTo = null;
-            //        mouse.nodeHovered.portalsTo.defaultSet();
-            //        mouse.nodeHovered.portalsTo = null;
-            //        gold = gold + 20;
-            //    }
-            //    else
-            //    {
-            //        mouse.portalComplete = true;
-            //    }
-            //}
-            //if (!mouse.portalComplete)
-            //{
-            //    mouse.portalLocation.portal = false;
-            //    mouse.portalLocation.defaultSet();
-            //    mouse.portalLocation = null;
-            //    mouse.portalComplete = true;
-            //}
+            if (mouse.HoveringContext == HoveringContext.Tower)
+            {
+                Tower t = mouse.HoveredObject as Tower;
+                gold = gold + t.cost;
+                towerlist.Remove(t);
+                ResourceManager.SellSound.Play();
+            }
+            else if (mouse.HoveringContext == HoveringContext.FilledNode)
+            {
+                Node n = mouse.HoveredObject as Node;
+                if (n.wall && CheckForPath(n.simplePos.X, n.simplePos.Y, false, true))
+                {
+                    gold = gold + 1;
+                    n.wall = false;
+                    n.defaultSet();
+                    ResourceManager.SellSound.Play();
+                }
+                else if (n.portal && CheckForPath(n.simplePos.X, n.simplePos.Y, true, true))
+                {
+                    n.portal = false;
+                    n.defaultSet();
+                    n.portalsTo.portal = false;
+                    n.portalsTo.portalsTo = null;
+                    n.portalsTo.defaultSet();
+                    n.portalsTo = null;
+                    gold = gold + 20;
+                    ResourceManager.SellSound.Play();
+                }
+            }
+            if (mouse.SelectionContext == SelectionContext.PlacingPortalExit)
+            {
+                mouse.PortalEntrance.portal = false;
+                mouse.PortalEntrance.defaultSet();
+                mouse.PortalEntrance = null;
+            }
             mouse.UpdateTex(ResourceManager.DefaultCursor);
             mouse.SelectionContext = SelectionContext.None;
-            //mouse.wallClicked = false;
-            //mouse.portalClicked = false;
-            //mouse.towerClicked = null;
-            //mouse.towerSelected = null;
-            //mouse.highlight = true;
-            //mouse.rClicking = true;
         }
 
         private static int heuristic(Node current)
         {
-            return Constants.MapSize.Y - (int)current.simplePos.Y;
+            return Constants.MapSize.Y - current.simplePos.Y;
         }
 
         internal static List<Node> findBestPath(Node[,] nodes)
