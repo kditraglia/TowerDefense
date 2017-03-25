@@ -21,11 +21,11 @@ namespace TowerDefense
         List<Enemy> enemylist = new List<Enemy>();
         List<Projectile> projectilelist = new List<Projectile>();
         MessageLog MessageLog = new MessageLog();
-        Node[,] nodes = new Node[Constants.X + 1, Constants.Y + 1];
+        Node[,] nodes = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
         bool attackPhase = false;
         bool playerLoses = false;
         int level = 0;
-        int gold = Constants.STARTINGGOLD;
+        int gold = Constants.StartingGold;
         double lastSpawnedTime = 0;
 
         public TowerDefense()
@@ -64,21 +64,33 @@ namespace TowerDefense
             mouse = new MouseHandler(Vector2.Zero, ResourceManager.DefaultCursor);
         }
 
+        //This map stuff should eventually live elsewhere
         private void CreateMap()
         {
-            int actualY = 64;
-            int actualX = 148;
-            for (int i = 0; i <= Constants.X; i++)
+            int actualY = Constants.MapStart.Y;
+            int actualX = Constants.MapStart.X;
+            for (int i = 0; i <= Constants.MapSize.X; i++)
             {
-                for (int j = 0; j <= Constants.Y; j++)
+                for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
                     nodes[i, j] = new Node(new Vector2(actualX, actualY), new Vector2(i, j), ResourceManager.Grass);
-                    actualY += 32;
+                    actualY += Constants.NodeSize.Y;
                 }
-                actualY = 64;
-                actualX += 32;
+                actualY = Constants.MapStart.Y;
+                actualX += Constants.NodeSize.X;
             }
         }
+
+        private bool MouseInGameBounds()
+        {
+            int topY = Constants.MapStart.Y;
+            int leftX = Constants.MapStart.X;
+
+            return mouse.pos.Y > topY && mouse.pos.X > leftX && 
+                        mouse.pos.Y < topY + (Constants.MapSize.Y * Constants.NodeSize.Y) && 
+                        mouse.pos.X < leftX + (Constants.MapSize.X * Constants.NodeSize.X);
+        }
+        //
 
         protected override void Update(GameTime gameTime)
         {
@@ -134,9 +146,9 @@ namespace TowerDefense
             GraphicsDevice.Clear(Color.WhiteSmoke);
 
             batch.Begin();
-            for (int i = 0; i <= Constants.X; i++)
+            for (int i = 0; i <= Constants.MapSize.X; i++)
             {
-                for (int j = 0; j <= Constants.Y; j++)
+                for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
                     nodes[i, j].Draw(batch);
                 }
@@ -453,7 +465,7 @@ namespace TowerDefense
 
         private static int heuristic(Node current)
         {
-            return Constants.Y - (int)current.simplePos.Y;
+            return Constants.MapSize.Y - (int)current.simplePos.Y;
         }
 
         internal static List<Node> findBestPath(Node[,] nodes)
@@ -461,13 +473,13 @@ namespace TowerDefense
             List<Node> available = new List<Node>();
             HashSet<Node> visited = new HashSet<Node>();
 
-            for (int i = 0; i <= Constants.X; i++)
-                for (int j = 0; j <= Constants.Y; j++)
+            for (int i = 0; i <= Constants.MapSize.X; i++)
+                for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
                     nodes[i, j].parent = null;
                     nodes[i, j].fScore = int.MaxValue;
                 }
-            for (int i = 0; i <= Constants.X; i++)
+            for (int i = 0; i <= Constants.MapSize.X; i++)
             {
                 if (!nodes[i, 0].wall)
                 {
@@ -478,7 +490,7 @@ namespace TowerDefense
             while (available.Count != 0)
             {
                 Node current = available.OrderBy(n => n.fScore).First();
-                if (current.simplePos.Y == Constants.Y)
+                if (current.simplePos.Y == Constants.MapSize.Y)
                 {
                     List<Node> bestPath = new List<Node>();
                     while (current.parent != null)
