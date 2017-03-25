@@ -38,26 +38,26 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BatteryTower.cs" />
-    <Compile Include="BlastTower.cs" />
-    <Compile Include="Blast.cs" />
-    <Compile Include="Bullet.cs" />
+    <Compile Include="Towers\BatteryTower.cs" />
+    <Compile Include="Towers\BlastTower.cs" />
+    <Compile Include="Projectiles\Blast.cs" />
+    <Compile Include="Projectiles\Bullet.cs" />
     <Compile Include="Button.cs" />
-    <Compile Include="CannonBall.cs" />
-    <Compile Include="CannonTower.cs" />
+    <Compile Include="Projectiles\CannonBall.cs" />
+    <Compile Include="Towers\CannonTower.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="TowerDefense.cs" />
-    <Compile Include="GenericTower.cs" />
-    <Compile Include="LightningBolt.cs" />
+    <Compile Include="Towers\GenericTower.cs" />
+    <Compile Include="Projectiles\LightningBolt.cs" />
     <Compile Include="MessageLog.cs" />
     <Compile Include="MouseHandler.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Projectile.cs" />
+    <Compile Include="Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tower.cs" />
+    <Compile Include="Towers\Tower.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

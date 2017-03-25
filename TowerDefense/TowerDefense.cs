@@ -33,7 +33,6 @@ namespace TowerDefense
         bool playerLoses = false;
         int level = 0;
         int enemyID = 0;
-        int towerID = 100;
         int gold;
         double lastSpawnedTime = 0;
 
@@ -426,16 +425,16 @@ namespace TowerDefense
                 switch (mouse.towerID)
                 {
                     case 1:
-                        mouse.towerSelected = new GenericTower(mouse.pos, mouse.tex, proj[0], towerID, sound[0]);
+                        mouse.towerSelected = new GenericTower(mouse.pos, mouse.tex, proj[0], sound[0]);
                         break;
                     case 2:
-                        mouse.towerSelected = new CannonTower(mouse.pos, mouse.tex, proj[1], towerID, sound[1]);
+                        mouse.towerSelected = new CannonTower(mouse.pos, mouse.tex, proj[1], sound[1]);
                         break;
                     case 3:
-                        mouse.towerSelected = new BatteryTower(mouse.pos, mouse.tex, proj[2], towerID, sound[2]);
+                        mouse.towerSelected = new BatteryTower(mouse.pos, mouse.tex, proj[2], sound[2]);
                         break;
                     case 4:
-                        mouse.towerSelected = new BlastTower(mouse.pos, mouse.tex, proj[3], towerID, sound[3]);
+                        mouse.towerSelected = new BlastTower(mouse.pos, mouse.tex, proj[3], sound[3]);
                         break;
                     case 5:
                         mouse.wallClicked = true;
@@ -446,7 +445,6 @@ namespace TowerDefense
                     default:
                         break;
                 }
-                towerID++;
                 mouse.towerClicked = null;
             }
             else if (mouse.nodeHovered != null && !mouse.highlight && mouse.towerSelected != null && !mouse.clicking && mouse.pos.X <= 641 && mouse.pos.Y <= 679)

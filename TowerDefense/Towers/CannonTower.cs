@@ -17,7 +17,7 @@ namespace TowerDefense
         public double cooldown = 0;
         SoundEffect attackSound;
 
-        public CannonTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base (tex, position)
+        public CannonTower(Vector2 position, Texture2D tex, Texture2D proj, SoundEffect attackSound) : base (tex, position)
         {
             this.tex = tex;
             this.position = position;

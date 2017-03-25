@@ -18,7 +18,7 @@ namespace TowerDefense
         SoundEffect attackSound;
         Blast tempBlast;
 
-        public BlastTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base(tex, position)
+        public BlastTower(Vector2 position, Texture2D tex, Texture2D proj, SoundEffect attackSound) : base(tex, position)
         {
             this.tex = tex;
             this.position = position;
