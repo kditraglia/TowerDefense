@@ -15,6 +15,7 @@ namespace TowerDefense
         ButtonBlastTower,
         ButtonWall,
         ButtonPortal,
+        ButtonCheese,
         EmptyNode,
         FilledNode,
         Tower,
@@ -27,6 +28,7 @@ namespace TowerDefense
         PlacingWall,
         PlacingPortalEntrance,
         PlacingPortalExit,
+        PlacingCheese,
         TowerSelected
     }
     class MouseHandler

@@ -19,6 +19,7 @@ namespace TowerDefense
         public static Texture2D BlastTower { get; private set; }
         public static Texture2D Wall { get; private set; }
         public static Texture2D Portal { get; private set; }
+        public static Texture2D Cheese { get; private set; }
         public static Texture2D Bullet { get; private set; }
         public static Texture2D CannonBall { get; private set; }
         public static Texture2D LightningBolt { get; private set; }
@@ -50,6 +51,7 @@ namespace TowerDefense
             BlastTower = content.Load<Texture2D>(@"blast tower");
             Wall = content.Load<Texture2D>(@"wall");
             Portal = content.Load<Texture2D>(@"portal");
+            Cheese = content.Load<Texture2D>(@"cheese");
             Bullet = content.Load<Texture2D>(@"bullet");
             CannonBall = content.Load<Texture2D>(@"cannon ball");
             LightningBolt = content.Load<Texture2D>(@"lightning bolt");

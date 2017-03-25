@@ -19,6 +19,7 @@ namespace TowerDefense
         public Node parent;
         public bool wall = false;
         public bool portal = false;
+        public bool cheese = false;
         public Node portalsTo = null;
 
         public override Color Color
