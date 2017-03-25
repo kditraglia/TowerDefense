@@ -86,8 +86,8 @@ namespace TowerDefense
             int topY = Constants.MapStart.Y;
             int leftX = Constants.MapStart.X;
 
-            return mouse.pos.Y > topY && mouse.pos.X > leftX && 
-                        mouse.pos.Y < topY + (Constants.MapSize.Y * Constants.NodeSize.Y) && 
+            return mouse.pos.Y > topY && mouse.pos.X > leftX &&
+                        mouse.pos.Y < topY + (Constants.MapSize.Y * Constants.NodeSize.Y) &&
                         mouse.pos.X < leftX + (Constants.MapSize.X * Constants.NodeSize.X);
         }
         //
@@ -176,7 +176,7 @@ namespace TowerDefense
                 e?.ShowStats(batch, ResourceManager.GameFont, viewport);
             }
 
-            batch.DrawString(ResourceManager.GameFont, "GOLD - " + gold + " $", new Vector2(viewport.Width *.8f, viewport.Height *.1f), Color.Black,
+            batch.DrawString(ResourceManager.GameFont, "GOLD - " + gold + " $", new Vector2(viewport.Width * .8f, viewport.Height * .1f), Color.Black,
                     0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
 
             MessageLog.Draw(batch, ResourceManager.GameFont, viewport);
@@ -245,9 +245,10 @@ namespace TowerDefense
                         mouse.HoveringContext = n.wall || n.portal ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
                     }
                 }
+
                 buttonlist.ForEach(b =>
                 {
-                    b.Hovering = b.BoundingBox().Contains(mouse.pos);
+                    b.Hovering = b.BoundingBox().Contains(mouse.pos) && mouse.SelectionContext == SelectionContext.None;
                     if (b.Hovering)
                     {
                         mouse.HoveredObject = b;
@@ -256,7 +257,7 @@ namespace TowerDefense
                 });
                 towerlist.ForEach(t =>
                 {
-                    t.Hovering = t.BoundingBox().Contains(mouse.pos);
+                    t.Hovering = t.BoundingBox().Contains(mouse.pos) && mouse.SelectionContext == SelectionContext.None;
                     if (t.Hovering)
                     {
                         mouse.HoveredObject = t;
@@ -403,7 +404,7 @@ namespace TowerDefense
                 {
                     MessageLog.IllegalPosition();
                 }
-                else  if (gold >= 20)
+                else if (gold >= 20)
                 {
                     portalExit.portal = true;
                     portalExit.UpdateTex(mouse.tex);
