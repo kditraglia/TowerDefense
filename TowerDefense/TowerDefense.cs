@@ -52,13 +52,20 @@ namespace TowerDefense
 
             startButton = new Button(new Vector2(10 + 32, viewport.Height * .2f - 74), ResourceManager.StartButton, false, 0);
             upgradeButton = new Button(new Vector2(viewport.Width - 160, viewport.Height * .55f), ResourceManager.UpgradeButton, false, 0);
-            this.buttonlist.Add(new Button(new Vector2(10, viewport.Height * .2f), ResourceManager.GenericTower, false, 1));
-            this.buttonlist.Add(new Button(new Vector2(10 + 64, viewport.Height * .2f), ResourceManager.CannonTower, false, 2));
-            this.buttonlist.Add(new Button(new Vector2(10, (viewport.Height * .2f) + 64), ResourceManager.BatteryTower, false, 3));
-            this.buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .2f) + 64), ResourceManager.BlastTower, false, 4));
-            this.buttonlist.Add(new Button(new Vector2(10 + 16, (viewport.Height * .5f)), ResourceManager.Wall, true, 5));
-            this.buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .5f)), ResourceManager.Portal, true, 6));
+            buttonlist.Add(new Button(new Vector2(10, viewport.Height * .2f), ResourceManager.GenericTower, false, 1));
+            buttonlist.Add(new Button(new Vector2(10 + 64, viewport.Height * .2f), ResourceManager.CannonTower, false, 2));
+            buttonlist.Add(new Button(new Vector2(10, (viewport.Height * .2f) + 64), ResourceManager.BatteryTower, false, 3));
+            buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .2f) + 64), ResourceManager.BlastTower, false, 4));
+            buttonlist.Add(new Button(new Vector2(10 + 16, (viewport.Height * .5f)), ResourceManager.Wall, true, 5));
+            buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .5f)), ResourceManager.Portal, true, 6));
 
+            CreateMap();
+
+            mouse = new MouseHandler(Vector2.Zero, ResourceManager.DefaultCursor);
+        }
+
+        private void CreateMap()
+        {
             int actualY = 64;
             int actualX = 148;
             for (int i = 0; i <= Constants.X; i++)
@@ -66,17 +73,11 @@ namespace TowerDefense
                 for (int j = 0; j <= Constants.Y; j++)
                 {
                     nodes[i, j] = new Node(new Vector2(actualX, actualY), new Vector2(i, j), ResourceManager.Grass);
-
-                    actualY = actualY + 32;
-                    if (actualY > 704)
-                    {
-                        actualY = 64;
-                        actualX = actualX + 32;
-                    }
+                    actualY += 32;
                 }
+                actualY = 64;
+                actualX += 32;
             }
-            
-            mouse = new MouseHandler(new Vector2(0, 0), ResourceManager.DefaultCursor);
         }
 
         protected override void Update(GameTime gameTime)
