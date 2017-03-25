@@ -9,27 +9,15 @@ namespace TowerDefense
         public Point Position { get; set; }
         public HoveringContext HoveringContext { get; set; }
 
-        private bool hovering;
-        public bool Hovering
-        {
-            get { return hovering; }
-            set { hovering = value; Color = hovering || selected ? Color.Green : Color.White; }
-        }
-
-        private bool selected;
-        public bool Selected
-        {
-            get { return selected; }
-            set { selected = value; Color = hovering || selected ? Color.Green : Color.White; }
-        }
-        public Color Color { get; set; }
+        public bool Hovering { get; set; }
+        public bool Selected { get; set; }
+        public virtual Color Color { get { return Hovering || Selected ? Color.Green : Color.White; } }
 
         public GameObject(Texture2D tex, Point position, HoveringContext hoveringContext = HoveringContext.None)
         {
             Tex = tex;
             Position = position;
             HoveringContext = hoveringContext;
-            Color = Color.White;
         }
 
         public virtual void Draw(SpriteBatch batch)

@@ -20,6 +20,19 @@ namespace TowerDefense
         public bool wall = false;
         public bool portal = false;
         public Node portalsTo = null;
+
+        public override Color Color
+        {
+            get
+            {
+                if (portalsTo != null && portalsTo.Hovering)
+                {
+                    return Color.Green;
+                }
+                return base.Color;
+            }
+        }
+
         public Node(Point actualPos, Point simplePos, Texture2D tex) : base(tex, actualPos)
         {
             this.actualPos = actualPos;
