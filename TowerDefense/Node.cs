@@ -48,24 +48,24 @@ namespace TowerDefense
             }
             else
             {
-                if (((int)simplePos.Y + 1) <= Constants.MapSize.Y && !nodes[(int)simplePos.X, (int)simplePos.Y + 1].wall)
+                if ((simplePos.Y + 1) <= Constants.MapSize.Y && !nodes[simplePos.X, simplePos.Y + 1].wall)
                 {
-                    Node tempNode = nodes[(int)simplePos.X, (int)simplePos.Y + 1];
+                    Node tempNode = nodes[simplePos.X, simplePos.Y + 1];
                     neighbors.Add(tempNode);
                 }
-                if (((int)simplePos.Y - 1) >= 0 && !nodes[(int)simplePos.X, (int)simplePos.Y - 1].wall)
+                if ((simplePos.Y - 1) >= 0 && !nodes[simplePos.X, simplePos.Y - 1].wall)
                 {
-                    Node tempNode = nodes[(int)simplePos.X, (int)simplePos.Y - 1];
+                    Node tempNode = nodes[simplePos.X, simplePos.Y - 1];
                     neighbors.Add(tempNode);
                 }
-                if (((int)simplePos.X + 1) <= Constants.MapSize.X && !nodes[(int)simplePos.X + 1, (int)simplePos.Y].wall)
+                if ((simplePos.X + 1) <= Constants.MapSize.X && !nodes[simplePos.X + 1, simplePos.Y].wall)
                 {
-                    Node tempNode = nodes[(int)simplePos.X + 1, (int)simplePos.Y];
+                    Node tempNode = nodes[simplePos.X + 1, simplePos.Y];
                     neighbors.Add(tempNode);
                 }
-                if (((int)simplePos.X - 1) >= 0 && !nodes[(int)simplePos.X - 1, (int)simplePos.Y].wall)
+                if ((simplePos.X - 1) >= 0 && !nodes[simplePos.X - 1, simplePos.Y].wall)
                 {
-                    Node tempNode = nodes[(int)simplePos.X - 1, (int)simplePos.Y];
+                    Node tempNode = nodes[simplePos.X - 1, simplePos.Y];
                     neighbors.Add(tempNode);
                 }
             }
