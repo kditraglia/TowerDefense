@@ -237,9 +237,9 @@ namespace TowerDefense
             {
                 HandleAttackPhase();
             }
-            HandleMouseHover();
             if (!attackPhase)
             {
+                HandleMouseHover();
                 if (mouse.mouseState.LeftButton == ButtonState.Pressed)
                 {
                     HandleLeftClick();
@@ -341,42 +341,39 @@ namespace TowerDefense
                     mouse.enemyHovered.color = Color.Green;
                 }
             }
-            if (!attackPhase)
+            if (mouse.buttonHovered != null)
             {
-                if (mouse.buttonHovered != null)
-                {
-                    mouse.buttonHovered.color = Color.Green;
-                }
-                if (mouse.towerClicked != null)
-                {
-                    mouse.towerClicked.color = Color.Green;
-                }
-                else if (mouse.highlight && mouse.towerSelected == null && mouse.towerHovered != null)
-                {
-                    mouse.towerHovered.color = Color.Green;
-                }
-                else if (mouse.highlight && mouse.wallClicked && mouse.nodeHovered != null && !mouse.nodeHovered.portal && !mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y))
-                {
-                    mouse.nodeHovered.color = Color.Green;
-                }
-                else if (mouse.highlight && !mouse.wallClicked && mouse.nodeHovered != null && !mouse.nodeHovered.portal && !mouse.nodeHovered.wall)
-                {
-                    mouse.nodeHovered.color = Color.Green;
-                }
-                else if (mouse.highlight && mouse.nodeHovered != null && mouse.nodeHovered.portal && !mouse.nodeHovered.wall)
-                {
-                    mouse.nodeHovered.color = Color.Green;
-                    if (mouse.nodeHovered.portalsTo != null)
-                        mouse.nodeHovered.portalsTo.color = Color.Green;
-                }
-                else if (mouse.highlight && mouse.nodeHovered != null && !mouse.nodeHovered.portal && mouse.nodeHovered.wall)
-                {
-                    mouse.nodeHovered.color = Color.Red;
-                }
-                else if (mouse.highlight && mouse.nodeHovered != null && !CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y))
-                {
-                    mouse.nodeHovered.color = Color.Red;
-                }
+                mouse.buttonHovered.color = Color.Green;
+            }
+            if (mouse.towerClicked != null)
+            {
+                mouse.towerClicked.color = Color.Green;
+            }
+            else if (mouse.highlight && mouse.towerSelected == null && mouse.towerHovered != null)
+            {
+                mouse.towerHovered.color = Color.Green;
+            }
+            else if (mouse.highlight && mouse.wallClicked && mouse.nodeHovered != null && !mouse.nodeHovered.portal && !mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y))
+            {
+                mouse.nodeHovered.color = Color.Green;
+            }
+            else if (mouse.highlight && !mouse.wallClicked && mouse.nodeHovered != null && !mouse.nodeHovered.portal && !mouse.nodeHovered.wall)
+            {
+                mouse.nodeHovered.color = Color.Green;
+            }
+            else if (mouse.highlight && mouse.nodeHovered != null && mouse.nodeHovered.portal && !mouse.nodeHovered.wall)
+            {
+                mouse.nodeHovered.color = Color.Green;
+                if (mouse.nodeHovered.portalsTo != null)
+                    mouse.nodeHovered.portalsTo.color = Color.Green;
+            }
+            else if (mouse.highlight && mouse.nodeHovered != null && !mouse.nodeHovered.portal && mouse.nodeHovered.wall)
+            {
+                mouse.nodeHovered.color = Color.Red;
+            }
+            else if (mouse.highlight && mouse.nodeHovered != null && !CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y))
+            {
+                mouse.nodeHovered.color = Color.Red;
             }
         }
 
