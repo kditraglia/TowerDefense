@@ -164,6 +164,7 @@ namespace TowerDefense
             {
                 Tower t = mouse.SelectedObject as Tower;
                 t?.ShowStats(batch, ResourceManager.GameFont, viewport);
+                upgradeButton.Draw(batch);
             }
             else if (mouse.HoveringContext == HoveringContext.Tower)
             {
@@ -254,6 +255,12 @@ namespace TowerDefense
             mouse.HoveringContext = HoveringContext.None;
             mouse.HoveredObject = null;
 
+            if (upgradeButton.BoundingBox().Contains(mouse.pos))
+            {
+                mouse.HoveredObject = upgradeButton;
+                mouse.HoveringContext = upgradeButton.HoveringContext;
+            }
+
             enemylist.ForEach(e =>
             {
                 e.Hovering = e.BoundingBox().Contains(mouse.pos);
@@ -278,7 +285,7 @@ namespace TowerDefense
 
                 buttonlist.ForEach(b =>
                 {
-                    b.Hovering = b.BoundingBox().Contains(mouse.pos) && mouse.SelectionContext == SelectionContext.None;
+                    b.Hovering = b.BoundingBox().Contains(mouse.pos);
                     if (b.Hovering)
                     {
                         mouse.HoveredObject = b;
@@ -365,8 +372,15 @@ namespace TowerDefense
                     case HoveringContext.ButtonUpgrade:
                         {
                             Tower t = mouse.SelectedObject as Tower;
-                            gold = gold - t.cost;
-                            t.upgrade();
+                            if (gold >= t.cost)
+                            {
+                                gold = gold - t.cost;
+                                t.upgrade();
+                            }
+                            else
+                            {
+                                MessageLog.NotEnoughGold();
+                            }
                             break;
                         }
                     case HoveringContext.Tower:
