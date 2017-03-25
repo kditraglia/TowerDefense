@@ -15,15 +15,11 @@ namespace TowerDefense
         public int areaofeffect = 20;
         public String description = "Line damage";
         public double cooldown = 0;
-        SoundEffect attackSound;
-        Blast tempBlast;
 
-        public BlastTower(Vector2 position, Texture2D tex, Texture2D proj, SoundEffect attackSound) : base(tex, position)
+        public BlastTower(Vector2 position, Texture2D tex) : base(tex, position)
         {
             this.tex = tex;
             this.position = position;
-            this.proj = proj;
-            this.attackSound = attackSound;
 
             cost = 15;
         }
@@ -34,11 +30,11 @@ namespace TowerDefense
             {
                 if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed && e.spawned && !e.dead)
                 {
-                    tempBlast = new Blast(position, proj, e.position, enemylist, damage, areaofeffect);
+                    Blast tempBlast = new Blast(position, ResourceManager.Blast, e.position, enemylist, damage, areaofeffect);
                     projectilelist.Add(tempBlast);
 
                     cooldown = elapsedTime;
-                    attackSound.Play();
+                    ResourceManager.BlastSound.Play();
                 }
             }
             return projectilelist;

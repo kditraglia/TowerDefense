@@ -15,14 +15,11 @@ namespace TowerDefense
         public int range = 175;
         public String description = "AOE damage";
         public double cooldown = 0;
-        SoundEffect attackSound;
 
-        public CannonTower(Vector2 position, Texture2D tex, Texture2D proj, SoundEffect attackSound) : base (tex, position)
+        public CannonTower(Vector2 position, Texture2D tex) : base (tex, position)
         {
             this.tex = tex;
             this.position = position;
-            this.proj = proj;
-            this.attackSound = attackSound;
 
             cost = 15;
         }
@@ -33,9 +30,9 @@ namespace TowerDefense
             {
                 if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed && e.spawned && !e.dead)
                 {
-                    projectilelist.Add(new CannonBall(position, proj, e.position, enemylist, damage, areaofeffect));
+                    projectilelist.Add(new CannonBall(position, ResourceManager.CannonBall, e.position, enemylist, damage, areaofeffect));
                     cooldown = elapsedTime;
-                    attackSound.Play();
+                    ResourceManager.CannonSound.Play();
                 }
             }
             return projectilelist;

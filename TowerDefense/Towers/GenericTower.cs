@@ -17,14 +17,10 @@ namespace TowerDefense
         public String description = "Hits 1 Target";
         public double cooldown = 0;
 
-        SoundEffect attackSound;
-
-        public GenericTower(Vector2 position, Texture2D tex, Texture2D proj, SoundEffect attackSound) : base(tex, position)
+        public GenericTower(Vector2 position, Texture2D tex) : base(tex, position)
         {
             this.tex = tex;
             this.position = position;
-            this.proj = proj;
-            this.attackSound = attackSound;
 
             cost = 12;
         }
@@ -35,9 +31,9 @@ namespace TowerDefense
             {
                 if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed && e.spawned && !e.dead )
                 {
-                    projectilelist.Add(new Bullet(position, proj, e, damage));
+                    projectilelist.Add(new Bullet(position, ResourceManager.Bullet, e, damage));
                     cooldown = elapsedTime;
-                    attackSound.Play();
+                    ResourceManager.BulletSound.Play();
                 }
             }
             return projectilelist;

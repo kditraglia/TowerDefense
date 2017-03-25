@@ -22,10 +22,8 @@ namespace TowerDefense
         public bool lose = false;
         public float scale;
         public double spawnRate;
-        SoundEffect damaged;
-        SoundEffect portal;
 
-        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate, SoundEffect damaged, SoundEffect portal) : base(tex, Vector2.Zero)
+        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate) : base(tex, Vector2.Zero)
         {
             this.name = name;
             this.HP = HP;
@@ -39,14 +37,12 @@ namespace TowerDefense
             this.position = temp.actualPos;
             this.bestPath.Remove(temp);
             this.temp = bestPath[0];
-            this.damaged = damaged;
-            this.portal = portal;
             currentDest = temp.actualPos;
         }
         public void damage(int damage)
         {
             HP = HP - damage;
-            damaged.Play();
+            ResourceManager.DamagedSound.Play();
             if ( HP <= 0 )
                 dead = true;
         }
@@ -78,7 +74,7 @@ namespace TowerDefense
                             temp = bestPath[0];
                             bestPath.Remove(temp);
                             temp = bestPath[0];
-                            portal.Play();
+                            ResourceManager.PortalSound.Play();
                         }
                         else
                             temp = bestPath[0];

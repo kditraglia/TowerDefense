@@ -9,7 +9,6 @@ namespace TowerDefense
 {
     abstract class Tower : GameObject
     {
-        protected Texture2D proj;
         public int cost;
         public bool hovering;
 

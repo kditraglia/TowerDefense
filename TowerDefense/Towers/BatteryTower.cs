@@ -16,14 +16,11 @@ namespace TowerDefense
         public int range = 100;
         public String description = "multiple targets";
         public double cooldown = 0;
-        SoundEffect attackSound;
 
-        public BatteryTower(Vector2 position, Texture2D tex, Texture2D proj, SoundEffect attackSound) : base(tex, position)
+        public BatteryTower(Vector2 position, Texture2D tex) : base(tex, position)
         {
             this.tex = tex;
             this.position = position;
-            this.proj = proj;
-            this.attackSound = attackSound;
 
             cost = 15;
         }
@@ -37,14 +34,14 @@ namespace TowerDefense
                 {
                     if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && e.spawned && !e.dead)
                     {
-                        projectilelist.Add(new Bullet(position, proj, e, damage));
+                        projectilelist.Add(new Bullet(position, ResourceManager.LightningBolt, e, damage));
                         cooldown = elapsedTime;
                         attacked = true;
                     }
                 }
                 if (attacked)
                 {
-                    attackSound.Play();
+                    ResourceManager.LightningSound.Play();
                 }
             }
             return projectilelist;

@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ResourceManager.cs" />
     <Compile Include="Towers\BatteryTower.cs" />
     <Compile Include="Towers\BlastTower.cs" />
     <Compile Include="Projectiles\Blast.cs" />

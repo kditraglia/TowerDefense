@@ -8,18 +8,11 @@ using System.Collections.Generic;
 
 namespace TowerDefense
 {
-    public class TowerDefense : Microsoft.Xna.Framework.Game
+    public class TowerDefense : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch batch;
-        SpriteFont text;
         MouseHandler mouse;
-        Texture2D defaultMouse;
-        Texture2D enemy;
-        Texture2D banner;
-        Texture2D banner2;
-        Texture2D[] proj;
-        SoundEffect[] sound;
         Viewport viewport;
         Button startButton;
         Button upgradeButton;
@@ -55,39 +48,22 @@ namespace TowerDefense
         protected override void LoadContent()
         {
             batch = new SpriteBatch(GraphicsDevice);
-            text = Content.Load<SpriteFont>("text");
-            startButton = new Button(new Vector2(10 + 32, viewport.Height * .2f - 74), Content.Load<Texture2D>(@"start"), false, 0);
-            upgradeButton = new Button(new Vector2(viewport.Width - 160, viewport.Height * .55f), Content.Load<Texture2D>(@"upgrade"), false, 0);
-            enemy = Content.Load<Texture2D>(@"enemy");
-            banner = Content.Load<Texture2D>(@"banner");
-            banner2 = Content.Load<Texture2D>(@"banner2");
+            ResourceManager.InitializeTextures(Content);
+
+            startButton = new Button(new Vector2(10 + 32, viewport.Height * .2f - 74), ResourceManager.StartButton, false, 0);
+            upgradeButton = new Button(new Vector2(viewport.Width - 160, viewport.Height * .55f), ResourceManager.UpgradeButton, false, 0);
+
             this.buttonlist = new List<Button>();
-            this.buttonlist.Add(new Button(new Vector2(10, viewport.Height * .2f), Content.Load<Texture2D>(@"generic tower"), false, 1));
-            this.buttonlist.Add(new Button(new Vector2(10 + 64, viewport.Height * .2f), Content.Load<Texture2D>(@"cannon tower"), false, 2));
-            this.buttonlist.Add(new Button(new Vector2(10, (viewport.Height * .2f) + 64), Content.Load<Texture2D>(@"battery tower"), false, 3));
-            this.buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .2f) + 64), Content.Load<Texture2D>(@"blast tower"), false, 4));
-            this.buttonlist.Add(new Button(new Vector2(10 + 16, (viewport.Height * .5f)), Content.Load<Texture2D>(@"wall"), true, 5));
-            this.buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .5f)), Content.Load<Texture2D>(@"portal"), true, 6));
+            this.buttonlist.Add(new Button(new Vector2(10, viewport.Height * .2f), ResourceManager.GenericTower, false, 1));
+            this.buttonlist.Add(new Button(new Vector2(10 + 64, viewport.Height * .2f), ResourceManager.CannonTower, false, 2));
+            this.buttonlist.Add(new Button(new Vector2(10, (viewport.Height * .2f) + 64), ResourceManager.BatteryTower, false, 3));
+            this.buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .2f) + 64), ResourceManager.BlastTower, false, 4));
+            this.buttonlist.Add(new Button(new Vector2(10 + 16, (viewport.Height * .5f)), ResourceManager.Wall, true, 5));
+            this.buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .5f)), ResourceManager.Portal, true, 6));
 
             this.towerlist = new List<Tower>();
             this.projectilelist = new List<Projectile>();
             this.enemylist = new List<Enemy>();
-
-            this.proj = new Texture2D[4];
-            proj[0] = Content.Load<Texture2D>(@"bullet");
-            proj[1] = Content.Load<Texture2D>(@"cannon ball");
-            proj[2] = Content.Load<Texture2D>(@"lightning bolt");
-            proj[3] = Content.Load<Texture2D>(@"blast");
-
-            this.sound = new SoundEffect[20];
-            sound[0] = Content.Load<SoundEffect>(@"generic attack");
-            sound[1] = Content.Load<SoundEffect>(@"cannon attack");
-            sound[2] = Content.Load<SoundEffect>(@"battery attack");
-            sound[3] = Content.Load<SoundEffect>(@"blast attack");
-            sound[4] = Content.Load<SoundEffect>(@"damaged");
-            sound[5] = Content.Load<SoundEffect>(@"sell");
-            sound[6] = Content.Load<SoundEffect>(@"wallsound");
-            sound[7] = Content.Load<SoundEffect>(@"portalsound");
 
             gold = Constants.STARTINGGOLD;
 
@@ -107,9 +83,8 @@ namespace TowerDefense
                     }
                 }
             }
-
-            defaultMouse = Content.Load<Texture2D>(@"cursor");
-            mouse = new MouseHandler(new Vector2(0, 0), defaultMouse);
+            
+            mouse = new MouseHandler(new Vector2(0, 0), ResourceManager.DefaultCursor);
         }
 
         protected override void Update(GameTime gameTime)
@@ -189,23 +164,23 @@ namespace TowerDefense
             projectilelist.ForEach(p => p.Draw(batch));
 
             if (mouse.towerSelected != null)
-                mouse.towerSelected.ShowStats(batch, text, viewport);
+                mouse.towerSelected.ShowStats(batch, ResourceManager.GameFont, viewport);
             else if (mouse.towerClicked != null)
             {
                 upgradeButton.Draw(batch);
-                mouse.towerClicked.ShowStats(batch, text, viewport);
+                mouse.towerClicked.ShowStats(batch, ResourceManager.GameFont, viewport);
             }
 
             if (mouse.enemyHovered != null)
-                mouse.enemyHovered.ShowStats(batch, text, viewport);
+                mouse.enemyHovered.ShowStats(batch, ResourceManager.GameFont, viewport);
 
-            batch.DrawString(text, "GOLD - " + gold + " $", new Vector2(viewport.Width *.8f, viewport.Height *.1f), Color.Black,
+            batch.DrawString(ResourceManager.GameFont, "GOLD - " + gold + " $", new Vector2(viewport.Width *.8f, viewport.Height *.1f), Color.Black,
                     0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
 
-            MessageLog.Draw(batch, text, viewport);
+            MessageLog.Draw(batch, ResourceManager.GameFont, viewport);
 
-            batch.Draw(banner, new Vector2(viewport.Width / 2 - banner.Width / 2, 0), null, Color.White);
-            batch.Draw(banner2, new Vector2(viewport.Width / 2 - banner.Width / 4, viewport.Height - banner2.Height), null, Color.White);
+            batch.Draw(ResourceManager.TopBanner, new Vector2(viewport.Width / 2 - ResourceManager.TopBanner.Width / 2, 0), null, Color.White);
+            batch.Draw(ResourceManager.BottomBanner, new Vector2(viewport.Width / 2 - ResourceManager.TopBanner.Width / 4, viewport.Height - ResourceManager.BottomBanner.Height), null, Color.White);
             mouse.Draw(batch);
 
             batch.End();
@@ -375,7 +350,7 @@ namespace TowerDefense
 
         private void StartLevel()
         {
-            mouse.UpdateTex(defaultMouse);
+            mouse.UpdateTex(ResourceManager.DefaultCursor);
             mouse.towerClicked = null;
             mouse.towerSelected = null;
             attackPhase = true;
@@ -387,21 +362,21 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (15 + level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 5, 1, enemy, nodes, "Malaria", 1.0f, .25, sound[4], sound[7]));
+                    enemylist.Add(new Enemy(level * 5, 1, ResourceManager.Enemy, nodes, "Malaria", 1.0f, .25));
                 }
             }
             else if (num < .6)
             {
                 for (int i = 0; i < (30 + 2 * level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 3, 2, enemy, nodes, "Tuberculosis", .75f, .10, sound[4], sound[7]));
+                    enemylist.Add(new Enemy(level * 3, 2, ResourceManager.Enemy, nodes, "Tuberculosis", .75f, .10));
                 }
             }
             else
             {
                 for (int i = 0; i < (5 + level / 2); i++)
                 {
-                    enemylist.Add(new Enemy(level * 20, 1, enemy, nodes, "AIDS", 1.25f, .50, sound[4], sound[7]));
+                    enemylist.Add(new Enemy(level * 20, 1, ResourceManager.Enemy, nodes, "AIDS", 1.25f, .50));
                 }
             }
         }
@@ -421,16 +396,16 @@ namespace TowerDefense
                 switch (mouse.towerID)
                 {
                     case 1:
-                        mouse.towerSelected = new GenericTower(mouse.pos, mouse.tex, proj[0], sound[0]);
+                        mouse.towerSelected = new GenericTower(mouse.pos, mouse.tex);
                         break;
                     case 2:
-                        mouse.towerSelected = new CannonTower(mouse.pos, mouse.tex, proj[1], sound[1]);
+                        mouse.towerSelected = new CannonTower(mouse.pos, mouse.tex);
                         break;
                     case 3:
-                        mouse.towerSelected = new BatteryTower(mouse.pos, mouse.tex, proj[2], sound[2]);
+                        mouse.towerSelected = new BatteryTower(mouse.pos, mouse.tex);
                         break;
                     case 4:
-                        mouse.towerSelected = new BlastTower(mouse.pos, mouse.tex, proj[3], sound[3]);
+                        mouse.towerSelected = new BlastTower(mouse.pos, mouse.tex);
                         break;
                     case 5:
                         mouse.wallClicked = true;
@@ -451,10 +426,10 @@ namespace TowerDefense
                     towerlist.Add(mouse.towerSelected);
                     mouse.towerSelected.position = mouse.pos;
                     mouse.towerSelected = null;
-                    mouse.UpdateTex(defaultMouse);
+                    mouse.UpdateTex(ResourceManager.DefaultCursor);
                     mouse.highlight = true;
                     mouse.towerClicked = null;
-                    sound[6].Play();
+                    ResourceManager.WallSound.Play();
                 }
                 else
                 {
@@ -468,7 +443,7 @@ namespace TowerDefense
                     mouse.nodeHovered.wall = true;
                     mouse.nodeHovered.UpdateTex(mouse.tex);
                     gold = gold - 1;
-                    sound[6].Play();
+                    ResourceManager.WallSound.Play();
                 }
                 else
                 {
@@ -512,14 +487,14 @@ namespace TowerDefense
             {
                 gold = gold + mouse.towerHovered.cost;
                 towerlist.Remove(mouse.towerHovered);
-                sound[5].Play();
+                ResourceManager.SellSound.Play();
             }
             else if (mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, true))
             {
                 gold = gold + 1;
                 mouse.nodeHovered.wall = false;
                 mouse.nodeHovered.defaultSet();
-                sound[6].Play();
+                ResourceManager.SellSound.Play();
             }
             else if (mouse.nodeHovered.portal && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, true))
             {
@@ -545,7 +520,7 @@ namespace TowerDefense
                 mouse.portalLocation = null;
                 mouse.portalComplete = true;
             }
-            mouse.UpdateTex(defaultMouse);
+            mouse.UpdateTex(ResourceManager.DefaultCursor);
             mouse.wallClicked = false;
             mouse.portalClicked = false;
             mouse.towerClicked = null;
