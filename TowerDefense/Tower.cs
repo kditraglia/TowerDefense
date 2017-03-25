@@ -7,25 +7,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TowerDefense
 {
-    abstract class Tower
+    abstract class Tower : GameObject
     {
-        public Texture2D tex;
         protected Texture2D proj;
         public int cost;
-        public Vector2 position { get; set; }
         public bool hovering;
-        public Color color = Color.White;
 
-        public Tower(Vector2 position, Texture2D tex)
-        {
-            this.tex = tex;
-            this.position = position;
-        }
-
-        public void Draw(SpriteBatch batch)
-        {
-            batch.Draw(tex, position, null, color);
-        }
+        public Tower(Texture2D tex, Vector2 position) : base(tex, position) { }
 
         public abstract List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, int elapsedTime);
 

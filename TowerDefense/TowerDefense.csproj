@@ -47,6 +47,7 @@
     <Compile Include="CannonTower.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="TowerDefense.cs" />
     <Compile Include="GenericTower.cs" />
     <Compile Include="LightningBolt.cs" />

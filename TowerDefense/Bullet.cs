@@ -12,7 +12,7 @@ namespace TowerDefense
         Enemy target;
         int damage;
 
-         public Bullet(Vector2 position, Texture2D tex, Enemy target, int damage) : base(position, tex)
+         public Bullet(Vector2 position, Texture2D tex, Enemy target, int damage) : base(tex, position)
         {
             this.target = target;
             this.damage = damage;
@@ -20,19 +20,19 @@ namespace TowerDefense
 
          public override bool Move()
          {
-             float rise = (Math.Abs(position.Y - target.pos.Y));
-             float run = Math.Abs(position.X - target.pos.X);
+             float rise = (Math.Abs(position.Y - target.position.Y));
+             float run = Math.Abs(position.X - target.position.X);
              float x = (float)Math.Sqrt(speed * (run / rise));
              float y = (float)Math.Sqrt(speed * (rise / run));
-             if (target.pos.X >= position.X && target.pos.Y >= position.Y)
+             if (target.position.X >= position.X && target.position.Y >= position.Y)
                  position = new Vector2(position.X + x,position.Y + y);
-             else if (target.pos.X < position.X && target.pos.Y > position.Y)
+             else if (target.position.X < position.X && target.position.Y > position.Y)
                  position = new Vector2(position.X - x,position.Y + y);
-             else if (target.pos.X > position.X && target.pos.Y < position.Y)
+             else if (target.position.X > position.X && target.position.Y < position.Y)
                  position = new Vector2(position.X + x,position.Y - y);
-             else if (target.pos.X <= position.X && target.pos.Y <= position.Y)
+             else if (target.position.X <= position.X && target.position.Y <= position.Y)
                  position = new Vector2(position.X - x, position.Y - y);
-             if (-10 < (position.X - target.pos.X) && (position.X - target.pos.X) < 10 && -10 < (position.Y - target.pos.Y) && (position.Y - target.pos.Y) < 10)
+             if (-10 < (position.X - target.position.X) && (position.X - target.position.X) < 10 && -10 < (position.Y - target.position.Y) && (position.Y - target.position.Y) < 10)
              {
                  Damage();
                  return true;

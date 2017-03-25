@@ -19,7 +19,7 @@ namespace TowerDefense
 
         SoundEffect attackSound;
 
-        public GenericTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base(position, tex)
+        public GenericTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base(tex, position)
         {
             this.tex = tex;
             this.position = position;
@@ -33,7 +33,7 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.pos.X, 2) + Math.Pow(this.position.Y - e.pos.Y, 2)) <= range && (elapsedTime - cooldown) > (attackspeed * 100) && e.spawned && !e.dead )
+                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && (elapsedTime - cooldown) > (attackspeed * 100) && e.spawned && !e.dead )
                 {
                     projectilelist.Add(new Bullet(position, proj, e, damage));
                     cooldown = elapsedTime;

@@ -7,21 +7,18 @@ using System.Linq;
 
 namespace TowerDefense
 {
-    class Enemy
+    class Enemy : GameObject
     {
         public string name;
         public int HP;
         public int maxHP;
         public int speed;
-        public Vector2 pos;
-        public Texture2D tex;
         List<Node> bestPath = new List<Node>();
         Node temp;
         public bool spawned = false;
         Vector2 currentDest;
         public bool dead = false;
         public bool hovering = false;
-        public Color color = Color.White;
         public bool lose = false;
         public float scale;
         public int spawnRate;
@@ -30,7 +27,7 @@ namespace TowerDefense
         public int ID;
 
 
-        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, int spawnRate, SoundEffect damaged, SoundEffect portal, int ID)
+        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, int spawnRate, SoundEffect damaged, SoundEffect portal, int ID) : base(tex, Vector2.Zero)
         {
             this.name = name;
             this.HP = HP;
@@ -41,9 +38,8 @@ namespace TowerDefense
             this.spawnRate = spawnRate;
             this.bestPath = TowerDefense.findBestPath(nodes);
             this.bestPath.Reverse();
-            this.tex = tex;
             this.temp = bestPath[0];
-            this.pos = temp.actualPos;
+            this.position = temp.actualPos;
             this.bestPath.Remove(temp);
             this.temp = bestPath[0];
             this.damaged = damaged;
@@ -65,14 +61,14 @@ namespace TowerDefense
         {
             if (spawned)
             {
-                if (pos.Y > currentDest.Y)
-                    pos = new Vector2(pos.X, pos.Y - speed);
-                else if (pos.Y < currentDest.Y)
-                    pos = new Vector2(pos.X, pos.Y + speed);
-                else if (pos.X > currentDest.X)
-                    pos = new Vector2(pos.X - speed, pos.Y);
-                else if (pos.X < currentDest.X)
-                    pos = new Vector2(pos.X + speed, pos.Y);
+                if (position.Y > currentDest.Y)
+                    position = new Vector2(position.X, position.Y - speed);
+                else if (position.Y < currentDest.Y)
+                    position = new Vector2(position.X, position.Y + speed);
+                else if (position.X > currentDest.X)
+                    position = new Vector2(position.X - speed, position.Y);
+                else if (position.X < currentDest.X)
+                    position = new Vector2(position.X + speed, position.Y);
 
                 else
                 {
@@ -81,7 +77,7 @@ namespace TowerDefense
                     {
                         if (temp.portal)
                         {
-                            pos = temp.portalsTo.actualPos;
+                            position = temp.portalsTo.actualPos;
                             temp = bestPath[0];
                             bestPath.Remove(temp);
                             temp = bestPath[0];
@@ -120,10 +116,12 @@ namespace TowerDefense
         }
 
 
-        public void Draw(SpriteBatch batch)
+        public override void Draw(SpriteBatch batch)
         {
             if (spawned)
-                batch.Draw(tex, pos, null, color, 0, new Vector2(0,0), scale, SpriteEffects.None,.5f);
+            {
+                base.Draw(batch);
+            }
         }
     }
 }

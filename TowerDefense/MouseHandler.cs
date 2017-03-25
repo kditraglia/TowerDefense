@@ -74,10 +74,10 @@ namespace TowerDefense
         }
         public bool EnemyClick(Enemy e)
         {
-            return this.pos.X >= e.pos.X
-            && this.pos.X < e.pos.X + e.tex.Width
-            && this.pos.Y > e.pos.Y
-            && this.pos.Y < e.pos.Y + e.tex.Height;
+            return this.pos.X >= e.position.X
+            && this.pos.X < e.position.X + e.tex.Width
+            && this.pos.Y > e.position.Y
+            && this.pos.Y < e.position.Y + e.tex.Height;
         }
     }
 }

@@ -3,21 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TowerDefense
 {
-    abstract class Projectile
+    abstract class Projectile : GameObject
     {
-        public Texture2D tex;
-        public Vector2 position;
         public int speed = 10;
 
-        public Projectile(Vector2 position, Texture2D tex)
-        {
-            this.position = position;
-            this.tex = tex;
-        }
-        public void Draw(SpriteBatch batch) 
-        {
-            batch.Draw(tex, position, null, Color.White);
-        }
+        public Projectile(Texture2D tex, Vector2 position) : base(tex, position) { }
+
         public abstract bool Move();
 
         public abstract void Damage();

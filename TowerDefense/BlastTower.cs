@@ -18,7 +18,7 @@ namespace TowerDefense
         SoundEffect attackSound;
         Blast tempBlast;
 
-        public BlastTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base(position, tex)
+        public BlastTower(Vector2 position, Texture2D tex, Texture2D proj, int ID, SoundEffect attackSound) : base(tex, position)
         {
             this.tex = tex;
             this.position = position;
@@ -32,9 +32,9 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.pos.X, 2) + Math.Pow(this.position.Y - e.pos.Y, 2)) <= range && (elapsedTime - cooldown) > (attackspeed * 100) && e.spawned && !e.dead)
+                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= range && (elapsedTime - cooldown) > (attackspeed * 100) && e.spawned && !e.dead)
                 {
-                    tempBlast = new Blast(position, proj, e.pos, enemylist, damage, areaofeffect);
+                    tempBlast = new Blast(position, proj, e.position, enemylist, damage, areaofeffect);
                     projectilelist.Add(tempBlast);
 
                     cooldown = elapsedTime;

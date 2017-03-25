@@ -13,7 +13,7 @@ namespace TowerDefense
         int damage;
         int areaofeffect;
         List<Enemy> enemylist;
-        public CannonBall (Vector2 position, Texture2D tex, Vector2 dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(position, tex)
+        public CannonBall (Vector2 position, Texture2D tex, Vector2 dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(tex, position)
         {
             this.position = position;
             this.dest = dest;
@@ -48,7 +48,7 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.pos.X, 2) + Math.Pow(this.position.Y - e.pos.Y, 2)) <= areaofeffect && e.spawned && !e.dead )
+                if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= areaofeffect && e.spawned && !e.dead )
                     e.damage( damage );
             }
         }
