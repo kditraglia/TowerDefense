@@ -27,7 +27,6 @@ namespace TowerDefense
         List< Tower > towerlist;
         List< Enemy > enemylist;
         List < Projectile > projectilelist;
-        Constants CONSTANT = new Constants();
         MessageLog MessageLog = new MessageLog();
         Node[,] nodes = new Node[17,21];
         bool attackPhase = false;
@@ -92,7 +91,7 @@ namespace TowerDefense
             sound[6] = Content.Load<SoundEffect>(@"wallsound");
             sound[7] = Content.Load<SoundEffect>(@"portalsound");
 
-            gold = CONSTANT.STARTINGGOLD;
+            gold = Constants.STARTINGGOLD;
 
             int actualY = 64;
             int actualX = 148;
@@ -111,8 +110,6 @@ namespace TowerDefense
                 }
             }
 
-
-            //Handle the cursor creation
             defaultMouse = Content.Load<Texture2D>(@"cursor");
             mouse = new MouseHandler(new Vector2(0, 0), defaultMouse);
         }
