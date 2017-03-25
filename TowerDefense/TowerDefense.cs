@@ -237,8 +237,8 @@ namespace TowerDefense
             {
                 HandleAttackPhase();
             }
-            if (!attackPhase)
-            {
+            else
+            { 
                 HandleMouseHover();
                 if (mouse.mouseState.LeftButton == ButtonState.Pressed)
                 {
