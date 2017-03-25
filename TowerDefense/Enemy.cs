@@ -24,17 +24,14 @@ namespace TowerDefense
         public double spawnRate;
         SoundEffect damaged;
         SoundEffect portal;
-        public int ID;
 
-
-        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate, SoundEffect damaged, SoundEffect portal, int ID) : base(tex, Vector2.Zero)
+        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate, SoundEffect damaged, SoundEffect portal) : base(tex, Vector2.Zero)
         {
             this.name = name;
             this.HP = HP;
             this.maxHP = HP;
             this.speed = speed;
             this.scale = scale;
-            this.ID = ID;
             this.spawnRate = spawnRate;
             this.bestPath = TowerDefense.findBestPath(nodes);
             this.bestPath.Reverse();

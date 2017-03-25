@@ -32,7 +32,6 @@ namespace TowerDefense
         bool attackPhase = false;
         bool playerLoses = false;
         int level = 0;
-        int enemyID = 0;
         int gold;
         double lastSpawnedTime = 0;
 
@@ -388,24 +387,21 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (15 + level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 5, 1, enemy, nodes, "Malaria", 1.0f, .25, sound[4], sound[7], enemyID));
-                    enemyID++;
+                    enemylist.Add(new Enemy(level * 5, 1, enemy, nodes, "Malaria", 1.0f, .25, sound[4], sound[7]));
                 }
             }
             else if (num < .6)
             {
                 for (int i = 0; i < (30 + 2 * level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 3, 2, enemy, nodes, "Tuberculosis", .75f, .10, sound[4], sound[7], enemyID));
-                    enemyID++;
+                    enemylist.Add(new Enemy(level * 3, 2, enemy, nodes, "Tuberculosis", .75f, .10, sound[4], sound[7]));
                 }
             }
             else
             {
                 for (int i = 0; i < (5 + level / 2); i++)
                 {
-                    enemylist.Add(new Enemy(level * 20, 1, enemy, nodes, "AIDS", 1.25f, .50, sound[4], sound[7], enemyID));
-                    enemyID++;
+                    enemylist.Add(new Enemy(level * 20, 1, enemy, nodes, "AIDS", 1.25f, .50, sound[4], sound[7]));
                 }
             }
         }

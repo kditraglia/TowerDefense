@@ -11,7 +11,7 @@ namespace TowerDefense
         int damage;
         int areaofeffect;
         List<Enemy> enemylist;
-        HashSet<int> damaged = new HashSet<int>();
+        HashSet<Enemy> damaged = new HashSet<Enemy>();
         Vector2 direction;
         public Blast (Vector2 position, Texture2D tex, Vector2 dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(tex, position)
         {
@@ -40,10 +40,10 @@ namespace TowerDefense
             {
                 if ((int)Math.Sqrt(Math.Pow(this.position.X - e.position.X, 2) + Math.Pow(this.position.Y - e.position.Y, 2)) <= areaofeffect && e.spawned && !e.dead)
                 {
-                    if (!damaged.Contains(e.ID))
+                    if (!damaged.Contains(e))
                     {
                         e.damage(damage);
-                        damaged.Add(e.ID);
+                        damaged.Add(e);
                     }
                 }
             }
