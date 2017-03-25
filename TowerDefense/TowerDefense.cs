@@ -160,15 +160,16 @@ namespace TowerDefense
             towerlist.ForEach(t => t.Draw(batch));
             projectilelist.ForEach(p => p.Draw(batch));
 
-            //mouse.towerSelected?.ShowStats(batch, ResourceManager.GameFont, viewport);
-
-            //if (mouse.towerClicked != null)
-            //{
-            //    upgradeButton.Draw(batch);
-            //    mouse.towerClicked.ShowStats(batch, ResourceManager.GameFont, viewport);
-            //}
-
-            //mouse.enemyHovered?.ShowStats(batch, ResourceManager.GameFont, viewport);
+            if (mouse.HoveringContext == HoveringContext.Tower)
+            {
+                Tower t = mouse.HoveredObject as Tower;
+                t?.ShowStats(batch, ResourceManager.GameFont, viewport);
+            }
+            else if (mouse.HoveringContext == HoveringContext.Enemy)
+            {
+                Enemy e = mouse.HoveredObject as Enemy;
+                e?.ShowStats(batch, ResourceManager.GameFont, viewport);
+            }
 
             batch.DrawString(ResourceManager.GameFont, "GOLD - " + gold + " $", new Vector2(viewport.Width *.8f, viewport.Height *.1f), Color.Black,
                     0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
@@ -195,7 +196,7 @@ namespace TowerDefense
                 return;
             }
 
-            if (mouse.MouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !attackPhase) //&& !mouse.portalClicked)
+            if (mouse.MouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !attackPhase && mouse.SelectionContext == SelectionContext.None)
             {
                 StartLevel();
             }
@@ -206,18 +207,10 @@ namespace TowerDefense
                 {
                     HandleLeftClick();
                 }
-                if (mouse.MouseState.RightButton == ButtonState.Pressed) //&& !mouse.rClicking && mouse.nodeHovered != null)
+                if (mouse.MouseState.RightButton == ButtonState.Pressed)
                 {
                     HandleRightClick();
                 }
-                //if (mouse.mouseState.LeftButton == ButtonState.Released)
-                //{
-                //    mouse.clicking = false;
-                //}
-                //if (mouse.mouseState.RightButton == ButtonState.Released)
-                //{
-                //    mouse.rClicking = false;
-                //}
             }
         }
 
