@@ -13,7 +13,7 @@ namespace TowerDefense
 
         public Tower(Texture2D tex, Point position) : base(tex, position) { }
 
-        public abstract List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime);
+        public abstract List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc);
 
         public abstract void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport);
 

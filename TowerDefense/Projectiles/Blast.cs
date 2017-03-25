@@ -13,7 +13,9 @@ namespace TowerDefense
         List<Enemy> enemylist;
         HashSet<Enemy> damaged = new HashSet<Enemy>();
         Vector2 direction;
-        public Blast (Point position, Texture2D tex, Point dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(tex, position)
+        Action<int, Point> damageFunc;
+
+        public Blast (Point position, Texture2D tex, Point dest, List<Enemy> enemylist, int damage, int areaofeffect, Action<int, Point> damageFunc) : base(tex, position)
         {
             this.dest = dest;
             this.damage = damage;
@@ -25,6 +27,7 @@ namespace TowerDefense
             {
                 direction.Normalize();
             }
+            this.damageFunc = damageFunc;
         }
 
         public override bool Move()
@@ -42,6 +45,7 @@ namespace TowerDefense
                 {
                     if (!damaged.Contains(e))
                     {
+                        damageFunc(damage, e.Position);
                         e.damage(damage);
                         damaged.Add(e);
                     }
