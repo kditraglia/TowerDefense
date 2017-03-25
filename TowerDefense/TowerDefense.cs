@@ -280,6 +280,15 @@ namespace TowerDefense
                     mouse.HoveredObject = t;
                 }
             });
+            foreach(Node n in nodes)
+            {
+                n.hovering = n.BoundingBox().Contains(mouse.pos);
+                if (n.hovering)
+                {
+                    mouse.HoveredObject = n;
+                    mouse.HoveredContext = n.wall || n.portal ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
+                }
+            }
         }
 
         private void StartLevel()
@@ -374,21 +383,25 @@ namespace TowerDefense
                     MessageLog.NotEnoughGold();
                 }
             }
-            //else if (mouse.nodeHovered != null && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.wallClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
-            //{
-            //    if (gold >= 1)
-            //    {
-            //        mouse.nodeHovered.wall = true;
-            //        mouse.nodeHovered.UpdateTex(mouse.tex);
-            //        gold = gold - 1;
-            //        ResourceManager.WallSound.Play();
-            //    }
-            //    else
-            //    {
-            //        MessageLog.NotEnoughGold();
-            //    }
-
-            //}
+            else if (mouse.SelectionContext == SelectionContext.PlacingWall && mouse.HoveredContext == HoveringContext.EmptyNode)
+            {
+                Node n = mouse.HoveredObject as Node;
+                if (!CheckForPath((int)n.simplePos.X, (int)n.simplePos.Y, false, false))
+                {
+                    MessageLog.IllegalPosition();
+                }
+                else if (gold >= 1)
+                {
+                    n.wall = true;
+                    n.UpdateTex(mouse.tex);
+                    gold = gold - 1;
+                    ResourceManager.WallSound.Play();
+                }
+                else
+                {
+                    MessageLog.NotEnoughGold();
+                }
+            }
             //else if (mouse.nodeHovered != null && mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked)
             //{
             //    mouse.nodeHovered.portal = true;

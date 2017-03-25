@@ -33,6 +33,10 @@ namespace TowerDefense
         {
             string1 = "Insufficient Gold";
         }
+        public void IllegalPosition()
+        {
+            string1 = "Cannot Place Here";
+        }
         public void LevelComplete(int gold, int level)
         {
             string1 = "level - " + level + " complete!  + " + gold + "$";
