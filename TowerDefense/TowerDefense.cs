@@ -268,7 +268,7 @@ namespace TowerDefense
             {
                 foreach (Node n in nodes)
                 {
-                    n.Hovering = n.BoundingBox().Contains(mouse.pos);
+                    n.Hovering = n.BoundingBox().Contains(mouse.pos) && mouse.SelectionContext != SelectionContext.PlacingTower;
                     if (n.Hovering)
                     {
                         mouse.HoveredObject = n;
