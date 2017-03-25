@@ -146,7 +146,6 @@ namespace TowerDefense
             base.Update(gameTime);
         }
 
-
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.WhiteSmoke);
@@ -376,6 +375,10 @@ namespace TowerDefense
                         mouse.UpdateTex(mouse.HoveredObject.Tex);
                         mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
                         break;
+                    case HoveringContext.ButtonCheese:
+                        mouse.UpdateTex(mouse.HoveredObject.Tex);
+                        mouse.SelectionContext = SelectionContext.PlacingCheese;
+                        break;
                     case HoveringContext.ButtonUpgrade:
                         {
                             Tower t = mouse.SelectedObject as Tower;
@@ -444,6 +447,25 @@ namespace TowerDefense
                     portalEntrance.portalsTo = portalExit;
                     mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
                     gold = gold - 20;
+                }
+                else
+                {
+                    MessageLog.NotEnoughGold();
+                }
+            }
+            else if (mouse.SelectionContext == SelectionContext.PlacingCheese && mouse.HoveringContext == HoveringContext.EmptyNode)
+            {
+                Node n = mouse.HoveredObject as Node;
+                //if (!CheckForPath(n.simplePos.X, n.simplePos.Y, false, false))
+                //{
+                //    MessageLog.IllegalPosition();
+                //}
+                if (gold >= 20)
+                {
+                    n.cheese = true;
+                    n.UpdateTex(mouse.tex);
+                    gold = gold - 20;
+                    ResourceManager.WallSound.Play();
                 }
                 else
                 {
