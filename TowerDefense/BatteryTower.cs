@@ -28,9 +28,9 @@ namespace TowerDefense
             cost = 15;
         }
 
-        public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, int elapsedTime)
+        public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime)
         {
-            if ((elapsedTime - cooldown) > (attackspeed * 100))
+            if ((elapsedTime - cooldown) > attackspeed)
             {
                 foreach (Enemy e in enemylist)
                 {

@@ -33,11 +33,10 @@ namespace TowerDefense
         bool attackPhase = false;
         bool playerLoses = false;
         int level = 0;
-        int counter = 0;
-        int counter2 = 0;
         int enemyID = 0;
         int towerID = 100;
         int gold;
+        double lastSpawnedTime = 0;
 
         public TowerDefense()
         {
@@ -126,17 +125,19 @@ namespace TowerDefense
             {
                 foreach (Enemy e in enemylist)
                 {
-                    if (!e.spawned && counter >= e.spawnRate)
+                    if (!e.spawned && (gameTime.TotalGameTime.TotalSeconds - lastSpawnedTime) > e.spawnRate)
                     {
                         e.spawn();
-                        counter = 0;
+                        lastSpawnedTime = gameTime.TotalGameTime.TotalSeconds;
                     }
                 }
                 List<Enemy> temp = new List<Enemy>();
                 foreach (Enemy e in enemylist)
                 {
                     if (e.dead)
+                    {
                         temp.Add(e);
+                    }
                     e.move();
                     if (e.lose)
                     {
@@ -150,13 +151,15 @@ namespace TowerDefense
                 }
                 foreach (Tower t in towerlist)
                 {
-                    projectilelist = t.Attack(enemylist, projectilelist, counter2);
+                    projectilelist = t.Attack(enemylist, projectilelist, gameTime.TotalGameTime.TotalSeconds);
                 }
                 List<Projectile> temp2 = new List<Projectile>();
                 foreach (Projectile p in projectilelist)
                 {
-                    if ( p.Move() )
+                    if (p.Move())
+                    {
                         temp2.Add(p);
+                    }
                     
                 }
                 foreach (Projectile p in temp2)
@@ -171,8 +174,6 @@ namespace TowerDefense
                 MessageLog.LevelComplete(level * 2 + (int)(gold * .05f), level);
                 gold = gold + (level * 2 + (int)(gold * .05f));
             }
-            counter++;
-            counter2++;
             base.Update(gameTime);
         }
 
@@ -391,7 +392,7 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (15 + level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 5, 1, enemy, nodes, "Malaria", 1.0f, 25, sound[4], sound[7], enemyID));
+                    enemylist.Add(new Enemy(level * 5, 1, enemy, nodes, "Malaria", 1.0f, .25, sound[4], sound[7], enemyID));
                     enemyID++;
                 }
             }
@@ -399,7 +400,7 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (30 + 2 * level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 3, 2, enemy, nodes, "Tuberculosis", .75f, 10, sound[4], sound[7], enemyID));
+                    enemylist.Add(new Enemy(level * 3, 2, enemy, nodes, "Tuberculosis", .75f, .10, sound[4], sound[7], enemyID));
                     enemyID++;
                 }
             }
@@ -407,7 +408,7 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (5 + level / 2); i++)
                 {
-                    enemylist.Add(new Enemy(level * 20, 1, enemy, nodes, "AIDS", 1.25f, 50, sound[4], sound[7], enemyID));
+                    enemylist.Add(new Enemy(level * 20, 1, enemy, nodes, "AIDS", 1.25f, .50, sound[4], sound[7], enemyID));
                     enemyID++;
                 }
             }

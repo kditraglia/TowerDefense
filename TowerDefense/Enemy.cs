@@ -21,13 +21,13 @@ namespace TowerDefense
         public bool hovering = false;
         public bool lose = false;
         public float scale;
-        public int spawnRate;
+        public double spawnRate;
         SoundEffect damaged;
         SoundEffect portal;
         public int ID;
 
 
-        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, int spawnRate, SoundEffect damaged, SoundEffect portal, int ID) : base(tex, Vector2.Zero)
+        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate, SoundEffect damaged, SoundEffect portal, int ID) : base(tex, Vector2.Zero)
         {
             this.name = name;
             this.HP = HP;
