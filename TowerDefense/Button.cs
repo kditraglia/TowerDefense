@@ -5,13 +5,11 @@ namespace TowerDefense
 {
     class Button : GameObject
     {
-        public bool highlight;
-        public int ID;
+        public HoveringContext HoveringContext { get; set; }
 
-        public Button(Vector2 position, Texture2D tex, bool highlight, int ID) : base(tex, position)
+        public Button(Vector2 position, Texture2D tex, HoveringContext hoveringContext) : base(tex, position)
         {
-            this.highlight = highlight;
-            this.ID = ID;
+            HoveringContext = hoveringContext;
         }
     }
 }

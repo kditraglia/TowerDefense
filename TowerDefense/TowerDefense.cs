@@ -50,14 +50,14 @@ namespace TowerDefense
             batch = new SpriteBatch(GraphicsDevice);
             ResourceManager.InitializeTextures(Content);
 
-            startButton = new Button(new Vector2(10 + 32, viewport.Height * .2f - 74), ResourceManager.StartButton, false, 0);
-            upgradeButton = new Button(new Vector2(viewport.Width - 160, viewport.Height * .55f), ResourceManager.UpgradeButton, false, 0);
-            buttonlist.Add(new Button(new Vector2(10, viewport.Height * .2f), ResourceManager.GenericTower, false, 1));
-            buttonlist.Add(new Button(new Vector2(10 + 64, viewport.Height * .2f), ResourceManager.CannonTower, false, 2));
-            buttonlist.Add(new Button(new Vector2(10, (viewport.Height * .2f) + 64), ResourceManager.BatteryTower, false, 3));
-            buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .2f) + 64), ResourceManager.BlastTower, false, 4));
-            buttonlist.Add(new Button(new Vector2(10 + 16, (viewport.Height * .5f)), ResourceManager.Wall, true, 5));
-            buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .5f)), ResourceManager.Portal, true, 6));
+            startButton = new Button(new Vector2(10 + 32, viewport.Height * .2f - 74), ResourceManager.StartButton, HoveringContext.ButtonStart);
+            upgradeButton = new Button(new Vector2(viewport.Width - 160, viewport.Height * .55f), ResourceManager.UpgradeButton, HoveringContext.ButtonUpgrade);
+            buttonlist.Add(new Button(new Vector2(10, viewport.Height * .2f), ResourceManager.GenericTower, HoveringContext.ButtonGenericTower));
+            buttonlist.Add(new Button(new Vector2(10 + 64, viewport.Height * .2f), ResourceManager.CannonTower, HoveringContext.ButtonCannonTower));
+            buttonlist.Add(new Button(new Vector2(10, (viewport.Height * .2f) + 64), ResourceManager.BatteryTower, HoveringContext.ButtonBatteryTower));
+            buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .2f) + 64), ResourceManager.BlastTower, HoveringContext.ButtonBlastTower));
+            buttonlist.Add(new Button(new Vector2(10 + 16, (viewport.Height * .5f)), ResourceManager.Wall, HoveringContext.ButtonWall));
+            buttonlist.Add(new Button(new Vector2(10 + 64, (viewport.Height * .5f)), ResourceManager.Portal, HoveringContext.ButtonPortal));
 
             CreateMap();
 
@@ -176,14 +176,14 @@ namespace TowerDefense
         {
             if (playerLoses)
             {
-                if (mouse.mouseState.LeftButton == ButtonState.Pressed)
+                if (mouse.MouseState.LeftButton == ButtonState.Pressed)
                 {
                     Exit();
                 }
                 return;
             }
 
-            if (mouse.mouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !attackPhase) //&& !mouse.portalClicked)
+            if (mouse.MouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !attackPhase) //&& !mouse.portalClicked)
             {
                 StartLevel();
             }
@@ -195,11 +195,11 @@ namespace TowerDefense
             else
             { 
                 HandleMouseHover();
-                if (mouse.mouseState.LeftButton == ButtonState.Pressed)
+                if (mouse.MouseState.LeftButton == ButtonState.Pressed)
                 {
                     HandleLeftClick();
                 }
-                if (mouse.mouseState.RightButton == ButtonState.Pressed) //&& !mouse.rClicking && mouse.nodeHovered != null)
+                if (mouse.MouseState.RightButton == ButtonState.Pressed) //&& !mouse.rClicking && mouse.nodeHovered != null)
                 {
                     HandleRightClick();
                 }
@@ -240,7 +240,34 @@ namespace TowerDefense
 
         private void HandleMouseHover()
         {
-            buttonlist.ForEach(b => b.hovering = b.BoundingBox().Contains(mouse.pos));
+            mouse.HoveredContext = HoveringContext.None;
+            mouse.HoveredObject = null;
+
+            enemylist.ForEach(e =>
+            {
+                e.hovering = e.BoundingBox().Contains(mouse.pos);
+                if (e.hovering)
+                {
+                    mouse.HoveredObject = e;
+                }
+            });
+            buttonlist.ForEach(b =>
+            {
+                b.hovering = b.BoundingBox().Contains(mouse.pos);
+                if (b.hovering)
+                {
+                    mouse.HoveredObject = b;
+                    mouse.HoveredContext = b.HoveringContext;
+                }
+            });
+            towerlist.ForEach(t =>
+            {
+                t.hovering = t.BoundingBox().Contains(mouse.pos);
+                if (t.hovering)
+                {
+                    mouse.HoveredObject = t;
+                }
+            });
         }
 
         private void StartLevel()
@@ -281,54 +308,55 @@ namespace TowerDefense
             //    gold = gold - mouse.towerClicked.cost;
             //    mouse.towerClicked.upgrade();
             //}
-            //if (mouse.buttonHovered != null && !mouse.clicking)
-            //{
-            //    mouse.highlight = mouse.buttonHovered.highlight;
-            //    mouse.towerID = mouse.buttonHovered.ID;
-            //    mouse.UpdateTex(mouse.buttonHovered.tex);
-            //    switch (mouse.towerID)
-            //    {
-            //        case 1:
-            //            mouse.towerSelected = new GenericTower(mouse.pos, mouse.tex);
-            //            break;
-            //        case 2:
-            //            mouse.towerSelected = new CannonTower(mouse.pos, mouse.tex);
-            //            break;
-            //        case 3:
-            //            mouse.towerSelected = new BatteryTower(mouse.pos, mouse.tex);
-            //            break;
-            //        case 4:
-            //            mouse.towerSelected = new BlastTower(mouse.pos, mouse.tex);
-            //            break;
-            //        case 5:
-            //            mouse.wallClicked = true;
-            //            break;
-            //        case 6:
-            //            mouse.portalClicked = true;
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //    mouse.towerClicked = null;
-            //}
-            //else if (mouse.nodeHovered != null && !mouse.highlight && mouse.towerSelected != null && !mouse.clicking && mouse.pos.X <= 641 && mouse.pos.Y <= 679)
-            //{
-            //    if (gold >= mouse.towerSelected.cost)
-            //    {
-            //        gold = gold - mouse.towerSelected.cost;
-            //        towerlist.Add(mouse.towerSelected);
-            //        mouse.towerSelected.position = mouse.pos;
-            //        mouse.towerSelected = null;
-            //        mouse.UpdateTex(ResourceManager.DefaultCursor);
-            //        mouse.highlight = true;
-            //        mouse.towerClicked = null;
-            //        ResourceManager.WallSound.Play();
-            //    }
-            //    else
-            //    {
-            //        MessageLog.NotEnoughGold();
-            //    }
-            //}
+            if (mouse.HoveredObject != null)
+            {
+                mouse.UpdateTex(mouse.HoveredObject.tex);
+                switch (mouse.HoveredContext)
+                {
+                    case HoveringContext.ButtonGenericTower:
+                        mouse.SelectedObject = new GenericTower(mouse.pos, mouse.tex);
+                        mouse.SelectionContext = SelectionContext.PlacingTower;
+                        break;
+                    case HoveringContext.ButtonCannonTower:
+                        mouse.SelectedObject = new CannonTower(mouse.pos, mouse.tex);
+                        mouse.SelectionContext = SelectionContext.PlacingTower;
+                        break;
+                    case HoveringContext.ButtonBatteryTower:
+                        mouse.SelectedObject = new BatteryTower(mouse.pos, mouse.tex);
+                        mouse.SelectionContext = SelectionContext.PlacingTower;
+                        break;
+                    case HoveringContext.ButtonBlastTower:
+                        mouse.SelectedObject = new BlastTower(mouse.pos, mouse.tex);
+                        mouse.SelectionContext = SelectionContext.PlacingTower;
+                        break;
+                    case HoveringContext.ButtonWall:
+                        mouse.SelectionContext = SelectionContext.PlacingWall;
+                        break;
+                    case HoveringContext.ButtonPortal:
+                        mouse.SelectionContext = SelectionContext.PlacingPortal;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (mouse.SelectionContext == SelectionContext.PlacingTower && mouse.pos.X <= 641 && mouse.pos.Y <= 679)
+            {
+                Tower t = mouse.SelectedObject as Tower;
+                if (gold >= t.cost)
+                {
+                    gold = gold - t.cost;
+                    towerlist.Add(t);
+                    t.position = mouse.pos;
+                    mouse.SelectedObject = null;
+                    mouse.SelectionContext = SelectionContext.None;
+                    mouse.UpdateTex(ResourceManager.DefaultCursor);
+                    ResourceManager.WallSound.Play();
+                }
+                else
+                {
+                    MessageLog.NotEnoughGold();
+                }
+            }
             //else if (mouse.nodeHovered != null && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.wallClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
             //{
             //    if (gold >= 1)
@@ -413,7 +441,8 @@ namespace TowerDefense
             //    mouse.portalLocation = null;
             //    mouse.portalComplete = true;
             //}
-            //mouse.UpdateTex(ResourceManager.DefaultCursor);
+            mouse.UpdateTex(ResourceManager.DefaultCursor);
+            mouse.SelectionContext = SelectionContext.None;
             //mouse.wallClicked = false;
             //mouse.portalClicked = false;
             //mouse.towerClicked = null;

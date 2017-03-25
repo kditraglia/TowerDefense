@@ -4,12 +4,34 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TowerDefense
 {
+    public enum HoveringContext
+    {
+        None,
+        ButtonStart,
+        ButtonUpgrade,
+        ButtonGenericTower,
+        ButtonCannonTower,
+        ButtonBatteryTower,
+        ButtonBlastTower,
+        ButtonWall,
+        ButtonPortal
+    }
+    public enum SelectionContext
+    {
+        None,
+        PlacingTower,
+        PlacingWall,
+        PlacingPortal
+    }
     class MouseHandler
     {
-        public Vector2 pos;
         public Texture2D tex;
-        public MouseState mouseState;
-        public int towerID = 0;
+        public Vector2 pos;
+        public MouseState MouseState { get; set; }
+        public GameObject HoveredObject { get; set; }
+        public HoveringContext HoveredContext { get; set; }
+        public GameObject SelectedObject { get; set; }
+        public SelectionContext SelectionContext { get; set; }
 
         public MouseHandler(Vector2 pos, Texture2D tex)
         {
@@ -18,9 +40,9 @@ namespace TowerDefense
         }
         public void Update()
         {
-            mouseState = Mouse.GetState();
-            this.pos.X = mouseState.X;
-            this.pos.Y = mouseState.Y;
+            MouseState = Mouse.GetState();
+            pos.X = MouseState.X;
+            pos.Y = MouseState.Y;
         }
         public void UpdateTex(Texture2D tex)
         {
@@ -29,7 +51,7 @@ namespace TowerDefense
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(this.tex, this.pos, Color.White);
+            batch.Draw(tex, pos, Color.White);
         }
     }
 }
