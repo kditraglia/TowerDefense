@@ -12,7 +12,7 @@ namespace TowerDefense
     {
         public Vector2 pos;
         public Texture2D tex;
-        private MouseState mouseState;
+        public MouseState mouseState;
         public int towerID = 0;
         public bool highlight = true;
         public bool hovering = false;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TowerDefense
 {
@@ -38,7 +39,7 @@ namespace TowerDefense
             this.scale = scale;
             this.ID = ID;
             this.spawnRate = spawnRate;
-            this.bestPath = findBestPath(nodes);
+            this.bestPath = TowerDefense.findBestPath(nodes);
             this.bestPath.Reverse();
             this.tex = tex;
             this.temp = bestPath[0];
@@ -119,122 +120,10 @@ namespace TowerDefense
         }
 
 
-        public void Draw(SpriteBatch batch) //Draw function, same as mousehandler one.
+        public void Draw(SpriteBatch batch)
         {
             if (spawned)
                 batch.Draw(tex, pos, null, color, 0, new Vector2(0,0), scale, SpriteEffects.None,.5f);
-        }
-
-        public List<Node> findBestPath(Node[,] nodes)
-        {
-            List<Node> available = new List<Node>();
-            HashSet<Node> visited = new HashSet<Node>();
-            List<Node> temp = new List<Node>();
-            List<Node> destinations = new List<Node>();
-
-            for (int i = 0; i < 17; i++)
-                for (int j = 0; j < 21; j++)
-                {
-                    nodes[i, j].parent = null;
-                    nodes[i, j].cost = 1000;
-                }
-            for (int i = 0; i < 17; i++)
-            {
-                if (!nodes[i, 0].wall)
-                {
-                    available.Add(nodes[i, 0]);
-                    visited.Add(nodes[i, 0]);
-                    nodes[i, 0].cost = 0;
-                }
-            }
-            while (available.Count != 0)
-            {
-                foreach (Node n in available)
-                {
-                    if ( n.simplePos.Y == 20 )
-                    {
-                        destinations.Add(n);
-                    }
-
-                    if (n.portal)
-                    {
-                        if (n.portalsTo.cost > n.cost + 1)
-                        {
-                            temp.Add(n.portalsTo);
-                            n.portalsTo.parent = n;
-                            n.portalsTo.cost = n.cost + 1;
-                        }
-                    }
-                    if (!n.portal || n.parent.portal)
-                    {
-                        if (((int)n.simplePos.Y + 1) < 21 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1].wall)
-                        {
-                            Node tempNode = nodes[(int)n.simplePos.X, (int)n.simplePos.Y + 1];
-                            if (tempNode.cost > n.cost + 1)
-                            {
-                                temp.Add(tempNode);
-                                tempNode.parent = n;
-                                tempNode.cost = n.cost + 1;
-                            }
-                        }
-                        if (((int)n.simplePos.Y - 1) >= 0 && !nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1].wall)
-                        {
-                            Node tempNode = nodes[(int)n.simplePos.X, (int)n.simplePos.Y - 1];
-                            if (tempNode.cost > n.cost + 1)
-                            {
-                                temp.Add(tempNode);
-                                tempNode.parent = n;
-                                tempNode.cost = n.cost + 1;
-                            }
-                        }
-                        if (((int)n.simplePos.X + 1) < 17 && !nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y].wall)
-                        {
-                            Node tempNode = nodes[(int)n.simplePos.X + 1, (int)n.simplePos.Y];
-                            if (tempNode.cost > n.cost + 1)
-                            {
-                                temp.Add(tempNode);
-                                tempNode.parent = n;
-                                tempNode.cost = n.cost + 1;
-                            }
-                        }
-                        if (((int)n.simplePos.X - 1) >= 0 && !nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y].wall)
-                        {
-                            Node tempNode = nodes[(int)n.simplePos.X - 1, (int)n.simplePos.Y];
-                            if (tempNode.cost > n.cost + 1)
-                            {
-                                temp.Add(tempNode);
-                                tempNode.parent = n;
-                                tempNode.cost = n.cost + 1;
-                            }
-                        }
-                    }
-                    visited.Add(n);
-                }
-                available.AddRange(temp);
-                available.RemoveAll(a=>visited.Contains(a));
-                
-                temp.Clear();
-            }
-
-            List<Node> bestPath = new List<Node>();
-            int bestCost = int.MaxValue;
-            Node bestDest = null;
-            foreach (Node n in destinations)
-            {
-                if (n.cost < bestCost)
-                {
-                    bestCost = n.cost;
-                    bestDest = n;
-                }
-
-            }
-            bestPath.Add(bestDest);
-            while (bestDest.parent != null)
-            {
-                bestPath.Add(bestDest.parent);
-                bestDest = bestDest.parent;
-            }
-            return bestPath;
         }
     }
 }
