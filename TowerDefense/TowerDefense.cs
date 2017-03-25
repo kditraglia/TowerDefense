@@ -208,6 +208,30 @@ namespace TowerDefense
             HandleMouseHover();
             if (!attackPhase)
             {
+                if (mouse.MouseState.LeftButton == ButtonState.Pressed)
+                {
+                    //I took this out of the HandleLeftClick method, since it's the only thing I want to allow holding the button down
+                    //It doesn't feel right to not be able to drag the mouse when making walls
+                    if (mouse.SelectionContext == SelectionContext.PlacingWall && mouse.HoveringContext == HoveringContext.EmptyNode)
+                    {
+                        Node n = mouse.HoveredObject as Node;
+                        if (!CheckForPath(n.simplePos.X, n.simplePos.Y, false, false))
+                        {
+                            MessageLog.IllegalPosition();
+                        }
+                        else if (gold >= 1)
+                        {
+                            n.wall = true;
+                            n.UpdateTex(mouse.tex);
+                            gold = gold - 1;
+                            ResourceManager.WallSound.Play();
+                        }
+                        else
+                        {
+                            MessageLog.NotEnoughGold();
+                        }
+                    }
+                }
                 if (mouse.MouseState.LeftButton == ButtonState.Pressed && !mouse.MouseClicked)
                 {
                     HandleLeftClick();
@@ -375,25 +399,6 @@ namespace TowerDefense
                     MessageLog.NotEnoughGold();
                 }
             }
-            else if (mouse.SelectionContext == SelectionContext.PlacingWall && mouse.HoveringContext == HoveringContext.EmptyNode)
-            {
-                Node n = mouse.HoveredObject as Node;
-                if (!CheckForPath(n.simplePos.X, n.simplePos.Y, false, false))
-                {
-                    MessageLog.IllegalPosition();
-                }
-                else if (gold >= 1)
-                {
-                    n.wall = true;
-                    n.UpdateTex(mouse.tex);
-                    gold = gold - 1;
-                    ResourceManager.WallSound.Play();
-                }
-                else
-                {
-                    MessageLog.NotEnoughGold();
-                }
-            }
             else if (mouse.SelectionContext == SelectionContext.PlacingPortalEntrance && mouse.HoveringContext == HoveringContext.EmptyNode)
             {
                 Node n = mouse.HoveredObject as Node;
@@ -428,14 +433,25 @@ namespace TowerDefense
 
         private void HandleRightClick()
         {
-            if (mouse.HoveringContext == HoveringContext.Tower)
+            if (mouse.SelectionContext == SelectionContext.PlacingPortalExit)
+            {
+                mouse.PortalEntrance.portal = false;
+                mouse.PortalEntrance.defaultSet();
+                mouse.PortalEntrance = null;
+            }
+            else if (mouse.SelectionContext == SelectionContext.TowerSelected)
+            {
+                Tower t = mouse.SelectedObject as Tower;
+                t.Selected = false;
+            }
+            else if (mouse.HoveringContext == HoveringContext.Tower && mouse.SelectionContext == SelectionContext.None)
             {
                 Tower t = mouse.HoveredObject as Tower;
                 gold = gold + t.cost;
                 towerlist.Remove(t);
                 ResourceManager.SellSound.Play();
             }
-            else if (mouse.HoveringContext == HoveringContext.FilledNode)
+            else if (mouse.HoveringContext == HoveringContext.FilledNode && mouse.SelectionContext == SelectionContext.None)
             {
                 Node n = mouse.HoveredObject as Node;
                 if (n.wall && CheckForPath(n.simplePos.X, n.simplePos.Y, false, true))
@@ -457,17 +473,7 @@ namespace TowerDefense
                     ResourceManager.SellSound.Play();
                 }
             }
-            if (mouse.SelectionContext == SelectionContext.PlacingPortalExit)
-            {
-                mouse.PortalEntrance.portal = false;
-                mouse.PortalEntrance.defaultSet();
-                mouse.PortalEntrance = null;
-            }
-            if (mouse.SelectionContext == SelectionContext.TowerSelected)
-            {
-                Tower t = mouse.SelectedObject as Tower;
-                t.Selected = false;
-            }
+
             mouse.UpdateTex(ResourceManager.DefaultCursor);
             mouse.SelectionContext = SelectionContext.None;
         }
