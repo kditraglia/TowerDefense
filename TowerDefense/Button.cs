@@ -5,7 +5,6 @@ namespace TowerDefense
 {
     class Button : GameObject
     {
-        public bool hovering;
         public bool highlight;
         public int ID;
 

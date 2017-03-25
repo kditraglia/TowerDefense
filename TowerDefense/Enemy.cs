@@ -18,7 +18,6 @@ namespace TowerDefense
         public bool spawned = false;
         Vector2 currentDest;
         public bool dead = false;
-        public bool hovering = false;
         public bool lose = false;
         public float scale;
         public double spawnRate;

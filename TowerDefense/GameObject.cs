@@ -7,6 +7,12 @@ namespace TowerDefense
     {
         public Texture2D tex { get; set; }
         public Vector2 position { get; set; }
+        private bool _hovering;
+        public bool hovering
+        {
+            get { return _hovering; }
+            set { _hovering = value; color = _hovering ? Color.Green : Color.White; }
+        }
         public Color color { get; set; }
 
         public GameObject(Texture2D tex, Vector2 position)

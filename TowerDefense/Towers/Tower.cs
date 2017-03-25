@@ -10,7 +10,6 @@ namespace TowerDefense
     abstract class Tower : GameObject
     {
         public int cost;
-        public bool hovering;
 
         public Tower(Texture2D tex, Vector2 position) : base(tex, position) { }
 

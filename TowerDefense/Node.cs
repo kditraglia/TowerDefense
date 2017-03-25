@@ -18,7 +18,6 @@ namespace TowerDefense
         public int fScore;
         public Node parent;
         public bool wall = false;
-        public bool hovering;
         public bool portal = false;
         public Node portalsTo = null;
         public Node(Vector2 actualPos, Vector2 simplePos, Texture2D tex) : base(tex, actualPos)

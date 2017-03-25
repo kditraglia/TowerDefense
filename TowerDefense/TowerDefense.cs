@@ -148,15 +148,15 @@ namespace TowerDefense
             towerlist.ForEach(t => t.Draw(batch));
             projectilelist.ForEach(p => p.Draw(batch));
 
-            mouse.towerSelected?.ShowStats(batch, ResourceManager.GameFont, viewport);
+            //mouse.towerSelected?.ShowStats(batch, ResourceManager.GameFont, viewport);
 
-            if (mouse.towerClicked != null)
-            {
-                upgradeButton.Draw(batch);
-                mouse.towerClicked.ShowStats(batch, ResourceManager.GameFont, viewport);
-            }
+            //if (mouse.towerClicked != null)
+            //{
+            //    upgradeButton.Draw(batch);
+            //    mouse.towerClicked.ShowStats(batch, ResourceManager.GameFont, viewport);
+            //}
 
-            mouse.enemyHovered?.ShowStats(batch, ResourceManager.GameFont, viewport);
+            //mouse.enemyHovered?.ShowStats(batch, ResourceManager.GameFont, viewport);
 
             batch.DrawString(ResourceManager.GameFont, "GOLD - " + gold + " $", new Vector2(viewport.Width *.8f, viewport.Height *.1f), Color.Black,
                     0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
@@ -183,7 +183,7 @@ namespace TowerDefense
                 return;
             }
 
-            if (mouse.mouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !attackPhase && !mouse.portalClicked)
+            if (mouse.mouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !attackPhase) //&& !mouse.portalClicked)
             {
                 StartLevel();
             }
@@ -199,144 +199,53 @@ namespace TowerDefense
                 {
                     HandleLeftClick();
                 }
-                if (mouse.mouseState.RightButton == ButtonState.Pressed && !mouse.rClicking && mouse.nodeHovered != null)
+                if (mouse.mouseState.RightButton == ButtonState.Pressed) //&& !mouse.rClicking && mouse.nodeHovered != null)
                 {
                     HandleRightClick();
                 }
-                if (mouse.mouseState.LeftButton == ButtonState.Released)
-                {
-                    mouse.clicking = false;
-                }
-                if (mouse.mouseState.RightButton == ButtonState.Released)
-                {
-                    mouse.rClicking = false;
-                }
+                //if (mouse.mouseState.LeftButton == ButtonState.Released)
+                //{
+                //    mouse.clicking = false;
+                //}
+                //if (mouse.mouseState.RightButton == ButtonState.Released)
+                //{
+                //    mouse.rClicking = false;
+                //}
             }
         }
 
         private void HandleAttackPhase()
         {
-            mouse.hovering = false;
-            mouse.enemyHovered = null;
-            foreach (Enemy e in enemylist)
-            {
-                if (e.ContainsPoint(mouse.pos))
-                {
-                    e.hovering = true;
-                    mouse.hovering = true;
-                    mouse.enemyHovered = e;
-                }
-                else
-                {
-                    e.hovering = false;
-                    e.color = Color.White;
-                }
-            }
-            if (mouse.enemyHovered != null)
-            {
-                mouse.enemyHovered.color = Color.Yellow;
-            }
+            //mouse.hovering = false;
+            //mouse.enemyHovered = null;
+            //foreach (Enemy e in enemylist)
+            //{
+            //    if (e.ContainsPoint(mouse.pos))
+            //    {
+            //        e.hovering = true;
+            //        mouse.hovering = true;
+            //        mouse.enemyHovered = e;
+            //    }
+            //    else
+            //    {
+            //        e.hovering = false;
+            //        e.color = Color.White;
+            //    }
+            //}
+            //if (mouse.enemyHovered != null)
+            //{
+            //    mouse.enemyHovered.color = Color.Yellow;
+            //}
         }
 
         private void HandleMouseHover()
         {
-            mouse.hovering = false;
-            mouse.buttonHovered = null;
-            mouse.towerHovered = null;
-            mouse.nodeHovered = null;
-
-            foreach (Button b in buttonlist)
-            {
-                if (b.ContainsPoint(mouse.pos))
-                {
-                    b.hovering = true;
-                    mouse.hovering = true;
-                    mouse.buttonHovered = b;
-                }
-                else
-                {
-                    b.hovering = false;
-                    b.color = Color.White;
-                }
-
-            }
-            foreach (Tower t in towerlist)
-            {
-                if (t.ContainsPoint(mouse.pos) && !mouse.hovering)
-                {
-                    t.hovering = true;
-                    mouse.hovering = true;
-                    mouse.towerHovered = t;
-                }
-                else
-                {
-                    t.hovering = false;
-                    t.color = Color.White;
-                }
-            }
-
-            for (int i = 0; i <= Constants.X; i++)
-            {
-                for (int j = 0; j <= Constants.Y; j++)
-                {
-                    if (nodes[i, j].ContainsPoint(mouse.pos))
-                    {
-                        nodes[i, j].hovering = true;
-                        mouse.hovering = true;
-                        mouse.nodeHovered = nodes[i, j];
-                    }
-                    else
-                    {
-                        nodes[i, j].hovering = false;
-                        nodes[i, j].color = Color.White;
-                    }
-                }
-                if (mouse.enemyHovered != null)
-                {
-                    mouse.enemyHovered.color = Color.Green;
-                }
-            }
-            if (mouse.buttonHovered != null)
-            {
-                mouse.buttonHovered.color = Color.Green;
-            }
-            if (mouse.towerClicked != null)
-            {
-                mouse.towerClicked.color = Color.Green;
-            }
-            else if (mouse.highlight && mouse.towerSelected == null && mouse.towerHovered != null)
-            {
-                mouse.towerHovered.color = Color.Green;
-            }
-            else if (mouse.highlight && mouse.wallClicked && mouse.nodeHovered != null && !mouse.nodeHovered.portal && !mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
-            {
-                mouse.nodeHovered.color = Color.Green;
-            }
-            else if (mouse.highlight && !mouse.wallClicked && mouse.nodeHovered != null && !mouse.nodeHovered.portal && !mouse.nodeHovered.wall)
-            {
-                mouse.nodeHovered.color = Color.Green;
-            }
-            else if (mouse.highlight && mouse.nodeHovered != null && mouse.nodeHovered.portal && !mouse.nodeHovered.wall)
-            {
-                mouse.nodeHovered.color = Color.Green;
-                if (mouse.nodeHovered.portalsTo != null)
-                    mouse.nodeHovered.portalsTo.color = Color.Green;
-            }
-            else if (mouse.highlight && mouse.nodeHovered != null && !mouse.nodeHovered.portal && mouse.nodeHovered.wall)
-            {
-                mouse.nodeHovered.color = Color.Red;
-            }
-            else if (mouse.highlight && mouse.nodeHovered != null && !CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
-            {
-                mouse.nodeHovered.color = Color.Red;
-            }
+            buttonlist.ForEach(b => b.hovering = b.BoundingBox().Contains(mouse.pos));
         }
 
         private void StartLevel()
         {
             mouse.UpdateTex(ResourceManager.DefaultCursor);
-            mouse.towerClicked = null;
-            mouse.towerSelected = null;
             attackPhase = true;
             level++;
             MessageLog.Level(level);
@@ -367,150 +276,150 @@ namespace TowerDefense
 
         private void HandleLeftClick()
         {
-            if (upgradeButton.ContainsPoint(mouse.pos) && mouse.towerClicked != null && gold >= mouse.towerClicked.cost && !mouse.clicking)
-            {
-                gold = gold - mouse.towerClicked.cost;
-                mouse.towerClicked.upgrade();
-            }
-            if (mouse.buttonHovered != null && !mouse.clicking)
-            {
-                mouse.highlight = mouse.buttonHovered.highlight;
-                mouse.towerID = mouse.buttonHovered.ID;
-                mouse.UpdateTex(mouse.buttonHovered.tex);
-                switch (mouse.towerID)
-                {
-                    case 1:
-                        mouse.towerSelected = new GenericTower(mouse.pos, mouse.tex);
-                        break;
-                    case 2:
-                        mouse.towerSelected = new CannonTower(mouse.pos, mouse.tex);
-                        break;
-                    case 3:
-                        mouse.towerSelected = new BatteryTower(mouse.pos, mouse.tex);
-                        break;
-                    case 4:
-                        mouse.towerSelected = new BlastTower(mouse.pos, mouse.tex);
-                        break;
-                    case 5:
-                        mouse.wallClicked = true;
-                        break;
-                    case 6:
-                        mouse.portalClicked = true;
-                        break;
-                    default:
-                        break;
-                }
-                mouse.towerClicked = null;
-            }
-            else if (mouse.nodeHovered != null && !mouse.highlight && mouse.towerSelected != null && !mouse.clicking && mouse.pos.X <= 641 && mouse.pos.Y <= 679)
-            {
-                if (gold >= mouse.towerSelected.cost)
-                {
-                    gold = gold - mouse.towerSelected.cost;
-                    towerlist.Add(mouse.towerSelected);
-                    mouse.towerSelected.position = mouse.pos;
-                    mouse.towerSelected = null;
-                    mouse.UpdateTex(ResourceManager.DefaultCursor);
-                    mouse.highlight = true;
-                    mouse.towerClicked = null;
-                    ResourceManager.WallSound.Play();
-                }
-                else
-                {
-                    MessageLog.NotEnoughGold();
-                }
-            }
-            else if (mouse.nodeHovered != null && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.wallClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
-            {
-                if (gold >= 1)
-                {
-                    mouse.nodeHovered.wall = true;
-                    mouse.nodeHovered.UpdateTex(mouse.tex);
-                    gold = gold - 1;
-                    ResourceManager.WallSound.Play();
-                }
-                else
-                {
-                    MessageLog.NotEnoughGold();
-                }
+            //if (upgradeButton.ContainsPoint(mouse.pos) && mouse.towerClicked != null && gold >= mouse.towerClicked.cost && !mouse.clicking)
+            //{
+            //    gold = gold - mouse.towerClicked.cost;
+            //    mouse.towerClicked.upgrade();
+            //}
+            //if (mouse.buttonHovered != null && !mouse.clicking)
+            //{
+            //    mouse.highlight = mouse.buttonHovered.highlight;
+            //    mouse.towerID = mouse.buttonHovered.ID;
+            //    mouse.UpdateTex(mouse.buttonHovered.tex);
+            //    switch (mouse.towerID)
+            //    {
+            //        case 1:
+            //            mouse.towerSelected = new GenericTower(mouse.pos, mouse.tex);
+            //            break;
+            //        case 2:
+            //            mouse.towerSelected = new CannonTower(mouse.pos, mouse.tex);
+            //            break;
+            //        case 3:
+            //            mouse.towerSelected = new BatteryTower(mouse.pos, mouse.tex);
+            //            break;
+            //        case 4:
+            //            mouse.towerSelected = new BlastTower(mouse.pos, mouse.tex);
+            //            break;
+            //        case 5:
+            //            mouse.wallClicked = true;
+            //            break;
+            //        case 6:
+            //            mouse.portalClicked = true;
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //    mouse.towerClicked = null;
+            //}
+            //else if (mouse.nodeHovered != null && !mouse.highlight && mouse.towerSelected != null && !mouse.clicking && mouse.pos.X <= 641 && mouse.pos.Y <= 679)
+            //{
+            //    if (gold >= mouse.towerSelected.cost)
+            //    {
+            //        gold = gold - mouse.towerSelected.cost;
+            //        towerlist.Add(mouse.towerSelected);
+            //        mouse.towerSelected.position = mouse.pos;
+            //        mouse.towerSelected = null;
+            //        mouse.UpdateTex(ResourceManager.DefaultCursor);
+            //        mouse.highlight = true;
+            //        mouse.towerClicked = null;
+            //        ResourceManager.WallSound.Play();
+            //    }
+            //    else
+            //    {
+            //        MessageLog.NotEnoughGold();
+            //    }
+            //}
+            //else if (mouse.nodeHovered != null && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.wallClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, false))
+            //{
+            //    if (gold >= 1)
+            //    {
+            //        mouse.nodeHovered.wall = true;
+            //        mouse.nodeHovered.UpdateTex(mouse.tex);
+            //        gold = gold - 1;
+            //        ResourceManager.WallSound.Play();
+            //    }
+            //    else
+            //    {
+            //        MessageLog.NotEnoughGold();
+            //    }
 
-            }
-            else if (mouse.nodeHovered != null && mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked)
-            {
-                mouse.nodeHovered.portal = true;
-                mouse.nodeHovered.UpdateTex(mouse.tex);
-                mouse.portalLocation = mouse.nodeHovered;
-                mouse.portalComplete = false;
-            }
-            else if (mouse.nodeHovered != null && !mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, false))
-            {
-                if (gold >= 20)
-                {
-                    mouse.nodeHovered.portal = true;
-                    mouse.nodeHovered.UpdateTex(mouse.tex);
-                    mouse.nodeHovered.portalsTo = mouse.portalLocation;
-                    mouse.portalLocation.portalsTo = mouse.nodeHovered;
-                    mouse.portalComplete = true;
-                    gold = gold - 20;
-                }
-                else
-                {
-                    MessageLog.NotEnoughGold();
-                }
-            }
-            else if (mouse.towerHovered != null && mouse.highlight && mouse.towerSelected == null && !mouse.clicking)
-            {
-                mouse.towerClicked = mouse.towerHovered;
-            }
-            mouse.clicking = true;
+            //}
+            //else if (mouse.nodeHovered != null && mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked)
+            //{
+            //    mouse.nodeHovered.portal = true;
+            //    mouse.nodeHovered.UpdateTex(mouse.tex);
+            //    mouse.portalLocation = mouse.nodeHovered;
+            //    mouse.portalComplete = false;
+            //}
+            //else if (mouse.nodeHovered != null && !mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, false))
+            //{
+            //    if (gold >= 20)
+            //    {
+            //        mouse.nodeHovered.portal = true;
+            //        mouse.nodeHovered.UpdateTex(mouse.tex);
+            //        mouse.nodeHovered.portalsTo = mouse.portalLocation;
+            //        mouse.portalLocation.portalsTo = mouse.nodeHovered;
+            //        mouse.portalComplete = true;
+            //        gold = gold - 20;
+            //    }
+            //    else
+            //    {
+            //        MessageLog.NotEnoughGold();
+            //    }
+            //}
+            //else if (mouse.towerHovered != null && mouse.highlight && mouse.towerSelected == null && !mouse.clicking)
+            //{
+            //    mouse.towerClicked = mouse.towerHovered;
+            //}
+            //mouse.clicking = true;
         }
 
         private void HandleRightClick()
         {
-            if (mouse.towerHovered != null)
-            {
-                gold = gold + mouse.towerHovered.cost;
-                towerlist.Remove(mouse.towerHovered);
-                ResourceManager.SellSound.Play();
-            }
-            else if (mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, true))
-            {
-                gold = gold + 1;
-                mouse.nodeHovered.wall = false;
-                mouse.nodeHovered.defaultSet();
-                ResourceManager.SellSound.Play();
-            }
-            else if (mouse.nodeHovered.portal && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, true))
-            {
-                mouse.nodeHovered.portal = false;
-                mouse.nodeHovered.defaultSet();
-                if (mouse.nodeHovered.portalsTo != null)
-                {
-                    mouse.nodeHovered.portalsTo.portal = false;
-                    mouse.nodeHovered.portalsTo.portalsTo = null;
-                    mouse.nodeHovered.portalsTo.defaultSet();
-                    mouse.nodeHovered.portalsTo = null;
-                    gold = gold + 20;
-                }
-                else
-                {
-                    mouse.portalComplete = true;
-                }
-            }
-            if (!mouse.portalComplete)
-            {
-                mouse.portalLocation.portal = false;
-                mouse.portalLocation.defaultSet();
-                mouse.portalLocation = null;
-                mouse.portalComplete = true;
-            }
-            mouse.UpdateTex(ResourceManager.DefaultCursor);
-            mouse.wallClicked = false;
-            mouse.portalClicked = false;
-            mouse.towerClicked = null;
-            mouse.towerSelected = null;
-            mouse.highlight = true;
-            mouse.rClicking = true;
+            //if (mouse.towerHovered != null)
+            //{
+            //    gold = gold + mouse.towerHovered.cost;
+            //    towerlist.Remove(mouse.towerHovered);
+            //    ResourceManager.SellSound.Play();
+            //}
+            //else if (mouse.nodeHovered.wall && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, false, true))
+            //{
+            //    gold = gold + 1;
+            //    mouse.nodeHovered.wall = false;
+            //    mouse.nodeHovered.defaultSet();
+            //    ResourceManager.SellSound.Play();
+            //}
+            //else if (mouse.nodeHovered.portal && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, true))
+            //{
+            //    mouse.nodeHovered.portal = false;
+            //    mouse.nodeHovered.defaultSet();
+            //    if (mouse.nodeHovered.portalsTo != null)
+            //    {
+            //        mouse.nodeHovered.portalsTo.portal = false;
+            //        mouse.nodeHovered.portalsTo.portalsTo = null;
+            //        mouse.nodeHovered.portalsTo.defaultSet();
+            //        mouse.nodeHovered.portalsTo = null;
+            //        gold = gold + 20;
+            //    }
+            //    else
+            //    {
+            //        mouse.portalComplete = true;
+            //    }
+            //}
+            //if (!mouse.portalComplete)
+            //{
+            //    mouse.portalLocation.portal = false;
+            //    mouse.portalLocation.defaultSet();
+            //    mouse.portalLocation = null;
+            //    mouse.portalComplete = true;
+            //}
+            //mouse.UpdateTex(ResourceManager.DefaultCursor);
+            //mouse.wallClicked = false;
+            //mouse.portalClicked = false;
+            //mouse.towerClicked = null;
+            //mouse.towerSelected = null;
+            //mouse.highlight = true;
+            //mouse.rClicking = true;
         }
 
         private static int heuristic(Node current)
@@ -581,7 +490,7 @@ namespace TowerDefense
             if (portal)
             {
                 nodes[x, y].portal = !remove;
-                nodes[x, y].portalsTo = remove ? null : mouse.portalLocation;
+                //nodes[x, y].portalsTo = remove ? null : mouse.portalLocation;
                 if (remove)
                 {
                     portaledTo.portalsTo = null;
@@ -589,7 +498,7 @@ namespace TowerDefense
                 }
                 else
                 {
-                    mouse.portalLocation.portalsTo = nodes[x, y];
+                    //mouse.portalLocation.portalsTo = nodes[x, y];
                 }
 
             }
@@ -609,7 +518,7 @@ namespace TowerDefense
                 }
                 else
                 {
-                    mouse.portalLocation.portalsTo = null;
+                    //mouse.portalLocation.portalsTo = null;
                 }
             }
             else
