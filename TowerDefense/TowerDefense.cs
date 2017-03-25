@@ -310,7 +310,7 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (30 + 2 * level); i++)
                 {
-                    enemylist.Add(new Enemy(level * 4, 3, ResourceManager.Enemy, nodes, "Tuberculosis", .33f, .2f));
+                    enemylist.Add(new Enemy(level * 4, 2, ResourceManager.Enemy, nodes, "Tuberculosis", .33f, .2f));
                 }
             }
             else
