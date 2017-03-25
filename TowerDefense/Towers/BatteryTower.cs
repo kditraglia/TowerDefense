@@ -22,7 +22,7 @@ namespace TowerDefense
             cost = 15;
         }
 
-        public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime)
+        public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc)
         {
             if ((elapsedTime - cooldown) > attackspeed)
             {
@@ -31,7 +31,7 @@ namespace TowerDefense
                 {
                     if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range && e.spawned && !e.dead)
                     {
-                        projectilelist.Add(new Bullet(Position, ResourceManager.LightningBolt, e, damage));
+                        projectilelist.Add(new Bullet(Position, ResourceManager.LightningBolt, e, damage, damageFunc));
                         cooldown = elapsedTime;
                         attacked = true;
                     }

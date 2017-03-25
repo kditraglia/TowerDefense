@@ -20,6 +20,7 @@ namespace TowerDefense
         List<Tower> towerlist = new List<Tower>();
         List<Enemy> enemylist = new List<Enemy>();
         List<Projectile> projectilelist = new List<Projectile>();
+        List<FloatingText> floatingTextList = new List<FloatingText>();
         MessageLog MessageLog = new MessageLog();
         Node[,] nodes = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
         bool attackPhase = false;
@@ -126,7 +127,10 @@ namespace TowerDefense
                 }
                 foreach (Tower t in towerlist)
                 {
-                    projectilelist = t.Attack(enemylist, projectilelist, gameTime.TotalGameTime.TotalSeconds);
+                    projectilelist = t.Attack(enemylist, projectilelist, gameTime.TotalGameTime.TotalSeconds, (d, p) =>
+                    {
+                        floatingTextList.Add(new FloatingText(p, ResourceManager.GameFont, d.ToString()));
+                    });
                 }
                 projectilelist.RemoveAll(p => p.Move());
             }
@@ -137,6 +141,7 @@ namespace TowerDefense
                 MessageLog.LevelComplete(level * 2 + (int)(gold * .05f), level);
                 gold = gold + (level * 2 + (int)(gold * .05f));
             }
+            floatingTextList.RemoveAll(f => f.Update(gameTime));
             base.Update(gameTime);
         }
 
@@ -159,6 +164,7 @@ namespace TowerDefense
             buttonlist.ForEach(b => b.Draw(batch));
             towerlist.ForEach(t => t.Draw(batch));
             projectilelist.ForEach(p => p.Draw(batch));
+            floatingTextList.ForEach(f => f.Draw(batch));
 
             if (mouse.SelectionContext == SelectionContext.TowerSelected)
             {

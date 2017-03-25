@@ -13,13 +13,16 @@ namespace TowerDefense
         int damage;
         int areaofeffect;
         List<Enemy> enemylist;
-        public CannonBall (Point position, Texture2D tex, Point dest, List<Enemy> enemylist, int damage, int areaofeffect) : base(tex, position)
+        Action<int, Point> damageFunc;
+
+        public CannonBall (Point position, Texture2D tex, Point dest, List<Enemy> enemylist, int damage, int areaofeffect, Action<int, Point> damageFunc) : base(tex, position)
         {
             this.dest = dest;
             this.Tex = tex;
             this.damage = damage;
             this.areaofeffect = areaofeffect;
             this.enemylist = enemylist;
+            this.damageFunc = damageFunc;
         }
         public override bool Move()
         {
@@ -47,8 +50,11 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= areaofeffect && e.spawned && !e.dead )
-                    e.damage( damage );
+                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= areaofeffect && e.spawned && !e.dead)
+                {
+                    damageFunc(damage, e.Position);
+                    e.damage(damage);
+                }
             }
         }
     }
