@@ -9,11 +9,18 @@ namespace TowerDefense
         public Point Position { get; set; }
         public HoveringContext HoveringContext { get; set; }
 
-        private bool _hovering;
-        public bool hovering
+        private bool hovering;
+        public bool Hovering
         {
-            get { return _hovering; }
-            set { _hovering = value; Color = _hovering ? Color.Green : Color.White; }
+            get { return hovering; }
+            set { hovering = value; Color = hovering || selected ? Color.Green : Color.White; }
+        }
+
+        private bool selected;
+        public bool Selected
+        {
+            get { return selected; }
+            set { selected = value; Color = hovering || selected ? Color.Green : Color.White; }
         }
         public Color Color { get; set; }
 

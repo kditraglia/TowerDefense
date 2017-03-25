@@ -160,7 +160,12 @@ namespace TowerDefense
             towerlist.ForEach(t => t.Draw(batch));
             projectilelist.ForEach(p => p.Draw(batch));
 
-            if (mouse.HoveringContext == HoveringContext.Tower)
+            if (mouse.SelectionContext == SelectionContext.TowerSelected)
+            {
+                Tower t = mouse.SelectedObject as Tower;
+                t?.ShowStats(batch, ResourceManager.GameFont, viewport);
+            }
+            else if (mouse.HoveringContext == HoveringContext.Tower)
             {
                 Tower t = mouse.HoveredObject as Tower;
                 t?.ShowStats(batch, ResourceManager.GameFont, viewport);
@@ -221,8 +226,8 @@ namespace TowerDefense
 
             enemylist.ForEach(e =>
             {
-                e.hovering = e.BoundingBox().Contains(mouse.pos);
-                if (e.hovering)
+                e.Hovering = e.BoundingBox().Contains(mouse.pos);
+                if (e.Hovering)
                 {
                     mouse.HoveredObject = e;
                     mouse.HoveringContext = HoveringContext.Enemy;
@@ -233,8 +238,8 @@ namespace TowerDefense
             {
                 foreach (Node n in nodes)
                 {
-                    n.hovering = n.BoundingBox().Contains(mouse.pos);
-                    if (n.hovering)
+                    n.Hovering = n.BoundingBox().Contains(mouse.pos);
+                    if (n.Hovering)
                     {
                         mouse.HoveredObject = n;
                         mouse.HoveringContext = n.wall || n.portal ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
@@ -242,8 +247,8 @@ namespace TowerDefense
                 }
                 buttonlist.ForEach(b =>
                 {
-                    b.hovering = b.BoundingBox().Contains(mouse.pos);
-                    if (b.hovering)
+                    b.Hovering = b.BoundingBox().Contains(mouse.pos);
+                    if (b.Hovering)
                     {
                         mouse.HoveredObject = b;
                         mouse.HoveringContext = b.HoveringContext;
@@ -251,8 +256,8 @@ namespace TowerDefense
                 });
                 towerlist.ForEach(t =>
                 {
-                    t.hovering = t.BoundingBox().Contains(mouse.pos);
-                    if (t.hovering)
+                    t.Hovering = t.BoundingBox().Contains(mouse.pos);
+                    if (t.Hovering)
                     {
                         mouse.HoveredObject = t;
                         mouse.HoveringContext = HoveringContext.Tower;
@@ -335,9 +340,10 @@ namespace TowerDefense
                         }
                     case HoveringContext.Tower:
                         {
-                            Tower t = mouse.SelectedObject as Tower;
+                            Tower t = mouse.HoveredObject as Tower;
                             mouse.SelectedObject = t;
                             mouse.SelectionContext = SelectionContext.TowerSelected;
+                            t.Selected = true;
                             break;
                         }
                     default:
@@ -450,6 +456,11 @@ namespace TowerDefense
                 mouse.PortalEntrance.defaultSet();
                 mouse.PortalEntrance = null;
             }
+            if (mouse.SelectionContext == SelectionContext.TowerSelected)
+            {
+                Tower t = mouse.SelectedObject as Tower;
+                t.Selected = false;
+            }
             mouse.UpdateTex(ResourceManager.DefaultCursor);
             mouse.SelectionContext = SelectionContext.None;
         }
@@ -516,7 +527,7 @@ namespace TowerDefense
             return null;
         }
 
-        public bool CheckForPath( int x, int y, bool portal, bool remove)
+        public bool CheckForPath(int x, int y, bool portal, bool remove)
         {
             Node portaledTo = nodes[x, y].portalsTo;
             if (portal)
