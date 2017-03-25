@@ -12,23 +12,21 @@ namespace TowerDefense
         Enemy target;
         int damage;
         Action<int, Point> damageFunc;
-        Vector2 direction;
 
         public Bullet(Point position, Texture2D tex, Enemy target, int damage, Action<int, Point> damageFunc) : base(tex, position)
         {
             this.target = target;
             this.damage = damage;
             this.damageFunc = damageFunc;
-
-            direction = (position - target.Position).ToVector2();
-            if (direction != Vector2.Zero)
-            {
-                direction.Normalize();
-            }
         }
 
         public override bool Move()
         {
+            Vector2 direction = (Position - target.Position).ToVector2();
+            if (direction != Vector2.Zero)
+            {
+                direction.Normalize();
+            }
             Position -= (direction * speed).ToPoint();
 
             if (Vector2.Distance(Position.ToVector2(), target.Position.ToVector2()) < 15)
