@@ -16,14 +16,17 @@ namespace TowerDefense
         ButtonWall,
         ButtonPortal,
         EmptyNode,
-        FilledNode
+        FilledNode,
+        Tower
     }
     public enum SelectionContext
     {
         None,
         PlacingTower,
         PlacingWall,
-        PlacingPortal
+        PlacingPortalEntrance,
+        PlacingPortalExit,
+        TowerSelected
     }
     class MouseHandler
     {
@@ -31,9 +34,13 @@ namespace TowerDefense
         public Point pos;
         public MouseState MouseState { get; set; }
         public GameObject HoveredObject { get; set; }
-        public HoveringContext HoveredContext { get; set; }
+        public HoveringContext HoveringContext { get; set; }
         public GameObject SelectedObject { get; set; }
         public SelectionContext SelectionContext { get; set; }
+
+        //This is one thing I'm not sure exactly where to store, but when you make the entrance of a portal, 
+        //I need to hold a reference for when you place the other side to link them together
+        public Node PortalEntrance { get; set; }
 
         public MouseHandler(Point pos, Texture2D tex)
         {

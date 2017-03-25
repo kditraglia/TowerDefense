@@ -252,7 +252,7 @@ namespace TowerDefense
 
         private void HandleMouseHover()
         {
-            mouse.HoveredContext = HoveringContext.None;
+            mouse.HoveringContext = HoveringContext.None;
             mouse.HoveredObject = null;
 
             enemylist.ForEach(e =>
@@ -269,7 +269,7 @@ namespace TowerDefense
                 if (b.hovering)
                 {
                     mouse.HoveredObject = b;
-                    mouse.HoveredContext = b.HoveringContext;
+                    mouse.HoveringContext = b.HoveringContext;
                 }
             });
             towerlist.ForEach(t =>
@@ -278,6 +278,7 @@ namespace TowerDefense
                 if (t.hovering)
                 {
                     mouse.HoveredObject = t;
+                    mouse.HoveringContext = HoveringContext.Tower;
                 }
             });
             foreach(Node n in nodes)
@@ -286,7 +287,7 @@ namespace TowerDefense
                 if (n.hovering)
                 {
                     mouse.HoveredObject = n;
-                    mouse.HoveredContext = n.wall || n.portal ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
+                    mouse.HoveringContext = n.wall || n.portal ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
                 }
             }
         }
@@ -324,14 +325,9 @@ namespace TowerDefense
 
         private void HandleLeftClick()
         {
-            //if (upgradeButton.ContainsPoint(mouse.pos) && mouse.towerClicked != null && gold >= mouse.towerClicked.cost && !mouse.clicking)
-            //{
-            //    gold = gold - mouse.towerClicked.cost;
-            //    mouse.towerClicked.upgrade();
-            //}
             if (mouse.HoveredObject != null)
             {
-                switch (mouse.HoveredContext)
+                switch (mouse.HoveringContext)
                 {
                     case HoveringContext.ButtonGenericTower:
                         mouse.UpdateTex(mouse.HoveredObject.Tex);
@@ -359,8 +355,22 @@ namespace TowerDefense
                         break;
                     case HoveringContext.ButtonPortal:
                         mouse.UpdateTex(mouse.HoveredObject.Tex);
-                        mouse.SelectionContext = SelectionContext.PlacingPortal;
+                        mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
                         break;
+                    case HoveringContext.ButtonUpgrade:
+                        {
+                            Tower t = mouse.SelectedObject as Tower;
+                            gold = gold - t.cost;
+                            t.upgrade();
+                            break;
+                        }
+                    case HoveringContext.Tower:
+                        {
+                            Tower t = mouse.SelectedObject as Tower;
+                            mouse.SelectedObject = t;
+                            mouse.SelectionContext = SelectionContext.TowerSelected;
+                            break;
+                        }
                     default:
                         break;
                 }
@@ -383,10 +393,10 @@ namespace TowerDefense
                     MessageLog.NotEnoughGold();
                 }
             }
-            else if (mouse.SelectionContext == SelectionContext.PlacingWall && mouse.HoveredContext == HoveringContext.EmptyNode)
+            else if (mouse.SelectionContext == SelectionContext.PlacingWall && mouse.HoveringContext == HoveringContext.EmptyNode)
             {
                 Node n = mouse.HoveredObject as Node;
-                if (!CheckForPath((int)n.simplePos.X, (int)n.simplePos.Y, false, false))
+                if (!CheckForPath(n.simplePos.X, n.simplePos.Y, false, false))
                 {
                     MessageLog.IllegalPosition();
                 }
@@ -402,34 +412,36 @@ namespace TowerDefense
                     MessageLog.NotEnoughGold();
                 }
             }
-            //else if (mouse.nodeHovered != null && mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked)
-            //{
-            //    mouse.nodeHovered.portal = true;
-            //    mouse.nodeHovered.UpdateTex(mouse.tex);
-            //    mouse.portalLocation = mouse.nodeHovered;
-            //    mouse.portalComplete = false;
-            //}
-            //else if (mouse.nodeHovered != null && !mouse.portalComplete && !mouse.nodeHovered.wall && !mouse.nodeHovered.portal && mouse.highlight && mouse.portalClicked && CheckForPath((int)mouse.nodeHovered.simplePos.X, (int)mouse.nodeHovered.simplePos.Y, true, false))
-            //{
-            //    if (gold >= 20)
-            //    {
-            //        mouse.nodeHovered.portal = true;
-            //        mouse.nodeHovered.UpdateTex(mouse.tex);
-            //        mouse.nodeHovered.portalsTo = mouse.portalLocation;
-            //        mouse.portalLocation.portalsTo = mouse.nodeHovered;
-            //        mouse.portalComplete = true;
-            //        gold = gold - 20;
-            //    }
-            //    else
-            //    {
-            //        MessageLog.NotEnoughGold();
-            //    }
-            //}
-            //else if (mouse.towerHovered != null && mouse.highlight && mouse.towerSelected == null && !mouse.clicking)
-            //{
-            //    mouse.towerClicked = mouse.towerHovered;
-            //}
-            //mouse.clicking = true;
+            else if (mouse.SelectionContext == SelectionContext.PlacingPortalEntrance && mouse.HoveringContext == HoveringContext.EmptyNode)
+            {
+                Node n = mouse.HoveredObject as Node;
+                n.portal = true;
+                n.UpdateTex(mouse.tex);
+                mouse.PortalEntrance = n;
+                mouse.SelectionContext = SelectionContext.PlacingPortalExit;
+            }
+            else if (mouse.SelectionContext == SelectionContext.PlacingPortalExit && mouse.HoveringContext == HoveringContext.EmptyNode)
+            {
+                Node portalExit = mouse.HoveredObject as Node;
+                Node portalEntrance = mouse.PortalEntrance;
+                if (!CheckForPath(portalExit.simplePos.X, portalExit.simplePos.Y, true, false))
+                {
+                    MessageLog.IllegalPosition();
+                }
+                else  if (gold >= 20)
+                {
+                    portalExit.portal = true;
+                    portalExit.UpdateTex(mouse.tex);
+                    portalExit.portalsTo = portalEntrance;
+                    portalEntrance.portalsTo = portalExit;
+                    mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
+                    gold = gold - 20;
+                }
+                else
+                {
+                    MessageLog.NotEnoughGold();
+                }
+            }
         }
 
         private void HandleRightClick()
@@ -549,7 +561,7 @@ namespace TowerDefense
             if (portal)
             {
                 nodes[x, y].portal = !remove;
-                //nodes[x, y].portalsTo = remove ? null : mouse.portalLocation;
+                nodes[x, y].portalsTo = remove ? null : mouse.PortalEntrance;
                 if (remove)
                 {
                     portaledTo.portalsTo = null;
@@ -557,7 +569,7 @@ namespace TowerDefense
                 }
                 else
                 {
-                    //mouse.portalLocation.portalsTo = nodes[x, y];
+                    mouse.PortalEntrance.portalsTo = nodes[x, y];
                 }
 
             }
@@ -577,7 +589,7 @@ namespace TowerDefense
                 }
                 else
                 {
-                    //mouse.portalLocation.portalsTo = null;
+                    mouse.PortalEntrance.portalsTo = null;
                 }
             }
             else
