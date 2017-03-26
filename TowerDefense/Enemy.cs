@@ -72,11 +72,21 @@ namespace TowerDefense
                             Position = temp.portalsTo.actualPos;
                             temp = bestPath[0];
                             bestPath.Remove(temp);
-                            temp = bestPath[0];
+                            if (bestPath.Count != 0)
+                            {
+                                temp = bestPath[0];
+                            }
+                            else
+                            {
+                                currentDest = new Point(350, 750);
+                                lose = true;
+                            }
                             ResourceManager.PortalSound.Play();
                         }
                         else
+                        {
                             temp = bestPath[0];
+                        }
                         currentDest = temp.actualPos;
                     }
                     else
