@@ -21,12 +21,10 @@ namespace TowerDefense
         List<Enemy> enemylist = new List<Enemy>();
         List<Projectile> projectilelist = new List<Projectile>();
         List<FloatingText> floatingTextList = new List<FloatingText>();
-        MessageLog MessageLog = new MessageLog();
         Node[,] nodes = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
         bool attackPhase = false;
         bool playerLoses = false;
         int level = 0;
-        int gold = Constants.StartingGold;
         double lastSpawnedTime = 0;
 
         public TowerDefense()
@@ -139,8 +137,8 @@ namespace TowerDefense
             {
                 attackPhase = false;
                 projectilelist.Clear();
-                MessageLog.LevelComplete(level * 2 + (int)(gold * .05f), level);
-                gold = gold + (level * 2 + (int)(gold * .05f));
+                MessageLog.LevelComplete(level * 2 + (int)(GameStats.Gold * .05f), level);
+                GameStats.Gold = GameStats.Gold + (level * 2 + (int)(GameStats.Gold * .05f));
             }
             floatingTextList.RemoveAll(f => f.Update(gameTime));
             base.Update(gameTime);
@@ -174,11 +172,10 @@ namespace TowerDefense
             }
             else if (mouse.HoveringContext != HoveringContext.None)
             {
-                GameObject g = mouse.HoveredObject as GameObject;
-                g?.ShowStats(batch, ResourceManager.GameFont, viewport);
+                mouse.HoveredObject?.ShowStats(batch, ResourceManager.GameFont, viewport);
             }
 
-            batch.DrawString(ResourceManager.GameFont, "GOLD - " + gold + " $", new Vector2(viewport.Width * .8f, viewport.Height * .1f), Color.Black,
+            batch.DrawString(ResourceManager.GameFont, "GOLD - " + GameStats.Gold + " $", new Vector2(viewport.Width * .8f, viewport.Height * .1f), Color.Black,
                     0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
 
             MessageLog.Draw(batch, ResourceManager.GameFont, viewport);
@@ -221,11 +218,11 @@ namespace TowerDefense
                         {
                             MessageLog.IllegalPosition();
                         }
-                        else if (gold >= 1)
+                        else if (GameStats.Gold >= 1)
                         {
                             n.wall = true;
                             n.UpdateTex(mouse.tex);
-                            gold = gold - 1;
+                            GameStats.Gold = GameStats.Gold - 1;
                             ResourceManager.WallSound.Play();
                         }
                         else
@@ -340,72 +337,14 @@ namespace TowerDefense
         {
             if (mouse.HoveredObject != null)
             {
-                switch (mouse.HoveringContext)
-                {
-                    case HoveringContext.ButtonGenericTower:
-                        mouse.UpdateTex(mouse.HoveredObject.Tex);
-                        mouse.SelectedObject = new GenericTower(mouse.pos, mouse.tex);
-                        mouse.SelectionContext = SelectionContext.PlacingTower;
-                        break;
-                    case HoveringContext.ButtonCannonTower:
-                        mouse.UpdateTex(mouse.HoveredObject.Tex);
-                        mouse.SelectedObject = new CannonTower(mouse.pos, mouse.tex);
-                        mouse.SelectionContext = SelectionContext.PlacingTower;
-                        break;
-                    case HoveringContext.ButtonBatteryTower:
-                        mouse.UpdateTex(mouse.HoveredObject.Tex);
-                        mouse.SelectedObject = new BatteryTower(mouse.pos, mouse.tex);
-                        mouse.SelectionContext = SelectionContext.PlacingTower;
-                        break;
-                    case HoveringContext.ButtonBlastTower:
-                        mouse.UpdateTex(mouse.HoveredObject.Tex);
-                        mouse.SelectedObject = new BlastTower(mouse.pos, mouse.tex);
-                        mouse.SelectionContext = SelectionContext.PlacingTower;
-                        break;
-                    case HoveringContext.ButtonWall:
-                        mouse.UpdateTex(mouse.HoveredObject.Tex);
-                        mouse.SelectionContext = SelectionContext.PlacingWall;
-                        break;
-                    case HoveringContext.ButtonPortal:
-                        mouse.UpdateTex(mouse.HoveredObject.Tex);
-                        mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
-                        break;
-                    case HoveringContext.ButtonCheese:
-                        mouse.UpdateTex(mouse.HoveredObject.Tex);
-                        mouse.SelectionContext = SelectionContext.PlacingCheese;
-                        break;
-                    case HoveringContext.ButtonUpgrade:
-                        {
-                            Tower t = mouse.SelectedObject as Tower;
-                            if (gold >= t.cost)
-                            {
-                                gold = gold - t.cost;
-                                t.upgrade();
-                            }
-                            else
-                            {
-                                MessageLog.NotEnoughGold();
-                            }
-                            break;
-                        }
-                    case HoveringContext.Tower:
-                        {
-                            Tower t = mouse.HoveredObject as Tower;
-                            mouse.SelectedObject = t;
-                            mouse.SelectionContext = SelectionContext.TowerSelected;
-                            t.Selected = true;
-                            break;
-                        }
-                    default:
-                        break;
-                }
+                mouse.HoveredObject.HandleLeftClick(mouse);
             }
             if (mouse.SelectionContext == SelectionContext.PlacingTower && MouseInGameBounds())
             {
                 Tower t = mouse.SelectedObject as Tower;
-                if (gold >= t.cost)
+                if (GameStats.Gold >= t.cost)
                 {
-                    gold = gold - t.cost;
+                    GameStats.Gold = GameStats.Gold - t.cost;
                     towerlist.Add(t);
                     t.Position = mouse.pos;
                     mouse.SelectedObject = null;
@@ -434,14 +373,14 @@ namespace TowerDefense
                 {
                     MessageLog.IllegalPosition();
                 }
-                else if (gold >= 20)
+                else if (GameStats.Gold >= 20)
                 {
                     portalExit.portal = true;
                     portalExit.UpdateTex(mouse.tex);
                     portalExit.portalsTo = portalEntrance;
                     portalEntrance.portalsTo = portalExit;
                     mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
-                    gold = gold - 20;
+                    GameStats.Gold = GameStats.Gold - 20;
                 }
                 else
                 {
@@ -455,11 +394,11 @@ namespace TowerDefense
                 {
                     MessageLog.IllegalPosition();
                 }
-                else if (gold >= 20)
+                else if (GameStats.Gold >= 20)
                 {
                     n.cheese = true;
                     n.UpdateTex(mouse.tex);
-                    gold = gold - 20;
+                    GameStats.Gold = GameStats.Gold - 20;
                     ResourceManager.WallSound.Play();
                 }
                 else
@@ -485,7 +424,7 @@ namespace TowerDefense
             else if (mouse.HoveringContext == HoveringContext.Tower && mouse.SelectionContext == SelectionContext.None)
             {
                 Tower t = mouse.HoveredObject as Tower;
-                gold = gold + t.cost;
+                GameStats.Gold = GameStats.Gold + t.cost;
                 towerlist.Remove(t);
                 ResourceManager.SellSound.Play();
             }
@@ -494,7 +433,7 @@ namespace TowerDefense
                 Node n = mouse.HoveredObject as Node;
                 if (n.wall && CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingWall))
                 {
-                    gold = gold + 1;
+                    GameStats.Gold = GameStats.Gold + 1;
                     n.wall = false;
                     n.defaultSet();
                     ResourceManager.SellSound.Play();
@@ -507,12 +446,12 @@ namespace TowerDefense
                     n.portalsTo.portalsTo = null;
                     n.portalsTo.defaultSet();
                     n.portalsTo = null;
-                    gold = gold + 20;
+                    GameStats.Gold = GameStats.Gold + 20;
                     ResourceManager.SellSound.Play();
                 }
                 else if (n.cheese && CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingCheese))
                 {
-                    gold = gold + 20;
+                    GameStats.Gold = GameStats.Gold + 20;
                     n.cheese = false;
                     n.defaultSet();
                     ResourceManager.SellSound.Play();
