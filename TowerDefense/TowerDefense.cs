@@ -586,7 +586,6 @@ namespace TowerDefense
 
                 startNodes.Clear();
                 startNodes.Add(bestPathSoFar.Last());
-                startNodes.ForEach(s => s.cheese = false);
                 startNodes.First().gScore = 0;
             }
 
