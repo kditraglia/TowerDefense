@@ -56,7 +56,7 @@ namespace TowerDefense
         public List<Node> getNeighbors(Node[,] nodes)
         {
             List<Node> neighbors = new List<Node>();
-            if (portal && !parent.portal)
+            if (portal && (parent != null && !parent.portal))
             {
                 neighbors.Add(portalsTo);
             }
