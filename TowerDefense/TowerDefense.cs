@@ -567,9 +567,9 @@ namespace TowerDefense
                         nodesClone[i, j].parent = null;
                         nodesClone[i, j].gScore = int.MaxValue;
                         nodesClone[i, j].fScore = int.MaxValue;
-                        foreach(Node thisIsDumb in startNodes)
+                        foreach(Node startNode in startNodes)
                         {
-                            if (thisIsDumb.simplePos == nodesClone[i,j].simplePos)
+                            if (startNode.simplePos == nodesClone[i,j].simplePos)
                             {
                                 nodesClone[i, j].cheese = false;
                             }
