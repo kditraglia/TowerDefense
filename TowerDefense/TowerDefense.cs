@@ -550,10 +550,10 @@ namespace TowerDefense
                     nodesClone = cloneNodes(nodes);
                     for (int i = 0; i <= Constants.MapSize.X; i++)
                     {
-                        if (!nodes[i, 0].wall)
+                        if (!nodesClone[i, 0].wall)
                         {
                             startNodes.Add(nodesClone[i, 0]);
-                            nodes[i, 0].fScore = 0;
+                            nodesClone[i, 0].fScore = 0;
                         }
                     }
                 }
