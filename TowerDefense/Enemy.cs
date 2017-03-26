@@ -31,7 +31,7 @@ namespace TowerDefense
             this.scale = scale;
             this.spawnRate = spawnRate;
             this.bestPath = TowerDefense.findBestPath(nodes);
-            this.bestPath.Reverse();
+
             this.temp = bestPath[0];
             this.Position = temp.actualPos;
             this.bestPath.Remove(temp);

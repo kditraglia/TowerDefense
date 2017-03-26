@@ -589,7 +589,7 @@ namespace TowerDefense
                 startNodes.ForEach(s => s.cheese = false);
                 startNodes.First().gScore = 0;
             }
-            bestPathSoFar.Reverse();
+
             return bestPathSoFar;
         }
 
