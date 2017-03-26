@@ -285,7 +285,7 @@ namespace TowerDefense
                     if (n.Hovering)
                     {
                         mouse.HoveredObject = n;
-                        mouse.HoveringContext = n.wall || n.portal ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
+                        mouse.HoveringContext = n.wall || n.portal || n.cheese ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
                     }
                 }
 
@@ -513,6 +513,13 @@ namespace TowerDefense
                     n.portalsTo.defaultSet();
                     n.portalsTo = null;
                     gold = gold + 20;
+                    ResourceManager.SellSound.Play();
+                }
+                else if (n.cheese && CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingCheese))
+                {
+                    gold = gold + 20;
+                    n.cheese = false;
+                    n.defaultSet();
                     ResourceManager.SellSound.Play();
                 }
             }
