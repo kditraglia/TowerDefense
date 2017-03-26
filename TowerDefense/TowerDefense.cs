@@ -541,24 +541,25 @@ namespace TowerDefense
                 numberOfCheese += n.cheese ? 1 : 0;
             }
             List<Node> startNodes = new List<Node>();
-            for (int i = 0; i <= Constants.MapSize.X; i++)
-            {
-                if (!nodes[i, 0].wall)
-                {
-                    startNodes.Add(nodes[i, 0]);
-                    nodes[i, 0].fScore = 0;
-                }
-            }
             List<Node> bestPathSoFar = new List<Node>();
+            Node[,] nodesClone = null;
             for (int c = numberOfCheese; c >= 0; c--)
             {
-                Node[,] nodesClone = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
-                for (int i = 0; i <= Constants.MapSize.X; i++)
+                if (nodesClone == null)
                 {
-                    for(int j = 0; j <= Constants.MapSize.Y; j++)
+                    nodesClone = cloneNodes(nodes);
+                    for (int i = 0; i <= Constants.MapSize.X; i++)
                     {
-                        nodesClone[i, j] = (Node)nodes[i, j].Clone();
+                        if (!nodes[i, 0].wall)
+                        {
+                            startNodes.Add(nodesClone[i, 0]);
+                            nodes[i, 0].fScore = 0;
+                        }
                     }
+                }
+                else
+                {
+                    nodesClone = cloneNodes(nodesClone);
                 }
                 for (int i = 0; i <= Constants.MapSize.X; i++)
                 {
@@ -567,13 +568,6 @@ namespace TowerDefense
                         nodesClone[i, j].parent = null;
                         nodesClone[i, j].gScore = int.MaxValue;
                         nodesClone[i, j].fScore = int.MaxValue;
-                        foreach(Node startNode in startNodes)
-                        {
-                            if (startNode.simplePos == nodesClone[i,j].simplePos)
-                            {
-                                nodesClone[i, j].cheese = false;
-                            }
-                        }
                     }
                 }
                 List<Node> bestPathRelay = findBestPath(nodesClone, startNodes, c);
@@ -586,10 +580,25 @@ namespace TowerDefense
 
                 startNodes.Clear();
                 startNodes.Add(bestPathSoFar.Last());
+                startNodes.ForEach(s => s.cheese = false);
                 startNodes.First().gScore = 0;
             }
 
             return bestPathSoFar;
+        }
+
+        private static Node[,] cloneNodes(Node[,] nodes)
+        {
+            Node[,] nodesClone = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
+            for (int i = 0; i <= Constants.MapSize.X; i++)
+            {
+                for (int j = 0; j <= Constants.MapSize.Y; j++)
+                {
+                    nodesClone[i, j] = (Node)nodes[i, j].Clone();
+                }
+            }
+
+            return nodesClone;
         }
 
         internal static List<Node> findBestPath(Node[,] nodes, List<Node> startNodes, int numberOfCheese)
