@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace TowerDefense
 {
     [DebuggerDisplay("{simplePos}")]
-    class Node : GameObject
+    class Node : GameObject, ICloneable
     {
         public Point actualPos;
         public Point simplePos;
@@ -19,6 +19,7 @@ namespace TowerDefense
         public Node parent;
         public bool wall = false;
         public bool portal = false;
+        public bool cheese = false;
         public Node portalsTo = null;
 
         public override Color Color
@@ -84,6 +85,17 @@ namespace TowerDefense
             }
 
             return neighbors;
+        }
+
+        public object Clone()
+        {
+            Node clone = new Node(actualPos, simplePos, Tex);
+            clone.wall = wall;
+            clone.portal = portal;
+            clone.cheese = cheese;
+            clone.portalsTo = portalsTo;
+
+            return clone;
         }
     }
 }
