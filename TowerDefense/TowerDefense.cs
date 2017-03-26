@@ -528,30 +528,73 @@ namespace TowerDefense
 
         internal static List<Node> findBestPath(Node[,] nodes)
         {
-            List<Node> available = new List<Node>();
-            HashSet<Node> visited = new HashSet<Node>();
-
-            for (int i = 0; i <= Constants.MapSize.X; i++)
-                for (int j = 0; j <= Constants.MapSize.Y; j++)
-                {
-                    nodes[i, j].parent = null;
-                    nodes[i, j].fScore = int.MaxValue;
-                }
+            int numberOfCheese = 0;
+            foreach(Node n in nodes)
+            {
+                numberOfCheese += n.cheese ? 1 : 0;
+            }
+            List<Node> startNodes = new List<Node>();
             for (int i = 0; i <= Constants.MapSize.X; i++)
             {
                 if (!nodes[i, 0].wall)
                 {
-                    available.Add(nodes[i, 0]);
+                    startNodes.Add(nodes[i, 0]);
                     nodes[i, 0].fScore = 0;
                 }
             }
+            List<Node> bestPathSoFar = new List<Node>();
+            for (int c = numberOfCheese; c >= 0; c--)
+            {
+                Node[,] nodesClone = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
+                for (int i = 0; i <= Constants.MapSize.X; i++)
+                {
+                    for(int j = 0; j <= Constants.MapSize.Y; j++)
+                    {
+                        nodesClone[i, j] = (Node)nodes[i, j].Clone();
+                    }
+                }
+                for (int i = 0; i <= Constants.MapSize.X; i++)
+                {
+                    for (int j = 0; j <= Constants.MapSize.Y; j++)
+                    {
+                        nodesClone[i, j].parent = null;
+                        nodesClone[i, j].gScore = int.MaxValue;
+                        nodesClone[i, j].fScore = int.MaxValue;
+                        foreach(Node thisIsDumb in startNodes)
+                        {
+                            if (thisIsDumb.simplePos == nodesClone[i,j].simplePos)
+                            {
+                                nodesClone[i, j].cheese = false;
+                            }
+                        }
+                    }
+                }
+                List<Node> bestPathRelay = findBestPath(nodesClone, startNodes, c);
+                bestPathRelay.Reverse();
+                bestPathSoFar.AddRange(bestPathRelay);
+
+                startNodes.Clear();
+                startNodes.Add(bestPathSoFar.Last());
+                startNodes.ForEach(s => s.cheese = false);
+                startNodes.First().gScore = 0;
+            }
+            bestPathSoFar.Reverse();
+            return bestPathSoFar;
+        }
+
+        internal static List<Node> findBestPath(Node[,] nodes, List<Node> startNodes, int numberOfCheese)
+        {
+            List<Node> available = new List<Node>(startNodes);
+            HashSet<Node> visited = new HashSet<Node>();
+
             while (available.Count != 0)
             {
                 Node current = available.OrderBy(n => n.fScore).First();
-                if (current.simplePos.Y == Constants.MapSize.Y)
+                if ((numberOfCheese > 0 && current.cheese) || (numberOfCheese == 0 && current.simplePos.Y == Constants.MapSize.Y))
                 {
                     List<Node> bestPath = new List<Node>();
-                    while (current.parent != null)
+                    bestPath.Add(current);
+                    while (current.parent != null && !startNodes.Contains(current))
                     {
                         bestPath.Add(current.parent);
                         current = current.parent;
