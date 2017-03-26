@@ -89,7 +89,72 @@ namespace TowerDefense
 
         public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
         {
+            if (wall)
+            {
+                String[] string1 = new String[6];
+                int[] stringlength1 = new int[6];
+                int[] stringlength2 = new int[6];
+                int Y = (int)(viewport.Height * .2f);
+                string1[0] = "Wall";
+                string1[1] = "damage - 0";
+                string1[2] = "attack speed - N/A";
+                string1[3] = "range - N/A";
+                string1[4] = "cost - 1";
+                string1[5] = "description - Blocks enemies";
 
+                for (int i = 0; i < 6; i++)
+                {
+                    stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
+                    stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
+                    Y = Y + stringlength2[i];
+                    batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
+                        0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+                }
+            }
+            else if (portal)
+            {
+                String[] string1 = new String[6];
+                int[] stringlength1 = new int[6];
+                int[] stringlength2 = new int[6];
+                int Y = (int)(viewport.Height * .2f);
+                string1[0] = "Portal";
+                string1[1] = "damage - 0";
+                string1[2] = "attack speed - N/A";
+                string1[3] = "range - N/A";
+                string1[4] = "cost - 20";
+                string1[5] = "description - Warps enemies";
+
+                for (int i = 0; i < 6; i++)
+                {
+                    stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
+                    stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
+                    Y = Y + stringlength2[i];
+                    batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
+                        0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+                }
+            }
+            else if (cheese)
+            {
+                String[] string1 = new String[6];
+                int[] stringlength1 = new int[6];
+                int[] stringlength2 = new int[6];
+                int Y = (int)(viewport.Height * .2f);
+                string1[0] = "Cheese";
+                string1[1] = "damage - 0";
+                string1[2] = "attack speed - N/A";
+                string1[3] = "range - N/A";
+                string1[4] = "cost - 20";
+                string1[5] = "description - Irresistible to enemies";
+
+                for (int i = 0; i < 6; i++)
+                {
+                    stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
+                    stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
+                    Y = Y + stringlength2[i];
+                    batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
+                        0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+                }
+            }
         }
 
         public object Clone()

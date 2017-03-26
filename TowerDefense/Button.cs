@@ -5,14 +5,44 @@ namespace TowerDefense
 {
     class Button : GameObject
     {
+        //This is sort of a hack to get the button to display the button item's stats given how I have that structured
+        GameObject InstanceOfWhatThisButtonCreates;
+
         public Button(Point position, Texture2D tex, HoveringContext hoveringContext) : base(tex, position, hoveringContext)
         {
-
+            switch (HoveringContext)
+            {
+                case HoveringContext.ButtonGenericTower:
+                    InstanceOfWhatThisButtonCreates = new GenericTower(position, tex);
+                    break;
+                case HoveringContext.ButtonCannonTower:
+                    InstanceOfWhatThisButtonCreates = new CannonTower(position, tex);
+                    break;
+                case HoveringContext.ButtonBatteryTower:
+                    InstanceOfWhatThisButtonCreates = new BatteryTower(position, tex);
+                    break;
+                case HoveringContext.ButtonBlastTower:
+                    InstanceOfWhatThisButtonCreates = new BlastTower(position, tex);
+                    break;
+                case HoveringContext.ButtonWall:
+                    InstanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { wall = true };
+                    break;
+                case HoveringContext.ButtonPortal:
+                    InstanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { portal = true };
+                    break;
+                case HoveringContext.ButtonCheese:
+                    InstanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { cheese = true };
+                    break;
+                case HoveringContext.ButtonUpgrade:
+                    break;
+                default:
+                    break;
+            }
         }
 
         public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
         {
-
+            InstanceOfWhatThisButtonCreates?.ShowStats(batch, font, viewport);
         }
 
         public override void HandleLeftClick(MouseHandler mouse)
@@ -52,19 +82,17 @@ namespace TowerDefense
                     mouse.SelectionContext = SelectionContext.PlacingCheese;
                     break;
                 case HoveringContext.ButtonUpgrade:
+                    Tower t = mouse.SelectedObject as Tower;
+                    if (GameStats.Gold >= t.cost)
                     {
-                        Tower t = mouse.SelectedObject as Tower;
-                        if (GameStats.Gold >= t.cost)
-                        {
-                            GameStats.Gold = GameStats.Gold - t.cost;
-                            t.upgrade();
-                        }
-                        else
-                        {
-                            MessageLog.NotEnoughGold();
-                        }
-                        break;
+                        GameStats.Gold = GameStats.Gold - t.cost;
+                        t.upgrade();
                     }
+                    else
+                    {
+                        MessageLog.NotEnoughGold();
+                    }
+                    break;
                 default:
                     break;
             }

@@ -32,7 +32,7 @@ namespace TowerDefense
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 950;
+            graphics.PreferredBackBufferWidth = 1050;
             graphics.PreferredBackBufferHeight = 800;
         }
 
