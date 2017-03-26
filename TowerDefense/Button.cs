@@ -9,5 +9,10 @@ namespace TowerDefense
         {
 
         }
+
+        public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
+        {
+
+        }
     }
 }

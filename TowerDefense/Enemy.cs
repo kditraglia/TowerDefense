@@ -97,7 +97,7 @@ namespace TowerDefense
                 }
             }
         }
-        public void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
         {
             String[] string1 = new String[3];
             int[] stringlength1 = new int[3];

@@ -87,6 +87,11 @@ namespace TowerDefense
             return neighbors;
         }
 
+        public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
+        {
+
+        }
+
         public object Clone()
         {
             Node clone = new Node(actualPos, simplePos, Tex);

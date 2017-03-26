@@ -172,15 +172,10 @@ namespace TowerDefense
                 t?.ShowStats(batch, ResourceManager.GameFont, viewport);
                 upgradeButton.Draw(batch);
             }
-            else if (mouse.HoveringContext == HoveringContext.Tower)
+            else if (mouse.HoveringContext != HoveringContext.None)
             {
-                Tower t = mouse.HoveredObject as Tower;
-                t?.ShowStats(batch, ResourceManager.GameFont, viewport);
-            }
-            else if (mouse.HoveringContext == HoveringContext.Enemy)
-            {
-                Enemy e = mouse.HoveredObject as Enemy;
-                e?.ShowStats(batch, ResourceManager.GameFont, viewport);
+                GameObject g = mouse.HoveredObject as GameObject;
+                g?.ShowStats(batch, ResourceManager.GameFont, viewport);
             }
 
             batch.DrawString(ResourceManager.GameFont, "GOLD - " + gold + " $", new Vector2(viewport.Width * .8f, viewport.Height * .1f), Color.Black,

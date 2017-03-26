@@ -9,6 +9,8 @@ namespace TowerDefense
 
         public Projectile(Texture2D tex, Point position) : base(tex, position) { }
 
+        public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport) { }
+
         public abstract bool Move();
 
         public abstract void Damage();

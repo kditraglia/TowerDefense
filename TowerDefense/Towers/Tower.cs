@@ -15,8 +15,6 @@ namespace TowerDefense
 
         public abstract List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc);
 
-        public abstract void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport);
-
         public abstract void upgrade();
     }
 }

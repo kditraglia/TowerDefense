@@ -20,6 +20,8 @@ namespace TowerDefense
             HoveringContext = hoveringContext;
         }
 
+        public abstract void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport);
+
         public virtual void Draw(SpriteBatch batch)
         {
             batch.Draw(Tex, Position.ToVector2(), null, Color);
