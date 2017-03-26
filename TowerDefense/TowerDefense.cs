@@ -222,7 +222,7 @@ namespace TowerDefense
                     if (mouse.SelectionContext == SelectionContext.PlacingWall && mouse.HoveringContext == HoveringContext.EmptyNode)
                     {
                         Node n = mouse.HoveredObject as Node;
-                        if (!CheckForPath(n.simplePos.X, n.simplePos.Y, false, false))
+                        if (!CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingWall))
                         {
                             MessageLog.IllegalPosition();
                         }
@@ -435,7 +435,7 @@ namespace TowerDefense
             {
                 Node portalExit = mouse.HoveredObject as Node;
                 Node portalEntrance = mouse.PortalEntrance;
-                if (!CheckForPath(portalExit.simplePos.X, portalExit.simplePos.Y, true, false))
+                if (!CheckForPath(portalExit.simplePos.X, portalExit.simplePos.Y, CheckForPathType.AddingPortal))
                 {
                     MessageLog.IllegalPosition();
                 }
@@ -456,11 +456,11 @@ namespace TowerDefense
             else if (mouse.SelectionContext == SelectionContext.PlacingCheese && mouse.HoveringContext == HoveringContext.EmptyNode)
             {
                 Node n = mouse.HoveredObject as Node;
-                //if (!CheckForPath(n.simplePos.X, n.simplePos.Y, false, false))
-                //{
-                //    MessageLog.IllegalPosition();
-                //}
-                if (gold >= 20)
+                if (!CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingCheese))
+                {
+                    MessageLog.IllegalPosition();
+                }
+                else if (gold >= 20)
                 {
                     n.cheese = true;
                     n.UpdateTex(mouse.tex);
@@ -497,14 +497,14 @@ namespace TowerDefense
             else if (mouse.HoveringContext == HoveringContext.FilledNode && mouse.SelectionContext == SelectionContext.None)
             {
                 Node n = mouse.HoveredObject as Node;
-                if (n.wall && CheckForPath(n.simplePos.X, n.simplePos.Y, false, true))
+                if (n.wall && CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingWall))
                 {
                     gold = gold + 1;
                     n.wall = false;
                     n.defaultSet();
                     ResourceManager.SellSound.Play();
                 }
-                else if (n.portal && CheckForPath(n.simplePos.X, n.simplePos.Y, true, true))
+                else if (n.portal && CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.RemovingPortal))
                 {
                     n.portal = false;
                     n.defaultSet();
@@ -570,6 +570,10 @@ namespace TowerDefense
                     }
                 }
                 List<Node> bestPathRelay = findBestPath(nodesClone, startNodes, c);
+                if (bestPathRelay == null)
+                {
+                    return null;
+                }
                 bestPathRelay.Reverse();
                 bestPathSoFar.AddRange(bestPathRelay);
 
@@ -626,46 +630,56 @@ namespace TowerDefense
             return null;
         }
 
-        public bool CheckForPath(int x, int y, bool portal, bool remove)
+        enum CheckForPathType
+        {
+            TogglingWall, TogglingCheese, AddingPortal, RemovingPortal
+        }
+
+        bool CheckForPath(int x, int y, CheckForPathType type)
         {
             Node portaledTo = nodes[x, y].portalsTo;
-            if (portal)
+            if (type == CheckForPathType.AddingPortal)
             {
-                nodes[x, y].portal = !remove;
-                nodes[x, y].portalsTo = remove ? null : mouse.PortalEntrance;
-                if (remove)
-                {
-                    portaledTo.portalsTo = null;
-                    portaledTo.portal = false;
-                }
-                else
-                {
-                    mouse.PortalEntrance.portalsTo = nodes[x, y];
-                }
-
+                nodes[x, y].portal = true;
+                nodes[x, y].portalsTo = mouse.PortalEntrance;
+                mouse.PortalEntrance.portalsTo = nodes[x, y];
+            }
+            else if (type == CheckForPathType.RemovingPortal)
+            {
+                nodes[x, y].portal = false;
+                nodes[x, y].portalsTo = null;
+                portaledTo.portalsTo = null;
+                portaledTo.portal = false;
+            }
+            else if (type == CheckForPathType.TogglingCheese)
+            {
+                nodes[x, y].cheese = !nodes[x, y].cheese;
             }
             else
             {
-                nodes[x, y].wall = !remove;
+                nodes[x, y].wall = !nodes[x, y].wall;
             }
             List<Node> bestPath = findBestPath(nodes);
-            if (portal)
+            if (type == CheckForPathType.AddingPortal)
             {
-                nodes[x, y].portal = remove;
-                nodes[x, y].portalsTo = remove ? portaledTo : null;
-                if (remove)
-                {
-                    portaledTo.portalsTo = nodes[x, y];
-                    portaledTo.portal = true;
-                }
-                else
-                {
-                    mouse.PortalEntrance.portalsTo = null;
-                }
+                nodes[x, y].portal = false;
+                nodes[x, y].portalsTo = null;
+                mouse.PortalEntrance.portalsTo = null;
+            }
+            else if (type == CheckForPathType.RemovingPortal)
+            {
+                nodes[x, y].portal = true;
+                nodes[x, y].portalsTo = portaledTo;
+                portaledTo.portalsTo = nodes[x, y];
+                portaledTo.portal = true;
+            }
+            else if (type == CheckForPathType.TogglingCheese)
+            {
+                nodes[x, y].cheese = !nodes[x, y].cheese;
             }
             else
             {
-                nodes[x, y].wall = remove;
+                nodes[x, y].wall = !nodes[x, y].wall;
             }
             return bestPath != null;
         }
