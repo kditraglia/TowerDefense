@@ -22,6 +22,11 @@ namespace TowerDefense
         public bool cheese = false;
         public Node portalsTo = null;
 
+        CommandCard emptyCard = new CommandCard("Grass", description: "Empty square");
+        CommandCard wallCard = new CommandCard("Wall", cost: "1", description: "Blocks enemies");
+        CommandCard portalCard = new CommandCard("Portal", cost: "20", description: "Warps enemies");
+        CommandCard cheeseCard = new CommandCard("Cheese", cost: "20", description: "Irresistible to enemies");
+
         public override Color Color
         {
             get
@@ -87,73 +92,26 @@ namespace TowerDefense
             return neighbors;
         }
 
-        public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch, Viewport viewport)
         {
+            int Y = (int)(viewport.Height * .2f);
+            int X = viewport.Width;
+
             if (wall)
             {
-                String[] string1 = new String[6];
-                int[] stringlength1 = new int[6];
-                int[] stringlength2 = new int[6];
-                int Y = (int)(viewport.Height * .2f);
-                string1[0] = "Wall";
-                string1[1] = "damage - 0";
-                string1[2] = "attack speed - N/A";
-                string1[3] = "range - N/A";
-                string1[4] = "cost - 1";
-                string1[5] = "description - Blocks enemies";
-
-                for (int i = 0; i < 6; i++)
-                {
-                    stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
-                    stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
-                    Y = Y + stringlength2[i];
-                    batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
-                        0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-                }
+                wallCard.Draw(new Point(X, Y), batch);
             }
             else if (portal)
             {
-                String[] string1 = new String[6];
-                int[] stringlength1 = new int[6];
-                int[] stringlength2 = new int[6];
-                int Y = (int)(viewport.Height * .2f);
-                string1[0] = "Portal";
-                string1[1] = "damage - 0";
-                string1[2] = "attack speed - N/A";
-                string1[3] = "range - N/A";
-                string1[4] = "cost - 20";
-                string1[5] = "description - Warps enemies";
-
-                for (int i = 0; i < 6; i++)
-                {
-                    stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
-                    stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
-                    Y = Y + stringlength2[i];
-                    batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
-                        0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-                }
+                portalCard.Draw(new Point(X, Y), batch);
             }
             else if (cheese)
             {
-                String[] string1 = new String[6];
-                int[] stringlength1 = new int[6];
-                int[] stringlength2 = new int[6];
-                int Y = (int)(viewport.Height * .2f);
-                string1[0] = "Cheese";
-                string1[1] = "damage - 0";
-                string1[2] = "attack speed - N/A";
-                string1[3] = "range - N/A";
-                string1[4] = "cost - 20";
-                string1[5] = "description - Irresistible to enemies";
-
-                for (int i = 0; i < 6; i++)
-                {
-                    stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
-                    stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
-                    Y = Y + stringlength2[i];
-                    batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
-                        0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-                }
+                cheeseCard.Draw(new Point(X, Y), batch);
+            }
+            else
+            {
+                emptyCard.Draw(new Point(X, Y), batch);
             }
         }
 

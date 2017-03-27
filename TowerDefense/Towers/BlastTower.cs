@@ -8,20 +8,18 @@ namespace TowerDefense
 {
     class BlastTower: Tower
     {
-        public String name = "Education Tower";
+        public string name = "Education Tower";
         public int damage = 10;
         public float attackspeed = 2.0f;
         public int range = 500;
         public int areaofeffect = 20;
-        public String description = "Line damage";
+        public string description = "Line damage";
         public double cooldown = 0;
 
         public BlastTower(Point position, Texture2D tex) : base(tex, position)
         {
-            this.Tex = tex;
-            this.Position = position;
-
-            cost = 15;
+            Cost = 15;
+            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc)
@@ -44,30 +42,7 @@ namespace TowerDefense
         {
             damage = damage * 2;
             areaofeffect = areaofeffect + 20;
-            cost = cost * 2;
-        }
-
-        public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
-        {
-            String[] string1 = new String[6];
-            int[] stringlength1 = new int[6];
-            int[] stringlength2 = new int[6];
-            int Y = (int)(viewport.Height * .2f);
-            string1[0] = name;
-            string1[1] = "damage - " + damage;
-            string1[2] = "attack speed - " + attackspeed;
-            string1[3] = "range - " + range;
-            string1[4] = "cost - " + cost;
-            string1[5] = "description - " + description;
-
-            for (int i = 0; i < 6; i++)
-            {
-                stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
-                stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
-                Y = Y + stringlength2[i];
-                batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
-                    0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-            }
+            Cost = Cost * 2;
         }
     }
 }

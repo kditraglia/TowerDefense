@@ -42,9 +42,9 @@ namespace TowerDefense
             }
         }
 
-        public override void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch, Viewport viewport)
         {
-            instanceOfWhatThisButtonCreates?.ShowStats(batch, font, viewport);
+            instanceOfWhatThisButtonCreates?.ShowStats(batch, viewport);
         }
 
         public override void HandleLeftClick(MouseHandler mouse)
@@ -85,9 +85,9 @@ namespace TowerDefense
                     break;
                 case HoveringContext.ButtonUpgrade:
                     Tower t = mouse.SelectedObject as Tower;
-                    if (GameStats.Gold >= t.cost)
+                    if (GameStats.Gold >= t.Cost)
                     {
-                        GameStats.Gold = GameStats.Gold - t.cost;
+                        GameStats.Gold = GameStats.Gold - t.Cost;
                         t.upgrade();
                     }
                     else

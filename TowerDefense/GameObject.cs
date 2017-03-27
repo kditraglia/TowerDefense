@@ -18,7 +18,7 @@ namespace TowerDefense
             Position = position;
         }
 
-        public virtual void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport) { }
+        public virtual void ShowStats(SpriteBatch batch, Viewport viewport) { }
         public virtual void HandleLeftClick(MouseHandler mouse) { }
 
         public virtual void Draw(SpriteBatch batch)

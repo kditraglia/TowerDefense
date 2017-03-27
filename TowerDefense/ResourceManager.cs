@@ -7,6 +7,7 @@ namespace TowerDefense
     static class ResourceManager
     {
         public static SpriteFont GameFont { get; private set; }
+        public static SpriteFont BoldFont { get; private set; }
 
         public static Texture2D StartButton { get; private set; }
         public static Texture2D UpgradeButton { get; private set; }
@@ -39,7 +40,7 @@ namespace TowerDefense
         internal static void InitializeTextures(ContentManager content)
         {
             GameFont = content.Load<SpriteFont>("text");
-
+            BoldFont = content.Load<SpriteFont>("bold");
             StartButton = content.Load<Texture2D>(@"start");
             UpgradeButton = content.Load<Texture2D>(@"upgrade");
             Enemy = content.Load<Texture2D>(@"enemy");

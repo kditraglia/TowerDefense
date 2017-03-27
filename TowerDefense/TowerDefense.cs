@@ -32,7 +32,7 @@ namespace TowerDefense
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1050;
+            graphics.PreferredBackBufferWidth = 1020;
             graphics.PreferredBackBufferHeight = 800;
         }
 
@@ -167,12 +167,12 @@ namespace TowerDefense
             if (mouse.SelectionContext == SelectionContext.TowerSelected)
             {
                 Tower t = mouse.SelectedObject as Tower;
-                t?.ShowStats(batch, ResourceManager.GameFont, viewport);
+                t?.ShowStats(batch, viewport);
                 upgradeButton.Draw(batch);
             }
             else if (mouse.HoveringContext != HoveringContext.None)
             {
-                mouse.HoveredObject?.ShowStats(batch, ResourceManager.GameFont, viewport);
+                mouse.HoveredObject?.ShowStats(batch, viewport);
             }
 
             batch.DrawString(ResourceManager.GameFont, "GOLD - " + GameStats.Gold + " $", new Vector2(viewport.Width * .8f, viewport.Height * .1f), Color.Black,
@@ -342,9 +342,9 @@ namespace TowerDefense
             if (mouse.SelectionContext == SelectionContext.PlacingTower && MouseInGameBounds())
             {
                 Tower t = mouse.SelectedObject as Tower;
-                if (GameStats.Gold >= t.cost)
+                if (GameStats.Gold >= t.Cost)
                 {
-                    GameStats.Gold = GameStats.Gold - t.cost;
+                    GameStats.Gold = GameStats.Gold - t.Cost;
                     towerlist.Add(t);
                     t.Position = mouse.pos;
                     mouse.SelectedObject = null;
@@ -424,7 +424,7 @@ namespace TowerDefense
             else if (mouse.HoveringContext == HoveringContext.Tower && mouse.SelectionContext == SelectionContext.None)
             {
                 Tower t = mouse.HoveredObject as Tower;
-                GameStats.Gold = GameStats.Gold + t.cost;
+                GameStats.Gold = GameStats.Gold + t.Cost;
                 towerlist.Remove(t);
                 ResourceManager.SellSound.Play();
             }
