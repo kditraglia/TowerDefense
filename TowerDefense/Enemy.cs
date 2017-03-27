@@ -97,24 +97,24 @@ namespace TowerDefense
                 }
             }
         }
-        public void ShowStats(SpriteBatch batch, SpriteFont font, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch, Viewport viewport)
         {
-            String[] string1 = new String[3];
-            int[] stringlength1 = new int[3];
-            int[] stringlength2 = new int[3];
-            int Y = (int)(viewport.Height * .2f);
-            string1[0] = name;
-            string1[1] = "HP - " + HP + "/" + maxHP;
-            string1[2] = "speed - " + speed;
+            //String[] string1 = new String[3];
+            //int[] stringlength1 = new int[3];
+            //int[] stringlength2 = new int[3];
+            //int Y = (int)(viewport.Height * .2f);
+            //string1[0] = name;
+            //string1[1] = "HP - " + HP + "/" + maxHP;
+            //string1[2] = "speed - " + speed;
 
-            for (int i = 0; i < 3; i++)
-            {
-                stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
-                stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
-                Y = Y + stringlength2[i];
-                batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
-                    0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-            }
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
+            //    stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
+            //    Y = Y + stringlength2[i];
+            //    batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
+            //        0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+            //}
         }
 
 

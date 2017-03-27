@@ -22,6 +22,11 @@ namespace TowerDefense
         public bool cheese = false;
         public Node portalsTo = null;
 
+        CommandCard emptyCard = new CommandCard("Grass", description: "Empty square");
+        CommandCard wallCard = new CommandCard("Wall", cost: "1", description: "Blocks enemies");
+        CommandCard portalCard = new CommandCard("Portal", cost: "20", description: "Warps enemies");
+        CommandCard cheeseCard = new CommandCard("Cheese", cost: "20", description: "Irresistible to enemies");
+
         public override Color Color
         {
             get
@@ -85,6 +90,29 @@ namespace TowerDefense
             }
 
             return neighbors;
+        }
+
+        public override void ShowStats(SpriteBatch batch, Viewport viewport)
+        {
+            int Y = (int)(viewport.Height * .2f);
+            int X = viewport.Width;
+
+            if (wall)
+            {
+                wallCard.Draw(new Point(X, Y), batch);
+            }
+            else if (portal)
+            {
+                portalCard.Draw(new Point(X, Y), batch);
+            }
+            else if (cheese)
+            {
+                cheeseCard.Draw(new Point(X, Y), batch);
+            }
+            else
+            {
+                emptyCard.Draw(new Point(X, Y), batch);
+            }
         }
 
         public object Clone()

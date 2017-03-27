@@ -253,12 +253,6 @@
 /processorParam:TextureFormat=Color
 /build:wall.png
 
-#begin text.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:text.spritefont
-
 #begin wallsound.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -282,4 +276,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:cheese.png
+
+#begin bold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:bold.spritefont
+
+#begin text.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:text.spritefont
 
