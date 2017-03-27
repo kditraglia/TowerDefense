@@ -22,6 +22,8 @@ namespace TowerDefense
         public float scale;
         public double spawnRate;
 
+        CommandCard commandCard;
+
         public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate) : base(tex, Point.Zero)
         {
             this.name = name;
@@ -37,10 +39,13 @@ namespace TowerDefense
             this.bestPath.Remove(temp);
             this.temp = bestPath[0];
             currentDest = temp.actualPos;
+
+            commandCard = new CommandCard(name, hp: HP.ToString(), speed: speed.ToString());
         }
         public void damage(int damage)
         {
             HP = HP - damage;
+            commandCard.HP = HP.ToString();
             ResourceManager.DamagedSound.Play();
             if ( HP <= 0 )
                 dead = true;
@@ -99,22 +104,10 @@ namespace TowerDefense
         }
         public override void ShowStats(SpriteBatch batch, Viewport viewport)
         {
-            //String[] string1 = new String[3];
-            //int[] stringlength1 = new int[3];
-            //int[] stringlength2 = new int[3];
-            //int Y = (int)(viewport.Height * .2f);
-            //string1[0] = name;
-            //string1[1] = "HP - " + HP + "/" + maxHP;
-            //string1[2] = "speed - " + speed;
+            int Y = (int)(viewport.Height * .2f);
+            int X = viewport.Width;
 
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    stringlength1[i] = (int)font.MeasureString(string1[i]).X + 10;
-            //    stringlength2[i] = (int)font.MeasureString(string1[i]).Y + 10;
-            //    Y = Y + stringlength2[i];
-            //    batch.DrawString(font, string1[i], new Vector2(viewport.Width - stringlength1[i], Y), Color.Black,
-            //        0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-            //}
+            commandCard.Draw(new Point(X, Y), batch);
         }
 
 

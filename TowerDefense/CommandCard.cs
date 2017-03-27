@@ -12,8 +12,10 @@ namespace TowerDefense
         public string Range { get; set; }
         public string Cost { get; set; }
         public string Description { get; set; }
+        public string HP { get; set; }
+        public string Speed { get; set; }
 
-        public CommandCard(string title, string damage = null, string attackSpeed = null, string range = null, string cost = null, string description = null)
+        public CommandCard(string title, string damage = null, string attackSpeed = null, string range = null, string cost = null, string description = null, string hp = null, string speed = null)
         {
             Title = title;
             Damage = damage;
@@ -21,6 +23,8 @@ namespace TowerDefense
             Range = range;
             Cost = cost;
             Description = description;
+            HP = hp;
+            Speed = speed;
         }
 
         public void Draw(Point pos, SpriteBatch batch)
@@ -33,6 +37,8 @@ namespace TowerDefense
             if (Range != null) cardList.Add("Range - " + Range);
             if (Cost != null) cardList.Add("Cost - " + Cost);
             if (Description != null) cardList.Add("Description - " + Description);
+            if (HP != null) cardList.Add("HP - " + HP);
+            if (Speed != null) cardList.Add("Speed - " + Speed);
 
             foreach (string text in cardList)
             {
