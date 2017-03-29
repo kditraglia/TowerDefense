@@ -41,6 +41,7 @@
     <Compile Include="CommandCard.cs" />
     <Compile Include="FloatingText.cs" />
     <Compile Include="GameStats.cs" />
+    <Compile Include="PathFinding.cs" />
     <Compile Include="ResourceManager.cs" />
     <Compile Include="Towers\BatteryTower.cs" />
     <Compile Include="Towers\BlastTower.cs" />

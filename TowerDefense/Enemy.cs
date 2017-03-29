@@ -32,7 +32,7 @@ namespace TowerDefense
             this.speed = speed;
             this.scale = scale;
             this.spawnRate = spawnRate;
-            this.bestPath = TowerDefense.findBestPath(nodes);
+            this.bestPath = PathFinding.findBestPath(nodes);
 
             this.temp = bestPath[0];
             this.Position = temp.actualPos;
