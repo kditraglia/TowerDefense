@@ -57,6 +57,17 @@ namespace TowerDefense
             pos.X = MouseState.X;
             pos.Y = MouseState.Y;
         }
+
+        internal bool MouseInGameBounds()
+        {
+            int topY = Constants.MapStart.Y;
+            int leftX = Constants.MapStart.X;
+
+            return pos.Y > topY && pos.X > leftX &&
+                        pos.Y < topY + (Constants.MapSize.Y * Constants.NodeSize.Y) &&
+                        pos.X < leftX + (Constants.MapSize.X * Constants.NodeSize.X);
+        }
+
         public void UpdateTex(Texture2D tex)
         {
             this.tex = tex;

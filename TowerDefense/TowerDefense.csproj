@@ -42,29 +42,31 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CommandCard.cs" />
-    <Compile Include="FloatingText.cs" />
-    <Compile Include="GameStats.cs" />
-    <Compile Include="ResourceManager.cs" />
-    <Compile Include="Towers\BatteryTower.cs" />
-    <Compile Include="Towers\BlastTower.cs" />
-    <Compile Include="Projectiles\Blast.cs" />
-    <Compile Include="Projectiles\Bullet.cs" />
-    <Compile Include="Button.cs" />
-    <Compile Include="Projectiles\CannonBall.cs" />
-    <Compile Include="Towers\CannonTower.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="GameObject.cs" />
+    <Compile Include="GameEngine.cs" />
+    <Compile Include="GameMap.cs" />
+    <Compile Include="UI\CommandCard.cs" />
+    <Compile Include="UI\FloatingText.cs" />
+    <Compile Include="StaticClasses\GameStats.cs" />
+    <Compile Include="StaticClasses\ResourceManager.cs" />
+    <Compile Include="GameObjects\Towers\BatteryTower.cs" />
+    <Compile Include="GameObjects\Towers\BlastTower.cs" />
+    <Compile Include="GameObjects\Projectiles\Blast.cs" />
+    <Compile Include="GameObjects\Projectiles\Bullet.cs" />
+    <Compile Include="UI\Button.cs" />
+    <Compile Include="GameObjects\Projectiles\CannonBall.cs" />
+    <Compile Include="GameObjects\Towers\CannonTower.cs" />
+    <Compile Include="StaticClasses\Constants.cs" />
+    <Compile Include="GameObjects\Enemy.cs" />
+    <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="TowerDefense.cs" />
-    <Compile Include="Towers\GenericTower.cs" />
-    <Compile Include="Projectiles\LightningBolt.cs" />
-    <Compile Include="MessageLog.cs" />
+    <Compile Include="GameObjects\Towers\GenericTower.cs" />
+    <Compile Include="GameObjects\Projectiles\LightningBolt.cs" />
+    <Compile Include="UI\MessageLog.cs" />
     <Compile Include="MouseHandler.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="Projectiles\Projectile.cs" />
+    <Compile Include="GameObjects\Node.cs" />
+    <Compile Include="GameObjects\Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Towers\Tower.cs" />
+    <Compile Include="GameObjects\Towers\Tower.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
