@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameEngine.cs" />
+    <Compile Include="GameHUD.cs" />
     <Compile Include="GameMap.cs" />
     <Compile Include="StaticClasses\PathFinding.cs" />
     <Compile Include="UI\CommandCard.cs" />

@@ -15,11 +15,9 @@ namespace TowerDefense
         MouseHandler mouse;
         Viewport viewport;
 
+        GameHUD gameHUD;
         GameEngine gameEngine;
         GameMap gameMap;
-        List<Button> buttonlist = new List<Button>();
-        Button startButton;
-        Button upgradeButton;
 
         public TowerDefense()
         {
@@ -43,17 +41,8 @@ namespace TowerDefense
             batch = new SpriteBatch(GraphicsDevice);
             ResourceManager.InitializeTextures(Content);
 
-            startButton = new Button(new Point(10 + 32, (int)(viewport.Height * .2f - 74)), ResourceManager.StartButton, HoveringContext.ButtonStart);
-            upgradeButton = new Button(new Point(viewport.Width - 160, (int)(viewport.Height * .55f)), ResourceManager.UpgradeButton, HoveringContext.ButtonUpgrade);
-            buttonlist.Add(new Button(new Point(10, (int)(viewport.Height * .2f)), ResourceManager.GenericTower, HoveringContext.ButtonGenericTower));
-            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .2f)), ResourceManager.CannonTower, HoveringContext.ButtonCannonTower));
-            buttonlist.Add(new Button(new Point(10, (int)(viewport.Height * .2f) + 64), ResourceManager.BatteryTower, HoveringContext.ButtonBatteryTower));
-            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .2f) + 64), ResourceManager.BlastTower, HoveringContext.ButtonBlastTower));
-            buttonlist.Add(new Button(new Point(10 + 16, (int)(viewport.Height * .5f)), ResourceManager.Wall, HoveringContext.ButtonWall));
-            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .5f)), ResourceManager.Portal, HoveringContext.ButtonPortal));
-            buttonlist.Add(new Button(new Point(10 + 16, (int)(viewport.Height * .56f)), ResourceManager.Cheese, HoveringContext.ButtonCheese));
-
             mouse = new MouseHandler(Point.Zero, ResourceManager.DefaultCursor);
+            gameHUD = new GameHUD(viewport, mouse);
             gameEngine = new GameEngine();
             gameMap = new GameMap();
         }
@@ -74,17 +63,10 @@ namespace TowerDefense
             batch.Begin();
 
             gameMap.Draw(batch);
-            startButton.Draw(batch);
-            buttonlist.ForEach(b => b.Draw(batch));
+            gameHUD.Draw(batch);
             gameEngine.Draw(batch);
 
-            if (mouse.SelectionContext == SelectionContext.TowerSelected)
-            {
-                Tower t = mouse.SelectedObject as Tower;
-                t?.ShowStats(batch, viewport);
-                upgradeButton.Draw(batch);
-            }
-            else if (mouse.HoveringContext != HoveringContext.None)
+            if (mouse.HoveringContext != HoveringContext.None)
             {
                 mouse.HoveredObject?.ShowStats(batch, viewport);
             }
@@ -107,17 +89,7 @@ namespace TowerDefense
         {
             if (GameStats.PlayerLoses)
             {
-                if (mouse.MouseState.LeftButton == ButtonState.Pressed)
-                {
-                    //Exit();
-                }
                 return;
-            }
-
-            if (mouse.MouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !GameStats.AttackPhase && mouse.SelectionContext == SelectionContext.None)
-            {
-                mouse.UpdateTex(ResourceManager.DefaultCursor);
-                gameEngine.StartLevel(gameMap.GetBestPath());
             }
             HandleMouseHover();
             if (!GameStats.AttackPhase)
@@ -168,27 +140,9 @@ namespace TowerDefense
             mouse.HoveringContext = HoveringContext.None;
             mouse.HoveredObject = null;
 
-            if (upgradeButton.BoundingBox().Contains(mouse.pos))
-            {
-                mouse.HoveredObject = upgradeButton;
-                mouse.HoveringContext = upgradeButton.HoveringContext;
-            }
-
             gameEngine.HandleMouseHover(mouse);
             gameMap.HandleMouseHover(mouse);
-
-            if (!GameStats.AttackPhase)
-            {
-                buttonlist.ForEach(b =>
-                {
-                    b.Hovering = b.BoundingBox().Contains(mouse.pos);
-                    if (b.Hovering)
-                    {
-                        mouse.HoveredObject = b;
-                        mouse.HoveringContext = b.HoveringContext;
-                    }
-                });
-            }
+            gameHUD.HandleMouseHover(mouse);
         }
 
         private void HandleLeftClick()
@@ -196,6 +150,11 @@ namespace TowerDefense
             if (mouse.HoveredObject != null)
             {
                 mouse.HoveredObject.HandleLeftClick(mouse);
+            }
+            if (mouse.HoveringContext == HoveringContext.ButtonStart && !GameStats.AttackPhase && mouse.SelectionContext == SelectionContext.None)
+            {
+                mouse.UpdateTex(ResourceManager.DefaultCursor);
+                gameEngine.StartLevel(gameMap.GetBestPath());
             }
             gameEngine.HandleLeftClick(mouse);
 
