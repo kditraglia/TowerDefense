@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FDADC560-9559-46EE-B7BB-C87360EB97C3}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{D374C6B7-AFB9-4343-B7E1-575C354FDDE7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TowerDefense</RootNamespace>
-    <AssemblyName>TowerDefense</AssemblyName>
+    <RootNamespace>TowerDefenseWindows</RootNamespace>
+    <AssemblyName>TowerDefenseWindows</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -38,32 +38,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CommandCard.cs" />
-    <Compile Include="FloatingText.cs" />
-    <Compile Include="GameStats.cs" />
-    <Compile Include="ResourceManager.cs" />
-    <Compile Include="Towers\BatteryTower.cs" />
-    <Compile Include="Towers\BlastTower.cs" />
-    <Compile Include="Projectiles\Blast.cs" />
-    <Compile Include="Projectiles\Bullet.cs" />
-    <Compile Include="Button.cs" />
-    <Compile Include="Projectiles\CannonBall.cs" />
-    <Compile Include="Towers\CannonTower.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="GameObject.cs" />
-    <Compile Include="TowerDefense.cs" />
-    <Compile Include="Towers\GenericTower.cs" />
-    <Compile Include="Projectiles\LightningBolt.cs" />
-    <Compile Include="MessageLog.cs" />
-    <Compile Include="MouseHandler.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="Projectiles\Projectile.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Towers\Tower.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -76,7 +55,13 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TowerDefense\TowerDefense.csproj">
+      <Project>{fdadc560-9559-46ee-b7bb-c87360eb97c3}</Project>
+      <Name>TowerDefense</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
