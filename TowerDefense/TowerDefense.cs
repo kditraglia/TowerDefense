@@ -195,7 +195,7 @@ namespace TowerDefense
             {
                 if (mouse.MouseState.LeftButton == ButtonState.Pressed)
                 {
-                    Exit();
+                    //Exit();
                 }
                 return;
             }
