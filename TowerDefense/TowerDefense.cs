@@ -50,9 +50,9 @@ namespace TowerDefense
         protected override void Update(GameTime gameTime)
         {
             mouse.Update(gameEngine, gameMap);
-            gameEngine.HandleMouseHover(mouse);
             gameMap.HandleMouseHover(mouse);
             gameHUD.HandleMouseHover(mouse);
+            gameEngine.HandleMouseHover(mouse);
 
             gameEngine.Update(gameTime);
             base.Update(gameTime);
