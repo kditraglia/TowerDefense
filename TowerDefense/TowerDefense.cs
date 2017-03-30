@@ -15,8 +15,8 @@ namespace TowerDefense
         MouseHandler mouse;
         Viewport viewport;
 
-        GameEngine gameEngine = new GameEngine();
-        GameMap gameMap = new GameMap();
+        GameEngine gameEngine;
+        GameMap gameMap;
         List<Button> buttonlist = new List<Button>();
         Button startButton;
         Button upgradeButton;
@@ -54,6 +54,8 @@ namespace TowerDefense
             buttonlist.Add(new Button(new Point(10 + 16, (int)(viewport.Height * .56f)), ResourceManager.Cheese, HoveringContext.ButtonCheese));
 
             mouse = new MouseHandler(Point.Zero, ResourceManager.DefaultCursor);
+            gameEngine = new GameEngine();
+            gameMap = new GameMap();
         }
 
         protected override void Update(GameTime gameTime)
@@ -115,7 +117,7 @@ namespace TowerDefense
             if (mouse.MouseState.LeftButton == ButtonState.Pressed && startButton.ContainsPoint(mouse.pos) && !GameStats.AttackPhase && mouse.SelectionContext == SelectionContext.None)
             {
                 mouse.UpdateTex(ResourceManager.DefaultCursor);
-                gameEngine.StartLevel();
+                gameEngine.StartLevel(gameMap.GetBestPath());
             }
             HandleMouseHover();
             if (!GameStats.AttackPhase)

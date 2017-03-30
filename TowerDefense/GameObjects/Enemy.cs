@@ -13,7 +13,7 @@ namespace TowerDefense
         public int HP;
         public int maxHP;
         public int speed;
-        List<Node> bestPath = new List<Node>();
+        List<Node> bestPath;
         Node temp;
         public bool spawned = false;
         Point currentDest;
@@ -24,7 +24,7 @@ namespace TowerDefense
 
         CommandCard commandCard;
 
-        public Enemy(int HP, int speed, Texture2D tex, Node[,] nodes, String name, float scale, double spawnRate) : base(tex, Point.Zero)
+        public Enemy(int HP, int speed, Texture2D tex, List<Node> bestPath, String name, float scale, double spawnRate) : base(tex, Point.Zero)
         {
             this.name = name;
             this.HP = HP;
@@ -32,7 +32,7 @@ namespace TowerDefense
             this.speed = speed;
             this.scale = scale;
             this.spawnRate = spawnRate;
-            this.bestPath = PathFinding.findBestPath(nodes);
+            this.bestPath = bestPath;
 
             this.temp = bestPath[0];
             this.Position = temp.actualPos;

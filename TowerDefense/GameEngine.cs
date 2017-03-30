@@ -79,7 +79,7 @@ namespace TowerDefense
             floatingTextList.ForEach(f => f.Draw(batch));
         }
 
-        internal void StartLevel()
+        internal void StartLevel(List<Node> bestPath)
         {
             GameStats.AttackPhase = true;
             GameStats.Level++;
@@ -90,21 +90,21 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (15 + GameStats.Level); i++)
                 {
-                    enemylist.Add(new Enemy(GameStats.Level * 8, 2, ResourceManager.Enemy, nodes, "Malaria", 1.0f, .4f));
+                    enemylist.Add(new Enemy(GameStats.Level * 8, 2, ResourceManager.Enemy, bestPath, "Malaria", 1.0f, .4f));
                 }
             }
             else if (num < .6)
             {
                 for (int i = 0; i < (30 + 2 * GameStats.Level); i++)
                 {
-                    enemylist.Add(new Enemy(GameStats.Level * 4, 2, ResourceManager.Enemy, nodes, "Tuberculosis", .33f, .2f));
+                    enemylist.Add(new Enemy(GameStats.Level * 4, 2, ResourceManager.Enemy, bestPath, "Tuberculosis", .33f, .2f));
                 }
             }
             else
             {
                 for (int i = 0; i < (5 + GameStats.Level / 2); i++)
                 {
-                    enemylist.Add(new Enemy(GameStats.Level * 16, 1, ResourceManager.Enemy, nodes, "AIDS", 1.5f, .8f));
+                    enemylist.Add(new Enemy(GameStats.Level * 16, 1, ResourceManager.Enemy, bestPath, "AIDS", 1.5f, .8f));
                 }
             }
         }

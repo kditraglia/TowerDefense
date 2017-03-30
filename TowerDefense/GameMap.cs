@@ -66,6 +66,11 @@ namespace TowerDefense
             }
         }
 
+        internal List<Node> GetBestPath()
+        {
+            return PathFinding.findBestPath(nodes);
+        }
+
         internal bool CheckForPath(int x, int y, MouseHandler mouse, CheckForPathType type)
         {
             Node portaledTo = nodes[x, y].portalsTo;

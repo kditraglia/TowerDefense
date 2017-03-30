@@ -29,7 +29,7 @@ namespace TowerDefense
 
             List<Node> startNodes = new List<Node>();
             List<Node> bestPathSoFar = new List<Node>();
-            Node[,] nodesClone = cloneNodes(nodes);
+            Node[,] nodesClone = null;
 
             for (int c = numberOfCheese; c >= 0; c--)
             {
