@@ -51,9 +51,8 @@ namespace TowerDefense
         {
             HandleMouse();
             mouse.Update();
-
             gameEngine.Update(gameTime);
-           base.Update(gameTime);
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -65,19 +64,6 @@ namespace TowerDefense
             gameMap.Draw(batch);
             gameHUD.Draw(batch);
             gameEngine.Draw(batch);
-
-            if (mouse.HoveringContext != HoveringContext.None)
-            {
-                mouse.HoveredObject?.ShowStats(batch, viewport);
-            }
-
-            batch.DrawString(ResourceManager.GameFont, "GOLD - " + GameStats.Gold + " $", new Vector2(viewport.Width * .8f, viewport.Height * .1f), Color.Black,
-                    0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
-
-            MessageLog.Draw(batch, ResourceManager.GameFont, viewport);
-
-            batch.Draw(ResourceManager.TopBanner, new Vector2(viewport.Width / 2 - ResourceManager.TopBanner.Width / 2, 0), null, Color.White);
-            batch.Draw(ResourceManager.BottomBanner, new Vector2(viewport.Width / 2 - ResourceManager.TopBanner.Width / 4, viewport.Height - ResourceManager.BottomBanner.Height), null, Color.White);
             mouse.Draw(batch);
 
             batch.End();
