@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameMap.cs" />
+    <Compile Include="StaticClasses\PathFinding.cs" />
     <Compile Include="UI\CommandCard.cs" />
     <Compile Include="UI\FloatingText.cs" />
     <Compile Include="StaticClasses\GameStats.cs" />

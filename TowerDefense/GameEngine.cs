@@ -137,7 +137,7 @@ namespace TowerDefense
 
         internal void HandleLeftClick(MouseHandler mouse)
         {
-            if (mouse.SelectionContext == SelectionContext.PlacingTower && MouseInGameBounds())
+            if (mouse.SelectionContext == SelectionContext.PlacingTower && mouse.MouseInGameBounds())
             {
                 Tower t = mouse.SelectedObject as Tower;
                 if (GameStats.Gold >= t.Cost)

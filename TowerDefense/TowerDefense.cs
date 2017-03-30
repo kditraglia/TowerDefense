@@ -60,9 +60,9 @@ namespace TowerDefense
         {
             HandleMouse();
             mouse.Update();
-            gameEngine.Update(gameTime);
 
-            base.Update(gameTime);
+            gameEngine.Update(gameTime);
+           base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -127,7 +127,7 @@ namespace TowerDefense
                     if (mouse.SelectionContext == SelectionContext.PlacingWall && mouse.HoveringContext == HoveringContext.EmptyNode)
                     {
                         Node n = mouse.HoveredObject as Node;
-                        if (!CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingWall))
+                        if (!gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, mouse, CheckForPathType.TogglingWall))
                         {
                             MessageLog.IllegalPosition();
                         }
@@ -209,7 +209,7 @@ namespace TowerDefense
             {
                 Node portalExit = mouse.HoveredObject as Node;
                 Node portalEntrance = mouse.PortalEntrance;
-                if (!CheckForPath(portalExit.simplePos.X, portalExit.simplePos.Y, CheckForPathType.AddingPortal))
+                if (!gameMap.CheckForPath(portalExit.simplePos.X, portalExit.simplePos.Y, mouse, CheckForPathType.AddingPortal))
                 {
                     MessageLog.IllegalPosition();
                 }
@@ -230,7 +230,7 @@ namespace TowerDefense
             else if (mouse.SelectionContext == SelectionContext.PlacingCheese && mouse.HoveringContext == HoveringContext.EmptyNode)
             {
                 Node n = mouse.HoveredObject as Node;
-                if (!CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingCheese))
+                if (!gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, mouse, CheckForPathType.TogglingCheese))
                 {
                     MessageLog.IllegalPosition();
                 }
@@ -261,14 +261,14 @@ namespace TowerDefense
             else if (mouse.HoveringContext == HoveringContext.FilledNode && mouse.SelectionContext == SelectionContext.None)
             {
                 Node n = mouse.HoveredObject as Node;
-                if (n.wall && CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingWall))
+                if (n.wall && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, mouse, CheckForPathType.TogglingWall))
                 {
                     GameStats.Gold = GameStats.Gold + 1;
                     n.wall = false;
                     n.defaultSet();
                     ResourceManager.SellSound.Play();
                 }
-                else if (n.portal && CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.RemovingPortal))
+                else if (n.portal && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, mouse, CheckForPathType.RemovingPortal))
                 {
                     n.portal = false;
                     n.defaultSet();
@@ -279,7 +279,7 @@ namespace TowerDefense
                     GameStats.Gold = GameStats.Gold + 20;
                     ResourceManager.SellSound.Play();
                 }
-                else if (n.cheese && CheckForPath(n.simplePos.X, n.simplePos.Y, CheckForPathType.TogglingCheese))
+                else if (n.cheese && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, mouse, CheckForPathType.TogglingCheese))
                 {
                     GameStats.Gold = GameStats.Gold + 20;
                     n.cheese = false;
@@ -290,177 +290,6 @@ namespace TowerDefense
 
             mouse.UpdateTex(ResourceManager.DefaultCursor);
             mouse.SelectionContext = SelectionContext.None;
-        }
-
-        private static int heuristic(Node current)
-        {
-            return Constants.MapSize.Y - current.simplePos.Y;
-        }
-
-        internal static List<Node> findBestPath(Node[,] nodes)
-        {
-            int numberOfCheese = 0;
-            foreach(Node n in nodes)
-            {
-                numberOfCheese += n.cheese ? 1 : 0;
-            }
-            List<Node> startNodes = new List<Node>();
-            List<Node> bestPathSoFar = new List<Node>();
-            Node[,] nodesClone = null;
-            for (int c = numberOfCheese; c >= 0; c--)
-            {
-                if (nodesClone == null)
-                {
-                    nodesClone = cloneNodes(nodes);
-                    for (int i = 0; i <= Constants.MapSize.X; i++)
-                    {
-                        if (!nodesClone[i, 0].wall)
-                        {
-                            startNodes.Add(nodesClone[i, 0]);
-                            nodesClone[i, 0].fScore = 0;
-                        }
-                    }
-                }
-                else
-                {
-                    nodesClone = cloneNodes(nodesClone);
-                }
-                for (int i = 0; i <= Constants.MapSize.X; i++)
-                {
-                    for (int j = 0; j <= Constants.MapSize.Y; j++)
-                    {
-                        nodesClone[i, j].parent = null;
-                        nodesClone[i, j].gScore = int.MaxValue;
-                        nodesClone[i, j].fScore = int.MaxValue;
-                    }
-                }
-                List<Node> bestPathRelay = findBestPath(nodesClone, startNodes, c);
-                if (bestPathRelay == null)
-                {
-                    return null;
-                }
-                bestPathRelay.Reverse();
-                bestPathSoFar.AddRange(bestPathRelay);
-
-                startNodes.Clear();
-                startNodes.Add(bestPathSoFar.Last());
-                startNodes.ForEach(s => s.cheese = false);
-                startNodes.First().gScore = 0;
-            }
-
-            return bestPathSoFar;
-        }
-
-        private static Node[,] cloneNodes(Node[,] nodes)
-        {
-            Node[,] nodesClone = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
-            for (int i = 0; i <= Constants.MapSize.X; i++)
-            {
-                for (int j = 0; j <= Constants.MapSize.Y; j++)
-                {
-                    nodesClone[i, j] = (Node)nodes[i, j].Clone();
-                }
-            }
-
-            return nodesClone;
-        }
-
-        internal static List<Node> findBestPath(Node[,] nodes, List<Node> startNodes, int numberOfCheese)
-        {
-            List<Node> available = new List<Node>(startNodes);
-            HashSet<Node> visited = new HashSet<Node>();
-
-            while (available.Count != 0)
-            {
-                Node current = available.OrderBy(n => n.fScore).First();
-                if ((numberOfCheese > 0 && current.cheese) || (numberOfCheese == 0 && current.simplePos.Y == Constants.MapSize.Y))
-                {
-                    List<Node> bestPath = new List<Node>();
-                    bestPath.Add(current);
-                    while (current.parent != null && !startNodes.Contains(current))
-                    {
-                        bestPath.Add(current.parent);
-                        current = current.parent;
-                    }
-                    return bestPath;
-                }
-                available.Remove(current);
-                visited.Add(current);
-                foreach (Node n in current.getNeighbors(nodes))
-                {
-                    if (visited.Contains(n))
-                    {
-                        continue;
-                    }
-                    int possibleScore = current.gScore + 1;
-                    if (!available.Contains(n))
-                    {
-                        available.Add(n);
-                    }
-                    else if (possibleScore >= n.gScore)
-                    {
-                        continue;
-                    }
-                    n.parent = current;
-                    n.gScore = possibleScore;
-                    n.fScore = possibleScore + heuristic(n);
-                }
-            }
-            return null;
-        }
-
-        enum CheckForPathType
-        {
-            TogglingWall, TogglingCheese, AddingPortal, RemovingPortal
-        }
-
-        bool CheckForPath(int x, int y, CheckForPathType type)
-        {
-            Node portaledTo = nodes[x, y].portalsTo;
-            if (type == CheckForPathType.AddingPortal)
-            {
-                nodes[x, y].portal = true;
-                nodes[x, y].portalsTo = mouse.PortalEntrance;
-                mouse.PortalEntrance.portalsTo = nodes[x, y];
-            }
-            else if (type == CheckForPathType.RemovingPortal)
-            {
-                nodes[x, y].portal = false;
-                nodes[x, y].portalsTo = null;
-                portaledTo.portalsTo = null;
-                portaledTo.portal = false;
-            }
-            else if (type == CheckForPathType.TogglingCheese)
-            {
-                nodes[x, y].cheese = !nodes[x, y].cheese;
-            }
-            else
-            {
-                nodes[x, y].wall = !nodes[x, y].wall;
-            }
-            List<Node> bestPath = findBestPath(nodes);
-            if (type == CheckForPathType.AddingPortal)
-            {
-                nodes[x, y].portal = false;
-                nodes[x, y].portalsTo = null;
-                mouse.PortalEntrance.portalsTo = null;
-            }
-            else if (type == CheckForPathType.RemovingPortal)
-            {
-                nodes[x, y].portal = true;
-                nodes[x, y].portalsTo = portaledTo;
-                portaledTo.portalsTo = nodes[x, y];
-                portaledTo.portal = true;
-            }
-            else if (type == CheckForPathType.TogglingCheese)
-            {
-                nodes[x, y].cheese = !nodes[x, y].cheese;
-            }
-            else
-            {
-                nodes[x, y].wall = !nodes[x, y].wall;
-            }
-            return bestPath != null;
         }
     }
 }

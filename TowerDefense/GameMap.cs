@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace TowerDefense
 {
+
+    internal enum CheckForPathType
+    {
+        TogglingWall, TogglingCheese, AddingPortal, RemovingPortal
+    }
+
     class GameMap
     {
         Node[,] nodes = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
@@ -58,6 +64,57 @@ namespace TowerDefense
                     }
                 }
             }
+        }
+
+        internal bool CheckForPath(int x, int y, MouseHandler mouse, CheckForPathType type)
+        {
+            Node portaledTo = nodes[x, y].portalsTo;
+
+            switch (type)
+            {
+                case CheckForPathType.AddingPortal:
+                    nodes[x, y].portal = true;
+                    nodes[x, y].portalsTo = mouse.PortalEntrance;
+                    mouse.PortalEntrance.portalsTo = nodes[x, y];
+                    break;
+                case CheckForPathType.RemovingPortal:
+                    nodes[x, y].portal = false;
+                    nodes[x, y].portalsTo = null;
+                    portaledTo.portalsTo = null;
+                    portaledTo.portal = false;
+                    break;
+                case CheckForPathType.TogglingCheese:
+                    nodes[x, y].cheese = !nodes[x, y].cheese;
+                    break;
+                default:
+                    nodes[x, y].wall = !nodes[x, y].wall;
+                    break;
+            }
+
+            List<Node> bestPath = PathFinding.findBestPath(nodes);
+
+            switch (type)
+            {
+                case CheckForPathType.AddingPortal:
+                    nodes[x, y].portal = false;
+                    nodes[x, y].portalsTo = null;
+                    mouse.PortalEntrance.portalsTo = null;
+                    break;
+                case CheckForPathType.RemovingPortal:
+                    nodes[x, y].portal = true;
+                    nodes[x, y].portalsTo = portaledTo;
+                    portaledTo.portalsTo = nodes[x, y];
+                    portaledTo.portal = true;
+                    break;
+                case CheckForPathType.TogglingCheese:
+                    nodes[x, y].cheese = !nodes[x, y].cheese;
+                    break;
+                default:
+                    nodes[x, y].wall = !nodes[x, y].wall;
+                    break;
+            }
+
+            return bestPath != null;
         }
     }
 }
