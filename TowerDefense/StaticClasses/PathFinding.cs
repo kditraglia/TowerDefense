@@ -29,26 +29,19 @@ namespace TowerDefense
 
             List<Node> startNodes = new List<Node>();
             List<Node> bestPathSoFar = new List<Node>();
-            Node[,] nodesClone = null;
+            Node[,] nodesClone = cloneNodes(nodes);
+
+            for (int i = 0; i <= Constants.MapSize.X; i++)
+            {
+                if (!nodesClone[i, 0].wall)
+                {
+                    startNodes.Add(nodesClone[i, 0]);
+                    nodesClone[i, 0].fScore = 0;
+                }
+            }
 
             for (int c = numberOfCheese; c >= 0; c--)
             {
-                if (nodesClone == null)
-                {
-                    nodesClone = cloneNodes(nodes);
-                    for (int i = 0; i <= Constants.MapSize.X; i++)
-                    {
-                        if (!nodesClone[i, 0].wall)
-                        {
-                            startNodes.Add(nodesClone[i, 0]);
-                            nodesClone[i, 0].fScore = 0;
-                        }
-                    }
-                }
-                else
-                {
-                    nodesClone = cloneNodes(nodesClone);
-                }
                 for (int i = 0; i <= Constants.MapSize.X; i++)
                 {
                     for (int j = 0; j <= Constants.MapSize.Y; j++)
