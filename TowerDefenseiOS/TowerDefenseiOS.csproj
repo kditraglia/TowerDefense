@@ -111,39 +111,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Button.cs" />
-    <Compile Include="CommandCard.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="FloatingText.cs" />
-    <Compile Include="GameObject.cs" />
-    <Compile Include="GameStats.cs" />
     <Compile Include="iOSProgram.cs" />
-    <Compile Include="MessageLog.cs" />
-    <Compile Include="MouseHandler.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="Projectiles\Blast.cs" />
-    <Compile Include="Projectiles\Bullet.cs" />
-    <Compile Include="Projectiles\CannonBall.cs" />
-    <Compile Include="Projectiles\LightningBolt.cs" />
-    <Compile Include="Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceManager.cs" />
-    <Compile Include="TowerDefense.cs" />
-    <Compile Include="Towers\BatteryTower.cs" />
-    <Compile Include="Towers\BlastTower.cs" />
-    <Compile Include="Towers\CannonTower.cs" />
-    <Compile Include="Towers\GenericTower.cs" />
-    <Compile Include="Towers\Tower.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
-    <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Default.png" />
     <BundleResource Include="GameThumbnail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TowerDefense\TowerDefense.csproj">
+      <Project>{fdadc560-9559-46ee-b7bb-c87360eb97c3}</Project>
+      <Name>TowerDefense</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
