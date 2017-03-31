@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{89D276F7-0093-43F8-A6B4-26A82FBC7001}</ProjectGuid>
+    <ProjectGuid>{B2499312-A34E-47BD-B030-7A14541867E2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>TowerDefenseiOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
@@ -111,10 +111,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="iOSProgram.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <MonoGameContentReference Include="..\TowerDefense\Content\Content.mgcb">
+      <Link>Content\Content.mgcb</Link>
+    </MonoGameContentReference>
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
   </ItemGroup>

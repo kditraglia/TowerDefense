@@ -26,9 +26,9 @@
 		<integer>2</integer>
 	</array>
 	<key>CFBundleShortVersionString</key>
-	<string></string>
+	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string></string>
+	<string>1</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array/>
 </dict>
