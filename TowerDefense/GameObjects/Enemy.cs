@@ -72,7 +72,7 @@ namespace TowerDefense
                     bestPath.Remove(temp);
                     if (bestPath.Count != 0)
                     {
-                        if (temp.portal)
+                        if (temp.portal && temp.portalsTo != null)
                         {
                             Position = temp.portalsTo.actualPos;
                             temp = bestPath[0];

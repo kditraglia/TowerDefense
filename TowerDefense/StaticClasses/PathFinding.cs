@@ -8,16 +8,6 @@ namespace TowerDefense
 {
     public static class PathFinding
     {
-        private static int heuristic(Node current)
-        {
-            return Constants.MapSize.Y - current.simplePos.Y;
-        }
-
-        /// <summary>
-        /// Gets the best path to get to the bottom of the map starting from the top.
-        /// </summary>
-        /// <param name="nodes">The map nodes.</param>
-        /// <returns>Best path of travel to get to the bottom of the map.</returns>
         internal static List<Node> findBestPath(Node[,] nodes)
         {
             int numberOfCheese = 0;
@@ -72,6 +62,11 @@ namespace TowerDefense
             }
 
             return bestPathSoFar;
+        }
+
+        private static int heuristic(Node current)
+        {
+            return Constants.MapSize.Y - current.simplePos.Y;
         }
 
         internal static List<Node> findBestPath(Node[,] nodes, List<Node> startNodes, List<Node> goalNodes)

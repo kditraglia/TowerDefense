@@ -58,7 +58,7 @@ namespace TowerDefense
         public List<Node> getNeighbors(Node[,] nodes, Node parent)
         {
             List<Node> neighbors = new List<Node>();
-            if (portal && (parent != null && !parent.portal))
+            if (portal && portalsTo != null)
             {
                 neighbors.Add(portalsTo);
             }
@@ -110,6 +110,16 @@ namespace TowerDefense
             {
                 emptyCard.Draw(new Point(X, Y), batch);
             }
+        }
+
+        internal Node Clone()
+        {
+            Node clone = new Node(actualPos, simplePos, Tex);
+            clone.wall = wall;
+            clone.portal = portal;
+            clone.cheese = cheese;
+
+            return clone;
         }
     }
 }
