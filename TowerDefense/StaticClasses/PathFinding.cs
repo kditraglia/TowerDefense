@@ -29,29 +29,36 @@ namespace TowerDefense
 
             List<Node> startNodes = new List<Node>();
             List<Node> bestPathSoFar = new List<Node>();
-            Node[,] nodesClone = cloneNodes(nodes);
+            List<Node> goalNodes = new List<Node>();
 
             for (int i = 0; i <= Constants.MapSize.X; i++)
             {
-                if (!nodesClone[i, 0].wall)
+                if (!nodes[i, 0].wall)
                 {
-                    startNodes.Add(nodesClone[i, 0]);
-                    nodesClone[i, 0].fScore = 0;
+                    startNodes.Add(nodes[i, 0]);
+                }
+            }
+            foreach (Node n in nodes)
+            {
+                if (n.cheese)
+                {
+                    goalNodes.Add(n);
                 }
             }
 
             for (int c = numberOfCheese; c >= 0; c--)
             {
-                for (int i = 0; i <= Constants.MapSize.X; i++)
+                if (goalNodes.Count == 0)
                 {
-                    for (int j = 0; j <= Constants.MapSize.Y; j++)
+                    for (int i = 0; i <= Constants.MapSize.X; i++)
                     {
-                        nodesClone[i, j].parent = null;
-                        nodesClone[i, j].gScore = int.MaxValue;
-                        nodesClone[i, j].fScore = int.MaxValue;
+                        if (!nodes[i, Constants.MapSize.Y].wall)
+                        {
+                            goalNodes.Add(nodes[i, Constants.MapSize.Y]);
+                        }
                     }
                 }
-                List<Node> bestPathRelay = findBestPath(nodesClone, startNodes, c);
+                List<Node> bestPathRelay = findBestPath(nodes, startNodes, goalNodes);
                 if (bestPathRelay == null)
                 {
                     return null;
@@ -61,66 +68,61 @@ namespace TowerDefense
 
                 startNodes.Clear();
                 startNodes.Add(bestPathSoFar.Last());
-                startNodes.ForEach(s => s.cheese = false);
-                startNodes.First().gScore = 0;
+                goalNodes.Remove(bestPathSoFar.Last());
             }
 
             return bestPathSoFar;
         }
 
-        private static Node[,] cloneNodes(Node[,] nodes)
-        {
-            Node[,] nodesClone = new Node[Constants.MapSize.X + 1, Constants.MapSize.Y + 1];
-            for (int i = 0; i <= Constants.MapSize.X; i++)
-            {
-                for (int j = 0; j <= Constants.MapSize.Y; j++)
-                {
-                    nodesClone[i, j] = (Node)nodes[i, j].Clone();
-                }
-            }
-
-            return nodesClone;
-        }
-
-        internal static List<Node> findBestPath(Node[,] nodes, List<Node> startNodes, int numberOfCheese)
+        internal static List<Node> findBestPath(Node[,] nodes, List<Node> startNodes, List<Node> goalNodes)
         {
             List<Node> available = new List<Node>(startNodes);
             HashSet<Node> visited = new HashSet<Node>();
+            Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
+            Dictionary<Node, int> gScore = new Dictionary<Node, int>();
+            Dictionary<Node, int> fScore = new Dictionary<Node, int>();
+
+            foreach(Node n in startNodes)
+            {
+                gScore[n] = 0;
+                fScore[n] = heuristic(n);
+            }
 
             while (available.Count != 0)
             {
-                Node current = available.OrderBy(n => n.fScore).First();
-                if ((numberOfCheese > 0 && current.cheese) || (numberOfCheese == 0 && current.simplePos.Y == Constants.MapSize.Y))
+                Node current = available.OrderBy(n => fScore.ContainsKey(n) ? fScore[n] : int.MaxValue).First();
+                if (goalNodes.Contains(current))
                 {
                     List<Node> bestPath = new List<Node>();
                     bestPath.Add(current);
-                    while (current.parent != null && !startNodes.Contains(current))
+                    while (cameFrom.ContainsKey(current) && !startNodes.Contains(current))
                     {
-                        bestPath.Add(current.parent);
-                        current = current.parent;
+                        bestPath.Add(cameFrom[current]);
+                        current = cameFrom[current];
                     }
                     return bestPath;
                 }
                 available.Remove(current);
                 visited.Add(current);
-                foreach (Node n in current.getNeighbors(nodes))
+                Node currentNodeParent = cameFrom.ContainsKey(current) ? cameFrom[current] : null;
+                foreach (Node n in current.getNeighbors(nodes, currentNodeParent))
                 {
                     if (visited.Contains(n))
                     {
                         continue;
                     }
-                    int possibleScore = current.gScore + 1;
+                    int possibleScore = gScore[current] + 1;
                     if (!available.Contains(n))
                     {
                         available.Add(n);
                     }
-                    else if (possibleScore >= n.gScore)
+                    else if (gScore.ContainsKey(n) && possibleScore >= gScore[n])
                     {
                         continue;
                     }
-                    n.parent = current;
-                    n.gScore = possibleScore;
-                    n.fScore = possibleScore + heuristic(n);
+                    cameFrom[n] = current;
+                    gScore[n] = possibleScore;
+                    fScore[n] = possibleScore + heuristic(n);
                 }
             }
             return null;

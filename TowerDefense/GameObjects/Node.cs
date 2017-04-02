@@ -9,14 +9,11 @@ using System.Diagnostics;
 namespace TowerDefense
 {
     [DebuggerDisplay("{simplePos}")]
-    class Node : GameObject, ICloneable
+    class Node : GameObject
     {
         public Point actualPos;
         public Point simplePos;
         public Texture2D tex2;
-        public int gScore;
-        public int fScore;
-        public Node parent;
         public bool wall = false;
         public bool portal = false;
         public bool cheese = false;
@@ -58,7 +55,7 @@ namespace TowerDefense
         {
             this.tex2 = null;
         }
-        public List<Node> getNeighbors(Node[,] nodes)
+        public List<Node> getNeighbors(Node[,] nodes, Node parent)
         {
             List<Node> neighbors = new List<Node>();
             if (portal && (parent != null && !parent.portal))
@@ -113,17 +110,6 @@ namespace TowerDefense
             {
                 emptyCard.Draw(new Point(X, Y), batch);
             }
-        }
-
-        public object Clone()
-        {
-            Node clone = new Node(actualPos, simplePos, Tex);
-            clone.wall = wall;
-            clone.portal = portal;
-            clone.cheese = cheese;
-            clone.portalsTo = portalsTo;
-
-            return clone;
         }
     }
 }
