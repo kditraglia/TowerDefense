@@ -23,7 +23,7 @@ namespace TowerDefense
 
             for (int i = 0; i <= Constants.MapSize.X; i++)
             {
-                if (!nodes[i, 0].wall)
+                if (!nodes[i, 0].wall && !nodes[i,0].portal)
                 {
                     startNodes.Add(nodes[i, 0]);
                 }
