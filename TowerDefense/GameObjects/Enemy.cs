@@ -86,25 +86,13 @@ namespace TowerDefense
                 currentFrame %= frameCount;
             }
 
-            if (Position.Y > currentDest.Y)
+            if (Position != currentDest)
             {
-                Position = new Point(Position.X, Position.Y - speed);
-                anim = VampireAnim.Up;
-            }
-            else if (Position.Y < currentDest.Y)
-            {
-                Position = new Point(Position.X, Position.Y + speed);
-                anim = VampireAnim.Down;
-            }
-            else if (Position.X > currentDest.X)
-            {
-                Position = new Point(Position.X - speed, Position.Y);
-                anim = VampireAnim.Left;
-            }
-            else if (Position.X < currentDest.X)
-            { 
-                Position = new Point(Position.X + speed, Position.Y);
-                anim = VampireAnim.Right;
+                Point diff = currentDest - Position;
+
+                // Prefer vertical movement, eliminate diagonal movement
+                Position += new Point(diff.Y == 0 ? speed * Math.Sign(diff.X) : 0, speed * Math.Sign(diff.Y));
+                anim = diff.Y == 0 ? diff.X < 0 ? VampireAnim.Left : VampireAnim.Right : diff.Y < 0 ? VampireAnim.Up : VampireAnim.Down;
             }
             else
             {
