@@ -7,6 +7,13 @@ using System.Linq;
 
 namespace TowerDefense
 {
+    enum VampireAnim
+    {
+        Down = 0,
+        Left = 1,
+        Right = 2,
+        Up = 3
+    }
     class Enemy : GameObject
     {
         string name;
@@ -15,17 +22,23 @@ namespace TowerDefense
         int speed;
         List<Node> bestPath;
         Point currentDest;
-        float scale;
+
+        int spriteHeight = 20;
+        int spriteWidth = 18;
+        int currentFrame = 0;
+        int frameCount = 2;
+        int frameTotalDuration = 200;
+        int frameDuration = 0;
+        VampireAnim anim = VampireAnim.Down;
 
         CommandCard commandCard;
 
-        public Enemy(int HP, int speed, Texture2D tex, List<Node> bestPath, string name, float scale) : base(tex, Point.Zero)
+        public Enemy(int HP, int speed, Texture2D tex, List<Node> bestPath, string name) : base(tex, Point.Zero)
         {
             this.name = name;
             this.HP = HP;
             this.maxHP = HP;
             this.speed = speed;
-            this.scale = scale;
             this.bestPath = bestPath;
             this.Position = currentDest = bestPath[0].actualPos;
 
@@ -41,21 +54,33 @@ namespace TowerDefense
 
         public bool Update(GameTime gameTime)
         {
+            frameDuration += gameTime.ElapsedGameTime.Milliseconds;
+            if (frameDuration > frameTotalDuration)
+            {
+                frameDuration = 0;
+                currentFrame++;
+                currentFrame %= frameCount;
+            }
+
             if (Position.Y > currentDest.Y)
             {
                 Position = new Point(Position.X, Position.Y - speed);
+                anim = VampireAnim.Up;
             }
             else if (Position.Y < currentDest.Y)
             {
                 Position = new Point(Position.X, Position.Y + speed);
+                anim = VampireAnim.Down;
             }
             else if (Position.X > currentDest.X)
             {
                 Position = new Point(Position.X - speed, Position.Y);
+                anim = VampireAnim.Left;
             }
             else if (Position.X < currentDest.X)
             { 
                 Position = new Point(Position.X + speed, Position.Y);
+                anim = VampireAnim.Right;
             }
             else
             {
@@ -78,7 +103,7 @@ namespace TowerDefense
 
                     //Travel behind Africa banner
                     //TODO not this
-                    currentDest = new Point(400, 750);
+                    currentDest = new Point(400, 736);
                 }
             }
 
@@ -91,6 +116,11 @@ namespace TowerDefense
             int X = viewport.Width;
 
             commandCard.Draw(new Point(X, Y), batch);
+        }
+
+        public override void Draw(SpriteBatch batch)
+        {
+            batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * spriteWidth, (int)anim * spriteHeight), new Point(spriteWidth, spriteHeight)), Color, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
         }
     }
 }

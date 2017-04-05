@@ -43,7 +43,7 @@ namespace TowerDefense
             BoldFont = content.Load<SpriteFont>("bold");
             StartButton = content.Load<Texture2D>(@"start");
             UpgradeButton = content.Load<Texture2D>(@"upgrade");
-            Enemy = content.Load<Texture2D>(@"enemy");
+            Enemy = content.Load<Texture2D>(@"vampire");
             TopBanner = content.Load<Texture2D>(@"banner");
             BottomBanner = content.Load<Texture2D>(@"banner2");
             GenericTower = content.Load<Texture2D>(@"generic tower");

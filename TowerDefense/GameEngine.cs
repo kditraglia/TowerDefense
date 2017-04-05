@@ -63,21 +63,21 @@ namespace TowerDefense
             {
                 for (int i = 0; i < (30 + GameStats.Level * 2); i++)
                 {
-                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 4, 4, ResourceManager.Enemy, new List<Node>(bestPath), "Malaria", 1.0f)), i * 400));
+                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 4, 4, ResourceManager.Enemy, new List<Node>(bestPath), "Malaria")), i * 400));
                 }
             }
             else if (num < .6)
             {
                 for (int i = 0; i < (20 + GameStats.Level * 1.5); i++)
                 {
-                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 8, 2, ResourceManager.Enemy, new List<Node>(bestPath), "Tuberculosis", .33f)), i * 400));
+                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 8, 2, ResourceManager.Enemy, new List<Node>(bestPath), "Tuberculosis")), i * 400));
                 }
             }
             else
             {
                 for (int i = 0; i < (20 + GameStats.Level); i++)
                 {
-                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 16, 1, ResourceManager.Enemy, new List<Node>(bestPath), "AIDS", 1.5f)), i * 1000));
+                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 16, 1, ResourceManager.Enemy, new List<Node>(bestPath), "AIDS")), i * 1000));
                 }
             }
         }
