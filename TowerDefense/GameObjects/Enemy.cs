@@ -41,21 +41,12 @@ namespace TowerDefense
 
         public bool Update(GameTime gameTime)
         {
-            if (Position.Y > currentDest.Y)
+            if (!Equals(Position, currentDest))
             {
-                Position = new Point(Position.X, Position.Y - speed);
-            }
-            else if (Position.Y < currentDest.Y)
-            {
-                Position = new Point(Position.X, Position.Y + speed);
-            }
-            else if (Position.X > currentDest.X)
-            {
-                Position = new Point(Position.X - speed, Position.Y);
-            }
-            else if (Position.X < currentDest.X)
-            { 
-                Position = new Point(Position.X + speed, Position.Y);
+                Point diff = currentDest - Position;
+
+                // Prefer vertical movement, eliminate diagonal movement
+                Position += new Point(diff.Y == 0 ? speed * Math.Sign(diff.X) : 0, speed * Math.Sign(diff.Y));
             }
             else
             {
