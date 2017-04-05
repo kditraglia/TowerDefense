@@ -120,6 +120,9 @@ namespace TowerDefense
 
         public override void Draw(SpriteBatch batch)
         {
+            batch.Draw(ResourceManager.Block, new Rectangle(Position.X - 2, Position.Y - 7, spriteWidth * 2 + 4, 8), Color.Black);
+            float HPPercent = (float)HP / maxHP;
+            batch.Draw(ResourceManager.Block, new Rectangle(Position.X, Position.Y - 5, (int)(HPPercent * spriteWidth * 2), 4), new Color(1.0f - HPPercent, HPPercent, 0));
             batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * spriteWidth, (int)anim * spriteHeight), new Point(spriteWidth, spriteHeight)), Color, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
         }
     }

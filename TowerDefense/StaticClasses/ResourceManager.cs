@@ -26,6 +26,7 @@ namespace TowerDefense
         public static Texture2D LightningBolt { get; private set; }
         public static Texture2D Blast { get; private set; }
         public static Texture2D Grass { get; private set; }
+        public static Texture2D Block { get; set; }
         public static Texture2D DefaultCursor { get; private set; }
 
         public static SoundEffect BulletSound { get; private set; }
@@ -41,33 +42,34 @@ namespace TowerDefense
         {
             GameFont = content.Load<SpriteFont>("text");
             BoldFont = content.Load<SpriteFont>("bold");
-            StartButton = content.Load<Texture2D>(@"start");
-            UpgradeButton = content.Load<Texture2D>(@"upgrade");
-            Enemy = content.Load<Texture2D>(@"vampire");
-            TopBanner = content.Load<Texture2D>(@"banner");
-            BottomBanner = content.Load<Texture2D>(@"banner2");
-            GenericTower = content.Load<Texture2D>(@"generic tower");
-            CannonTower = content.Load<Texture2D>(@"cannon tower");
-            BatteryTower = content.Load<Texture2D>(@"battery tower");
-            BlastTower = content.Load<Texture2D>(@"blast tower");
-            Wall = content.Load<Texture2D>(@"wall");
-            Portal = content.Load<Texture2D>(@"portal");
-            Cheese = content.Load<Texture2D>(@"cheese");
-            Bullet = content.Load<Texture2D>(@"bullet");
-            CannonBall = content.Load<Texture2D>(@"cannon ball");
-            LightningBolt = content.Load<Texture2D>(@"lightning bolt");
-            Blast = content.Load<Texture2D>(@"blast");
-            Grass = content.Load<Texture2D>(@"grass");
-            DefaultCursor = content.Load<Texture2D>(@"cursor");
+            StartButton = content.Load<Texture2D>("start");
+            UpgradeButton = content.Load<Texture2D>("upgrade");
+            Enemy = content.Load<Texture2D>("vampire");
+            TopBanner = content.Load<Texture2D>("banner");
+            BottomBanner = content.Load<Texture2D>("banner2");
+            GenericTower = content.Load<Texture2D>("generic tower");
+            CannonTower = content.Load<Texture2D>("cannon tower");
+            BatteryTower = content.Load<Texture2D>("battery tower");
+            BlastTower = content.Load<Texture2D>("blast tower");
+            Wall = content.Load<Texture2D>("wall");
+            Portal = content.Load<Texture2D>("portal");
+            Cheese = content.Load<Texture2D>("cheese");
+            Bullet = content.Load<Texture2D>("bullet");
+            CannonBall = content.Load<Texture2D>("cannon ball");
+            LightningBolt = content.Load<Texture2D>("lightning bolt");
+            Blast = content.Load<Texture2D>("blast");
+            Grass = content.Load<Texture2D>("grass");
+            Block = content.Load<Texture2D>("block");
+            DefaultCursor = content.Load<Texture2D>("cursor");
 
-            BulletSound = content.Load<SoundEffect>(@"generic attack");
-            CannonSound = content.Load<SoundEffect>(@"cannon attack");
-            LightningSound = content.Load<SoundEffect>(@"battery attack");
-            BlastSound = content.Load<SoundEffect>(@"blast attack");
-            DamagedSound = content.Load<SoundEffect>(@"damaged");
-            SellSound = content.Load<SoundEffect>(@"sell");
-            WallSound = content.Load<SoundEffect>(@"wallsound");
-            PortalSound = content.Load<SoundEffect>(@"portalsound");
+            BulletSound = content.Load<SoundEffect>("generic attack");
+            CannonSound = content.Load<SoundEffect>("cannon attack");
+            LightningSound = content.Load<SoundEffect>("battery attack");
+            BlastSound = content.Load<SoundEffect>("blast attack");
+            DamagedSound = content.Load<SoundEffect>("damaged");
+            SellSound = content.Load<SoundEffect>("sell");
+            WallSound = content.Load<SoundEffect>("wallsound");
+            PortalSound = content.Load<SoundEffect>("portalsound");
         }
     }
 }
