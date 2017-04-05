@@ -32,6 +32,15 @@ namespace TowerDefense
         VampireAnim anim = VampireAnim.Down;
 
         CommandCard commandCard;
+        Color color = Color.White;
+
+        public override Color Color
+        {
+            get
+            {
+                return color;
+            }
+        }
 
         public Enemy(int HP, int speed, Texture2D tex, List<Node> bestPath, string name) : base(tex, Point.Zero)
         {
@@ -54,6 +63,21 @@ namespace TowerDefense
 
         public bool Update(GameTime gameTime)
         {
+            if (HP <= 0)
+            {
+                color.R -= 15;
+                color.G -= 15;
+                color.B -= 15;
+                if (color == Color.Black)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
             frameDuration += gameTime.ElapsedGameTime.Milliseconds;
             if (frameDuration > frameTotalDuration)
             {
@@ -107,7 +131,7 @@ namespace TowerDefense
                 }
             }
 
-            return HP <= 0;
+            return false;
         }
 
         public override void ShowStats(SpriteBatch batch, Viewport viewport)
