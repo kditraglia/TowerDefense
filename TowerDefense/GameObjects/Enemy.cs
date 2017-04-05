@@ -41,7 +41,7 @@ namespace TowerDefense
 
         public bool Update(GameTime gameTime)
         {
-            if (!Equals(Position, currentDest))
+            if (Position != currentDest)
             {
                 Point diff = currentDest - Position;
 
