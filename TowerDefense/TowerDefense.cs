@@ -65,8 +65,8 @@ namespace TowerDefense
             batch.Begin();
 
             gameMap.Draw(batch);
-            gameHUD.Draw(batch);
             gameEngine.Draw(batch);
+            gameHUD.Draw(batch);
             mouse.Draw(batch);
 
             batch.End();

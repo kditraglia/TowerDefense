@@ -27,7 +27,7 @@ namespace TowerDefense
                 bool attacked = false;
                 foreach (Enemy e in enemylist)
                 {
-                    if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range && e.spawned && !e.dead)
+                    if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range)
                     {
                         projectilelist.Add(new Bullet(Position, ResourceManager.LightningBolt, e, damage, damageFunc));
                         cooldown = elapsedTime;

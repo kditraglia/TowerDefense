@@ -69,6 +69,7 @@
     <Compile Include="GameObjects\Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Towers\Tower.cs" />
+    <Compile Include="UtilityClasses\DelayedAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
