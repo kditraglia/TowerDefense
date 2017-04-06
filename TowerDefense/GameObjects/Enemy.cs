@@ -68,14 +68,7 @@ namespace TowerDefense
                 color.R -= 15;
                 color.G -= 15;
                 color.B -= 15;
-                if (color == Color.Black)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return color == Color.Black;
             }
 
             frameDuration += gameTime.ElapsedGameTime.Milliseconds;
