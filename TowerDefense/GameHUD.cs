@@ -34,7 +34,7 @@ namespace TowerDefense
 
         internal void Update(GameTime gameTime)
         {
-
+            buttonlist.ForEach(b => b.Update(gameTime));
         }
 
         internal void Draw(SpriteBatch batch)
@@ -61,12 +61,12 @@ namespace TowerDefense
 
         internal void HandleMouseHover(MouseHandler mouse)
         {
-            if (upgradeButton.BoundingBox().Contains(mouse.pos))
+            if (upgradeButton.BoundingBox().Contains(mouse.Position))
             {
                 mouse.HoveredObject = upgradeButton;
                 mouse.HoveringContext = upgradeButton.HoveringContext;
             }
-            else if (startButton.BoundingBox().Contains(mouse.pos))
+            else if (startButton.BoundingBox().Contains(mouse.Position))
             {
                 mouse.HoveredObject = startButton;
                 mouse.HoveringContext = startButton.HoveringContext;
@@ -76,7 +76,7 @@ namespace TowerDefense
             {
                 buttonlist.ForEach(b =>
                 {
-                    b.Hovering = b.BoundingBox().Contains(mouse.pos);
+                    b.Hovering = b.BoundingBox().Contains(mouse.Position);
                     if (b.Hovering)
                     {
                         mouse.HoveredObject = b;

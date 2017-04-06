@@ -31,10 +31,8 @@ namespace TowerDefense
         PlacingCheese,
         TowerSelected
     }
-    class MouseHandler
+    class MouseHandler : GameObject
     {
-        public Texture2D tex;
-        public Point pos;
         public MouseState MouseState { get; set; }
         public bool MouseClicked { get; set; }
         public GameObject HoveredObject { get; set; }
@@ -46,16 +44,14 @@ namespace TowerDefense
         //I need to hold a reference for when you place the other side to link them together
         public Node PortalEntrance { get; set; }
 
-        public MouseHandler(Point pos, Texture2D tex)
+        public MouseHandler(Point pos, Texture2D tex) : base(tex, pos)
         {
-            this.pos = pos;
-            this.tex = tex;
+
         }
-        public void Update(GameEngine gameEngine, GameMap gameMap)
+        public void Update(GameTime gameTime, GameEngine gameEngine, GameMap gameMap)
         {
             MouseState = Mouse.GetState();
-            pos.X = MouseState.X;
-            pos.Y = MouseState.Y;
+            Position = MouseState.Position;
 
             if (GameStats.PlayerLoses)
             {
@@ -78,7 +74,7 @@ namespace TowerDefense
                         else if (GameStats.Gold >= 1)
                         {
                             n.wall = true;
-                            n.UpdateTex(tex);
+                            n.UpdateTex(Tex);
                             GameStats.Gold = GameStats.Gold - 1;
                             ResourceManager.WallSound.Play();
                         }
@@ -106,6 +102,14 @@ namespace TowerDefense
 
             HoveringContext = HoveringContext.None;
             HoveredObject = null;
+
+            base.Update(gameTime);
+        }
+
+        public override void Draw(SpriteBatch batch)
+        {
+
+            batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * spriteWidth, 0), new Point(spriteWidth, spriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
 
         private void HandleLeftClick(GameEngine gameEngine, GameMap gameMap)
@@ -125,7 +129,7 @@ namespace TowerDefense
             {
                 Node n = HoveredObject as Node;
                 n.portal = true;
-                n.UpdateTex(tex);
+                n.UpdateTex(Tex);
                 PortalEntrance = n;
                 SelectionContext = SelectionContext.PlacingPortalExit;
             }
@@ -140,7 +144,7 @@ namespace TowerDefense
                 else if (GameStats.Gold >= 20)
                 {
                     portalExit.portal = true;
-                    portalExit.UpdateTex(tex);
+                    portalExit.UpdateTex(Tex);
                     portalExit.portalsTo = portalEntrance;
                     portalEntrance.portalsTo = portalExit;
                     SelectionContext = SelectionContext.PlacingPortalEntrance;
@@ -161,7 +165,7 @@ namespace TowerDefense
                 else if (GameStats.Gold >= 20)
                 {
                     n.cheese = true;
-                    n.UpdateTex(tex);
+                    n.UpdateTex(Tex);
                     GameStats.Gold = GameStats.Gold - 20;
                     ResourceManager.WallSound.Play();
                 }
@@ -221,19 +225,23 @@ namespace TowerDefense
             int topY = Constants.MapStart.Y;
             int leftX = Constants.MapStart.X;
 
-            return pos.Y > topY && pos.X > leftX &&
-                        pos.Y < topY + (Constants.MapSize.Y * Constants.NodeSize.Y) &&
-                        pos.X < leftX + (Constants.MapSize.X * Constants.NodeSize.X);
+            return Position.Y > topY && Position.X > leftX &&
+                        Position.Y < topY + (Constants.MapSize.Y * Constants.NodeSize.Y) &&
+                        Position.X < leftX + (Constants.MapSize.X * Constants.NodeSize.X);
         }
 
         public void UpdateTex(Texture2D tex)
         {
-            this.tex = tex;
+            UpdateTex(tex, tex.Bounds.Height, tex.Bounds.Width, 0);
         }
 
-        public void Draw(SpriteBatch batch)
+        public void UpdateTex(Texture2D tex, int spriteHeight, int spriteWidth, int frameCount)
         {
-            batch.Draw(tex, pos.ToVector2(), Color.White);
+            this.Tex = tex;
+            this.spriteHeight = spriteHeight;
+            this.spriteWidth = spriteWidth;
+            this.frameCount = frameCount;
+            this.currentFrame = 0;
         }
     }
 }
