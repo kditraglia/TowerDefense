@@ -13,7 +13,7 @@ namespace TowerDefense
             Gold = Constants.StartingGold;
             AttackPhase = false;
             PlayerLoses = false;
-            Level = 1;
+            Level = 0;
         }
     }
 }

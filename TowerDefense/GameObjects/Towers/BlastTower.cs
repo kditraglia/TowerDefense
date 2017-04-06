@@ -26,7 +26,7 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed && e.spawned && !e.dead)
+                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed)
                 {
                     Blast tempBlast = new Blast(Position, ResourceManager.Blast, e.Position, enemylist, damage, areaofeffect, damageFunc);
                     projectilelist.Add(tempBlast);

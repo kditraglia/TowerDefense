@@ -26,7 +26,7 @@ namespace TowerDefense
         {
             foreach (Enemy e in enemylist)
             {
-                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed && e.spawned && !e.dead)
+                if ((int)Math.Sqrt(Math.Pow(this.Position.X - e.Position.X, 2) + Math.Pow(this.Position.Y - e.Position.Y, 2)) <= range && (elapsedTime - cooldown) > attackspeed)
                 {
                     projectilelist.Add(new CannonBall(Position, ResourceManager.CannonBall, e.Position, enemylist, damage, areaofeffect, damageFunc));
                     cooldown = elapsedTime;

@@ -2,9 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TowerDefense
 {
@@ -14,8 +11,7 @@ namespace TowerDefense
         List<Enemy> enemylist = new List<Enemy>();
         List<Projectile> projectilelist = new List<Projectile>();
         List<FloatingText> floatingTextList = new List<FloatingText>();
-
-        double lastSpawnedTime = 0;
+        List<DelayedAction> delayedActions = new List<DelayedAction>();
 
         internal GameEngine()
         {
@@ -24,41 +20,17 @@ namespace TowerDefense
 
         internal void Update(GameTime gameTime)
         {
+            delayedActions.RemoveAll(d => d.Update(gameTime));
             if (GameStats.AttackPhase)
             {
-                foreach (Enemy e in enemylist)
-                {
-                    if (!e.spawned && (gameTime.TotalGameTime.TotalSeconds - lastSpawnedTime) > e.spawnRate)
-                    {
-                        e.spawn();
-                        lastSpawnedTime = gameTime.TotalGameTime.TotalSeconds;
-                    }
-                }
-                List<Enemy> temp = new List<Enemy>();
-                foreach (Enemy e in enemylist)
-                {
-                    if (e.dead)
-                    {
-                        temp.Add(e);
-                    }
-                    e.move();
-                    if (e.lose)
-                    {
-                        MessageLog.GameOver();
-                        GameStats.PlayerLoses = true;
-                    }
-                }
-                foreach (Enemy e in temp)
-                {
-                    enemylist.Remove(e);
-                }
-                foreach (Tower t in towerlist)
+                enemylist.RemoveAll(e => e.Update(gameTime));
+                towerlist.ForEach(t =>
                 {
                     projectilelist = t.Attack(enemylist, projectilelist, gameTime.TotalGameTime.TotalSeconds, (d, p) =>
                     {
                         floatingTextList.Add(new FloatingText(p, ResourceManager.GameFont, d.ToString()));
                     });
-                }
+                });
                 projectilelist.RemoveAll(p => p.Move());
             }
             if (enemylist.Count == 0 && GameStats.AttackPhase)
@@ -84,27 +56,28 @@ namespace TowerDefense
             GameStats.AttackPhase = true;
             GameStats.Level++;
             MessageLog.Level(GameStats.Level);
-            Random rand = new Random();
-            double num = rand.NextDouble();
+            Random random = new Random();
+
+            double num = random.NextDouble();
             if (num < .3)
             {
-                for (int i = 0; i < (15 + GameStats.Level); i++)
+                for (int i = 0; i < (30 + GameStats.Level * 2); i++)
                 {
-                    enemylist.Add(new Enemy(GameStats.Level * 8, 2, ResourceManager.Enemy, new List<Node>(bestPath), "Malaria", 1.0f, .4f));
+                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 4, 4, ResourceManager.Enemy, new List<Node>(bestPath), "Malaria", 1.0f)), i * 400));
                 }
             }
             else if (num < .6)
             {
-                for (int i = 0; i < (30 + 2 * GameStats.Level); i++)
+                for (int i = 0; i < (20 + GameStats.Level * 1.5); i++)
                 {
-                    enemylist.Add(new Enemy(GameStats.Level * 4, 2, ResourceManager.Enemy, new List<Node>(bestPath), "Tuberculosis", .33f, .2f));
+                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 8, 2, ResourceManager.Enemy, new List<Node>(bestPath), "Tuberculosis", .33f)), i * 400));
                 }
             }
             else
             {
-                for (int i = 0; i < (5 + GameStats.Level / 2); i++)
+                for (int i = 0; i < (20 + GameStats.Level); i++)
                 {
-                    enemylist.Add(new Enemy(GameStats.Level * 16, 1, ResourceManager.Enemy, new List<Node>(bestPath), "AIDS", 1.5f, .8f));
+                    delayedActions.Add(new DelayedAction(() => enemylist.Add(new Enemy(GameStats.Level * 16, 1, ResourceManager.Enemy, new List<Node>(bestPath), "AIDS", 1.5f)), i * 1000));
                 }
             }
         }
