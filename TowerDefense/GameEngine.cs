@@ -33,7 +33,7 @@ namespace TowerDefense
                 });
                 projectilelist.RemoveAll(p => p.Move());
             }
-            if (enemylist.Count == 0 && GameStats.AttackPhase)
+            if (enemylist.Count == 0 && delayedActions.Count == 0 && GameStats.AttackPhase)
             {
                 GameStats.AttackPhase = false;
                 projectilelist.Clear();
