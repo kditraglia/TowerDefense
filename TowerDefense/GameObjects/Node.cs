@@ -60,7 +60,7 @@ namespace TowerDefense
             List<Node> neighbors = new List<Node>();
             if (portal && portalsTo != null)
             {
-                neighbors.Add(portalsTo);
+                neighbors.Add(portalsTo.Clone());
             }
             else
             {

@@ -79,8 +79,8 @@ namespace TowerDefense
             {
                 case CheckForPathType.AddingPortal:
                     nodes[x, y].portal = true;
-                    nodes[x, y].portalsTo = mouse.PortalEntrance.Clone();
-                    mouse.PortalEntrance.portalsTo = nodes[x, y].Clone();
+                    nodes[x, y].portalsTo = mouse.PortalEntrance;
+                    mouse.PortalEntrance.portalsTo = nodes[x, y];
                     break;
                 case CheckForPathType.RemovingPortal:
                     nodes[x, y].portal = false;
@@ -108,7 +108,7 @@ namespace TowerDefense
                 case CheckForPathType.RemovingPortal:
                     nodes[x, y].portal = true;
                     nodes[x, y].portalsTo = portaledTo;
-                    portaledTo.portalsTo = nodes[x, y].Clone();
+                    portaledTo.portalsTo = nodes[x, y];
                     portaledTo.portal = true;
                     break;
                 case CheckForPathType.TogglingCheese:

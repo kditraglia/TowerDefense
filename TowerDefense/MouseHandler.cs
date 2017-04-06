@@ -141,8 +141,8 @@ namespace TowerDefense
                 {
                     portalExit.portal = true;
                     portalExit.UpdateTex(tex);
-                    portalExit.portalsTo = portalEntrance.Clone();
-                    portalEntrance.portalsTo = portalExit.Clone();
+                    portalExit.portalsTo = portalEntrance;
+                    portalEntrance.portalsTo = portalExit;
                     SelectionContext = SelectionContext.PlacingPortalEntrance;
                     GameStats.Gold = GameStats.Gold - 20;
                 }
