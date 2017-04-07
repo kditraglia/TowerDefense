@@ -40,12 +40,26 @@ namespace TowerDefense
         {
             this.actualPos = actualPos;
             this.simplePos = simplePos;
+
+            spriteHeight = 32;
+            spriteWidth = 32;
+            currentFrame = 0;
         }
+
+        public override bool Update(GameTime gameTime)
+        {
+            frameCount = portal ? 4 : 0;
+            currentFrame = portal ? currentFrame : 0;
+            return base.Update(gameTime);
+        }
+
         public override void Draw(SpriteBatch batch) 
         {
             base.Draw(batch);
-            if ( tex2 != null )
-                batch.Draw(tex2, actualPos.ToVector2(), null, Color);
+            if (tex2 != null)
+            {
+                batch.Draw(tex2, Position.ToVector2(), new Rectangle(new Point(currentFrame * spriteWidth, 0), new Point(spriteWidth, spriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            }
         }
         public void UpdateTex(Texture2D tex)
         {

@@ -86,7 +86,7 @@ namespace TowerDefense
         {
             enemylist.ForEach(e =>
             {
-                e.Hovering = e.BoundingBox().Contains(mouse.pos);
+                e.Hovering = e.BoundingBox().Contains(mouse.Position);
                 if (e.Hovering)
                 {
                     mouse.HoveredObject = e;
@@ -98,7 +98,7 @@ namespace TowerDefense
             {
                 towerlist.ForEach(t =>
                 {
-                    t.Hovering = t.BoundingBox().Contains(mouse.pos) && mouse.SelectionContext == SelectionContext.None;
+                    t.Hovering = t.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext == SelectionContext.None;
                     if (t.Hovering)
                     {
                         mouse.HoveredObject = t;
@@ -117,7 +117,7 @@ namespace TowerDefense
                 {
                     GameStats.Gold = GameStats.Gold - t.Cost;
                     towerlist.Add(t);
-                    t.Position = mouse.pos;
+                    t.Position = mouse.Position;
                     mouse.SelectedObject = null;
                     mouse.SelectionContext = SelectionContext.None;
                     mouse.UpdateTex(ResourceManager.DefaultCursor);

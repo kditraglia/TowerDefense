@@ -31,6 +31,10 @@ namespace TowerDefense
                     break;
                 case HoveringContext.ButtonPortal:
                     instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { portal = true };
+                    spriteHeight = 32;
+                    spriteWidth = 32;
+                    currentFrame = 0;
+                    frameCount = 4;
                     break;
                 case HoveringContext.ButtonCheese:
                     instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { cheese = true };
@@ -40,6 +44,11 @@ namespace TowerDefense
                 default:
                     break;
             }
+        }
+
+        public override void Draw(SpriteBatch batch)
+        {
+            batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * spriteWidth, 0), new Point(spriteWidth, spriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
 
         public override void ShowStats(SpriteBatch batch, Viewport viewport)
@@ -53,22 +62,22 @@ namespace TowerDefense
             {
                 case HoveringContext.ButtonGenericTower:
                     mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectedObject = new GenericTower(mouse.pos, mouse.tex);
+                    mouse.SelectedObject = new GenericTower(mouse.Position, mouse.Tex);
                     mouse.SelectionContext = SelectionContext.PlacingTower;
                     break;
                 case HoveringContext.ButtonCannonTower:
                     mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectedObject = new CannonTower(mouse.pos, mouse.tex);
+                    mouse.SelectedObject = new CannonTower(mouse.Position, mouse.Tex);
                     mouse.SelectionContext = SelectionContext.PlacingTower;
                     break;
                 case HoveringContext.ButtonBatteryTower:
                     mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectedObject = new BatteryTower(mouse.pos, mouse.tex);
+                    mouse.SelectedObject = new BatteryTower(mouse.Position, mouse.Tex);
                     mouse.SelectionContext = SelectionContext.PlacingTower;
                     break;
                 case HoveringContext.ButtonBlastTower:
                     mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectedObject = new BlastTower(mouse.pos, mouse.tex);
+                    mouse.SelectedObject = new BlastTower(mouse.Position, mouse.Tex);
                     mouse.SelectionContext = SelectionContext.PlacingTower;
                     break;
                 case HoveringContext.ButtonWall:
@@ -76,7 +85,7 @@ namespace TowerDefense
                     mouse.SelectionContext = SelectionContext.PlacingWall;
                     break;
                 case HoveringContext.ButtonPortal:
-                    mouse.UpdateTex(mouse.HoveredObject.Tex);
+                    mouse.UpdateTex(mouse.HoveredObject.Tex, 32, 32, 4);
                     mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
                     break;
                 case HoveringContext.ButtonCheese:

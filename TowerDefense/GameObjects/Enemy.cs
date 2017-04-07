@@ -22,13 +22,6 @@ namespace TowerDefense
         int speed;
         List<Node> bestPath;
         Point currentDest;
-
-        int spriteHeight = 20;
-        int spriteWidth = 18;
-        int currentFrame = 0;
-        int frameCount = 2;
-        int frameTotalDuration = 200;
-        int frameDuration = 0;
         VampireAnim anim = VampireAnim.Down;
 
         CommandCard commandCard;
@@ -52,7 +45,11 @@ namespace TowerDefense
             this.Position = currentDest = bestPath[0].actualPos;
 
             commandCard = new CommandCard(name, hp: HP.ToString(), speed: speed.ToString());
-        }
+            spriteHeight = 20;
+            spriteWidth = 18;
+            currentFrame = 0;
+            frameCount = 2;
+    }
 
         public void damage(int damage)
         {
@@ -61,7 +58,7 @@ namespace TowerDefense
             ResourceManager.DamagedSound.Play();
         }
 
-        public bool Update(GameTime gameTime)
+        public override bool Update(GameTime gameTime)
         {
             if (HP <= 0)
             {
@@ -69,14 +66,6 @@ namespace TowerDefense
                 color.G -= 15;
                 color.B -= 15;
                 return color == Color.Black;
-            }
-
-            frameDuration += gameTime.ElapsedGameTime.Milliseconds;
-            if (frameDuration > frameTotalDuration)
-            {
-                frameDuration = 0;
-                currentFrame++;
-                currentFrame %= frameCount;
             }
 
             if (Position != currentDest)
@@ -112,7 +101,7 @@ namespace TowerDefense
                 }
             }
 
-            return false;
+            return base.Update(gameTime);
         }
 
         public override void ShowStats(SpriteBatch batch, Viewport viewport)

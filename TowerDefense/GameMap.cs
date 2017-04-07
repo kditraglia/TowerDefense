@@ -39,6 +39,17 @@ namespace TowerDefense
             }
         }
 
+        internal void Update(GameTime gameTime)
+        {
+            for (int i = 0; i <= Constants.MapSize.X; i++)
+            {
+                for (int j = 0; j <= Constants.MapSize.Y; j++)
+                {
+                    nodes[i, j].Update(gameTime);
+                }
+            }
+        }
+
         internal void Draw(SpriteBatch batch)
         {
             for (int i = 0; i <= Constants.MapSize.X; i++)
@@ -56,7 +67,7 @@ namespace TowerDefense
             {
                 foreach (Node n in nodes)
                 {
-                    n.Hovering = n.BoundingBox().Contains(mouse.pos) && mouse.SelectionContext != SelectionContext.PlacingTower;
+                    n.Hovering = n.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext != SelectionContext.PlacingTower;
                     if (n.Hovering)
                     {
                         mouse.HoveredObject = n;
