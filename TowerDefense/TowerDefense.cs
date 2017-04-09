@@ -28,8 +28,8 @@ namespace TowerDefense
 
             VirtualSize = new Vector2(1020, 800);
 
-            //graphics.PreferredBackBufferWidth = 1020;
-            //graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 1020;
+            graphics.PreferredBackBufferHeight = 800;
         }
 
 

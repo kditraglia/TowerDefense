@@ -12,8 +12,6 @@ namespace TowerDefense
         public static Texture2D StartButton { get; private set; }
         public static Texture2D UpgradeButton { get; private set; }
         public static Texture2D Enemy { get; private set; }
-        public static Texture2D TopBanner { get; private set; }
-        public static Texture2D BottomBanner { get; private set; }
         public static Texture2D GenericTower { get; private set; }
         public static Texture2D CannonTower { get; private set; }
         public static Texture2D BatteryTower { get; private set; }
@@ -45,8 +43,6 @@ namespace TowerDefense
             StartButton = content.Load<Texture2D>("start");
             UpgradeButton = content.Load<Texture2D>("upgrade");
             Enemy = content.Load<Texture2D>("vampire");
-            TopBanner = content.Load<Texture2D>("banner");
-            BottomBanner = content.Load<Texture2D>("banner2");
             GenericTower = content.Load<Texture2D>("generic tower");
             CannonTower = content.Load<Texture2D>("cannon tower");
             BatteryTower = content.Load<Texture2D>("battery tower");
