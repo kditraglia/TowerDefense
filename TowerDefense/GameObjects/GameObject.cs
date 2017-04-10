@@ -12,8 +12,8 @@ namespace TowerDefense
         public bool Selected { get; set; }
         public virtual Color Color { get { return Hovering || Selected ? Color.Green : Color.White; } }
 
-        protected int spriteHeight;
-        protected int spriteWidth;
+        internal int SpriteHeight { get; set; }
+        internal int SpriteWidth { get; set; }
         protected int currentFrame = 0;
         protected int frameCount = 0;
         protected int frameTotalDuration = 200;
@@ -23,8 +23,8 @@ namespace TowerDefense
         {
             Tex = tex;
             Position = position;
-            spriteHeight = tex.Bounds.Height;
-            spriteWidth = tex.Bounds.Width;
+            SpriteHeight = tex.Bounds.Height;
+            SpriteWidth = tex.Bounds.Width;
         }
 
         public virtual void ShowStats(SpriteBatch batch, Viewport viewport) { }
@@ -48,7 +48,7 @@ namespace TowerDefense
             batch.Draw(Tex, Position.ToVector2(), null, Color);
         }
 
-        public Rectangle BoundingBox()
+        public virtual Rectangle BoundingBox()
         {
             //Assumes the texture isn't scaled
             return new Rectangle(Position, new Point(Tex.Width, Tex.Height));

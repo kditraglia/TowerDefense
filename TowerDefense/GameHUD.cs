@@ -10,37 +10,55 @@ namespace TowerDefense
 {
     class GameHUD
     {
-        List<Button> buttonlist = new List<Button>();
         Button startButton;
         Button upgradeButton;
         MouseHandler mouse;
         Viewport viewport;
+        ActionCard actionCard;
 
-        //TODO nix this viewport nonsense
         internal GameHUD(Viewport viewport, MouseHandler mouse)
         {
             this.viewport = viewport;
             this.mouse = mouse;
-            startButton = new Button(new Point(10 + 32, (int)(viewport.Height * .2f - 74)), ResourceManager.StartButton, HoveringContext.ButtonStart);
+            startButton = new Button(new Point(10 + 64, 125), ResourceManager.StartButton, HoveringContext.ButtonStart);
             upgradeButton = new Button(new Point(viewport.Width - 160, (int)(viewport.Height * .55f)), ResourceManager.UpgradeButton, HoveringContext.ButtonUpgrade);
-            buttonlist.Add(new Button(new Point(10, (int)(viewport.Height * .2f)), ResourceManager.GenericTower, HoveringContext.ButtonGenericTower));
-            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .2f)), ResourceManager.CannonTower, HoveringContext.ButtonCannonTower));
-            buttonlist.Add(new Button(new Point(10, (int)(viewport.Height * .2f) + 64), ResourceManager.BatteryTower, HoveringContext.ButtonBatteryTower));
-            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .2f) + 64), ResourceManager.BlastTower, HoveringContext.ButtonBlastTower));
-            buttonlist.Add(new Button(new Point(10 + 16, (int)(viewport.Height * .5f)), ResourceManager.Wall, HoveringContext.ButtonWall));
-            buttonlist.Add(new Button(new Point(10 + 64, (int)(viewport.Height * .5f)), ResourceManager.Portal, HoveringContext.ButtonPortal));
-            buttonlist.Add(new Button(new Point(10 + 16, (int)(viewport.Height * .56f)), ResourceManager.Cheese, HoveringContext.ButtonCheese));
+
+            List<Button> buttonList = new List<Button>();
+            buttonList.Add(new Button(Point.Zero, ResourceManager.GenericTower, HoveringContext.ButtonGenericTower));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.CannonTower, HoveringContext.ButtonCannonTower));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.BatteryTower, HoveringContext.ButtonBatteryTower));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.BlastTower, HoveringContext.ButtonBlastTower));
+
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
+
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Wall, HoveringContext.ButtonWall));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Portal, HoveringContext.ButtonPortal));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Cheese, HoveringContext.ButtonCheese));
+
+            actionCard = new ActionCard(new Point(0, 170), buttonList);
         }
 
-        internal void Update(GameTime gameTime)
+        internal void Update(GameTime gameTime, MouseHandler mouse)
         {
-            buttonlist.ForEach(b => b.Update(gameTime));
+            actionCard.Update(gameTime, mouse);
+
+            if (upgradeButton.BoundingBox().Contains(mouse.Position))
+            {
+                mouse.HoveredObject = upgradeButton;
+                mouse.HoveringContext = upgradeButton.HoveringContext;
+            }
+            else if (startButton.BoundingBox().Contains(mouse.Position))
+            {
+                mouse.HoveredObject = startButton;
+                mouse.HoveringContext = startButton.HoveringContext;
+            }
         }
 
         internal void Draw(SpriteBatch batch)
         {
             startButton.Draw(batch);
-            buttonlist.ForEach(b => b.Draw(batch));
+            actionCard.Draw(batch);
 
             if (mouse.SelectionContext == SelectionContext.TowerSelected)
             {
@@ -55,35 +73,6 @@ namespace TowerDefense
 
             batch.DrawString(ResourceManager.GameFont, "GOLD - " + GameStats.Gold + " $", new Vector2(viewport.Width * .8f, viewport.Height * .1f), Color.Black, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
             MessageLog.Draw(batch, ResourceManager.GameFont, viewport);
-            batch.Draw(ResourceManager.TopBanner, new Vector2(viewport.Width / 2 - ResourceManager.TopBanner.Width / 2, 0), null, Color.White);
-            batch.Draw(ResourceManager.BottomBanner, new Vector2(viewport.Width / 2 - ResourceManager.TopBanner.Width / 4, viewport.Height - ResourceManager.BottomBanner.Height), null, Color.White);
-        }
-
-        internal void HandleMouseHover(MouseHandler mouse)
-        {
-            if (upgradeButton.BoundingBox().Contains(mouse.Position))
-            {
-                mouse.HoveredObject = upgradeButton;
-                mouse.HoveringContext = upgradeButton.HoveringContext;
-            }
-            else if (startButton.BoundingBox().Contains(mouse.Position))
-            {
-                mouse.HoveredObject = startButton;
-                mouse.HoveringContext = startButton.HoveringContext;
-            }
-
-            if (!GameStats.AttackPhase)
-            {
-                buttonlist.ForEach(b =>
-                {
-                    b.Hovering = b.BoundingBox().Contains(mouse.Position);
-                    if (b.Hovering)
-                    {
-                        mouse.HoveredObject = b;
-                        mouse.HoveringContext = b.HoveringContext;
-                    }
-                });
-            }
         }
     }
 }

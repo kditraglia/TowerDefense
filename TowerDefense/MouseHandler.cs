@@ -109,7 +109,7 @@ namespace TowerDefense
         public override void Draw(SpriteBatch batch)
         {
 
-            batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * spriteWidth, 0), new Point(spriteWidth, spriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * SpriteWidth, 0), new Point(SpriteWidth, SpriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
 
         private void HandleLeftClick(GameEngine gameEngine, GameMap gameMap)
@@ -238,8 +238,8 @@ namespace TowerDefense
         public void UpdateTex(Texture2D tex, int spriteHeight, int spriteWidth, int frameCount)
         {
             this.Tex = tex;
-            this.spriteHeight = spriteHeight;
-            this.spriteWidth = spriteWidth;
+            this.SpriteHeight = spriteHeight;
+            this.SpriteWidth = spriteWidth;
             this.frameCount = frameCount;
             this.currentFrame = 0;
         }

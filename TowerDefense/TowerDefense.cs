@@ -19,10 +19,14 @@ namespace TowerDefense
         GameEngine gameEngine;
         GameMap gameMap;
 
+        public Vector2 VirtualSize { get; set; }
+
         public TowerDefense()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            VirtualSize = new Vector2(1020, 800);
 
             graphics.PreferredBackBufferWidth = 1020;
             graphics.PreferredBackBufferHeight = 800;
@@ -32,7 +36,7 @@ namespace TowerDefense
         protected override void Initialize()
         {
             viewport = graphics.GraphicsDevice.Viewport;
-
+            
             base.Initialize();
         }
 
@@ -50,21 +54,20 @@ namespace TowerDefense
         protected override void Update(GameTime gameTime)
         {
             mouse.Update(gameTime, gameEngine, gameMap);
-            gameMap.Update(gameTime);
-            gameHUD.Update(gameTime);
-            gameMap.HandleMouseHover(mouse);
-            gameHUD.HandleMouseHover(mouse);
-            gameEngine.HandleMouseHover(mouse);
-
-            gameEngine.Update(gameTime);
+            gameMap.Update(gameTime, mouse);
+            gameHUD.Update(gameTime, mouse);
+            gameEngine.Update(gameTime, mouse);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.WhiteSmoke);
+            var scaleX = viewport.Width / VirtualSize.X;
+            var scaleY = viewport.Height / VirtualSize.Y;
+            var scaleMatrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
 
-            batch.Begin();
+            batch.Begin(transformMatrix: scaleMatrix);
 
             gameMap.Draw(batch);
             gameEngine.Draw(batch);
