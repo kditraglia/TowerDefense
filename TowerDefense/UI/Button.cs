@@ -31,8 +31,8 @@ namespace TowerDefense
                     break;
                 case HoveringContext.ButtonPortal:
                     instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { portal = true };
-                    spriteHeight = 32;
-                    spriteWidth = 32;
+                    SpriteHeight = 32;
+                    SpriteWidth = 32;
                     currentFrame = 0;
                     frameCount = 4;
                     break;
@@ -48,12 +48,17 @@ namespace TowerDefense
 
         public override void Draw(SpriteBatch batch)
         {
-            batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * spriteWidth, 0), new Point(spriteWidth, spriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * SpriteWidth, 0), new Point(SpriteWidth, SpriteHeight)), Color, 0, new Vector2(SpriteWidth / 2, SpriteHeight / 2), 1, SpriteEffects.None, 0);
         }
 
         public override void ShowStats(SpriteBatch batch, Viewport viewport)
         {
             instanceOfWhatThisButtonCreates?.ShowStats(batch, viewport);
+        }
+
+        public override Rectangle BoundingBox()
+        {
+            return new Rectangle(Position.X - SpriteWidth / 2, Position.Y - SpriteHeight / 2, SpriteWidth, SpriteHeight);
         }
 
         public override void HandleLeftClick(MouseHandler mouse)

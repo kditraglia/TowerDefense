@@ -55,9 +55,8 @@ namespace TowerDefense
         {
             mouse.Update(gameTime, gameEngine, gameMap);
             gameMap.Update(gameTime);
-            gameHUD.Update(gameTime);
+            gameHUD.Update(gameTime, mouse);
             gameMap.HandleMouseHover(mouse);
-            gameHUD.HandleMouseHover(mouse);
             gameEngine.HandleMouseHover(mouse);
 
             gameEngine.Update(gameTime);

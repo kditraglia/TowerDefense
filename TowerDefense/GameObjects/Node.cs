@@ -41,8 +41,8 @@ namespace TowerDefense
             this.actualPos = actualPos;
             this.simplePos = simplePos;
 
-            spriteHeight = 32;
-            spriteWidth = 32;
+            SpriteHeight = 32;
+            SpriteWidth = 32;
             currentFrame = 0;
         }
 
@@ -58,7 +58,7 @@ namespace TowerDefense
             base.Draw(batch);
             if (tex2 != null)
             {
-                batch.Draw(tex2, Position.ToVector2(), new Rectangle(new Point(currentFrame * spriteWidth, 0), new Point(spriteWidth, spriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                batch.Draw(tex2, Position.ToVector2(), new Rectangle(new Point(currentFrame * SpriteWidth, 0), new Point(SpriteWidth, SpriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             }
         }
         public void UpdateTex(Texture2D tex)
