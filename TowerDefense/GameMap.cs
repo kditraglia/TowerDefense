@@ -39,13 +39,26 @@ namespace TowerDefense
             }
         }
 
-        internal void Update(GameTime gameTime)
+        internal void Update(GameTime gameTime, MouseHandler mouse)
         {
             for (int i = 0; i <= Constants.MapSize.X; i++)
             {
                 for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
                     nodes[i, j].Update(gameTime);
+                }
+            }
+
+            if (!GameStats.AttackPhase)
+            {
+                foreach (Node n in nodes)
+                {
+                    n.Hovering = n.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext != SelectionContext.PlacingTower;
+                    if (n.Hovering)
+                    {
+                        mouse.HoveredObject = n;
+                        mouse.HoveringContext = n.wall || n.portal || n.cheese ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
+                    }
                 }
             }
         }
@@ -57,22 +70,6 @@ namespace TowerDefense
                 for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
                     nodes[i, j].Draw(batch);
-                }
-            }
-        }
-
-        internal void HandleMouseHover(MouseHandler mouse)
-        {
-            if (!GameStats.AttackPhase)
-            {
-                foreach (Node n in nodes)
-                {
-                    n.Hovering = n.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext != SelectionContext.PlacingTower;
-                    if (n.Hovering)
-                    {
-                        mouse.HoveredObject = n;
-                        mouse.HoveringContext = n.wall || n.portal || n.cheese ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
-                    }
                 }
             }
         }

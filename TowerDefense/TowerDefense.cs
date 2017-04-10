@@ -54,12 +54,9 @@ namespace TowerDefense
         protected override void Update(GameTime gameTime)
         {
             mouse.Update(gameTime, gameEngine, gameMap);
-            gameMap.Update(gameTime);
+            gameMap.Update(gameTime, mouse);
             gameHUD.Update(gameTime, mouse);
-            gameMap.HandleMouseHover(mouse);
-            gameEngine.HandleMouseHover(mouse);
-
-            gameEngine.Update(gameTime);
+            gameEngine.Update(gameTime, mouse);
             base.Update(gameTime);
         }
 
