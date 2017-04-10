@@ -20,7 +20,7 @@ namespace TowerDefense
         {
             this.viewport = viewport;
             this.mouse = mouse;
-            startButton = new Button(new Point(10 + 32, (int)(viewport.Height * .2f - 74)), ResourceManager.StartButton, HoveringContext.ButtonStart);
+            startButton = new Button(new Point(10 + 64, 125), ResourceManager.StartButton, HoveringContext.ButtonStart);
             upgradeButton = new Button(new Point(viewport.Width - 160, (int)(viewport.Height * .55f)), ResourceManager.UpgradeButton, HoveringContext.ButtonUpgrade);
 
             List<Button> buttonList = new List<Button>();
