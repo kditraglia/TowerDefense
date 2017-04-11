@@ -103,10 +103,10 @@ namespace TowerDefense
             return neighbors;
         }
 
-        public override void ShowStats(SpriteBatch batch, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch)
         {
-            int Y = (int)(viewport.Height * .2f);
-            int X = viewport.Width;
+            int Y = (int)(Constants.GameSize.Y * .2f);
+            int X = Constants.GameSize.X;
 
             if (wall)
             {

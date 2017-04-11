@@ -27,7 +27,7 @@ namespace TowerDefense
             SpriteWidth = tex.Bounds.Width;
         }
 
-        public virtual void ShowStats(SpriteBatch batch, Viewport viewport) { }
+        public virtual void ShowStats(SpriteBatch batch) { }
         public virtual void HandleLeftClick(MouseHandler mouse) { }
 
         public virtual bool Update(GameTime gameTime)

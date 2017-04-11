@@ -18,7 +18,7 @@ namespace TowerDefense
             _position = position;
             _buttonList = buttonList;
 
-            Point _tempPos = _position + new Point(10 + 32, 10 + 32);
+            Point _tempPos = _position + new Point(10 + 32, 32);
             _buttonList.ForEach(b =>
             {
                 b.Position = _tempPos;
@@ -51,13 +51,21 @@ namespace TowerDefense
 
         internal void Draw(SpriteBatch batch)
         {
-            batch.Draw(ResourceManager.Block, new Rectangle(_position, new Point(Constants.MapStart.X, 500)), Color.DarkKhaki);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X + 74, _position.Y, 1, 500), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10, Constants.MapStart.X, 1), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10 + 64, Constants.MapStart.X, 1), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10 + 128, Constants.MapStart.X, 1), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10 + 192, Constants.MapStart.X, 1), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10 + 256, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position, new Point(Constants.MapStart.X, Constants.NodeSize.Y * (Constants.MapSize.Y + 1))), Color.DarkKhaki);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X + 74, _position.Y, 1, Constants.NodeSize.Y * (Constants.MapSize.Y + 1)), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 64, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 128, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 192, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 256, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 320, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 384, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 448, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 512, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 576, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 640, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 704, Constants.MapStart.X, 1), Color.Black);
+            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 768, Constants.MapStart.X, 1), Color.Black);
             _buttonList.ForEach(b => b.Draw(batch));
         }
     }

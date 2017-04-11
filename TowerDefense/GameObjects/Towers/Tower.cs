@@ -25,10 +25,10 @@ namespace TowerDefense
             }
         }
 
-        public override void ShowStats(SpriteBatch batch, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch)
         {
-            int Y = (int)(viewport.Height * .2f);
-            int X = viewport.Width;
+            int Y = 200;
+            int X = 1020;
 
             CommandCard.Draw(new Point(X, Y), batch);
         }

@@ -44,7 +44,7 @@ namespace TowerDefense
         //I need to hold a reference for when you place the other side to link them together
         public Node PortalEntrance { get; set; }
 
-        public MouseHandler(Point pos, Texture2D tex) : base(tex, pos)
+        public MouseHandler() : base(ResourceManager.DefaultCursor, Point.Zero)
         {
 
         }

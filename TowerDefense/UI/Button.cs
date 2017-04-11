@@ -51,9 +51,9 @@ namespace TowerDefense
             batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * SpriteWidth, 0), new Point(SpriteWidth, SpriteHeight)), Color, 0, new Vector2(SpriteWidth / 2, SpriteHeight / 2), 1, SpriteEffects.None, 0);
         }
 
-        public override void ShowStats(SpriteBatch batch, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch)
         {
-            instanceOfWhatThisButtonCreates?.ShowStats(batch, viewport);
+            instanceOfWhatThisButtonCreates?.ShowStats(batch);
         }
 
         public override Rectangle BoundingBox()
