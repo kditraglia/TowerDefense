@@ -39,13 +39,13 @@ namespace TowerDefense
             }
         }
 
-        internal void Update(GameTime gameTime, InputHandler mouse)
+        internal void Update(GameTime gameTime, InputHandler inputHandler)
         {
             for (int i = 0; i <= Constants.MapSize.X; i++)
             {
                 for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
-                    nodes[i, j].Update(gameTime);
+                    nodes[i, j].Update(gameTime, inputHandler);
                 }
             }
 

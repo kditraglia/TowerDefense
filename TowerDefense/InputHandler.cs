@@ -16,11 +16,12 @@ namespace TowerDefense
         TowerSelected
     }
 
-    class InputHandler : GameObject
+    class InputHandler
     {
+        public Point Position { get; set; }
         public MouseState MouseState { get; set; }
         public TouchCollection TouchState { get; set; }
-        public bool MouseClicked { get; set; }
+        public bool SelectionOccurring { get; set; }
         public GameObject SelectedObject { get; set; }
         public SelectionContext SelectionContext { get; set; }
 
@@ -30,11 +31,11 @@ namespace TowerDefense
 
         private Vector2 _gameScale;
 
-        public InputHandler(Vector2 gameScale) : base(ResourceManager.DefaultCursor, Point.Zero)
+        public InputHandler(Vector2 gameScale)
         {
             _gameScale = gameScale;
         }
-        public void Update(GameTime gameTime, GameEngine gameEngine, GameMap gameMap)
+        public void Update(GameTime gameTime, InputHandler inputHandler)
         {
             MouseState = Mouse.GetState();
             TouchState = TouchPanel.GetState();
@@ -42,10 +43,16 @@ namespace TowerDefense
             if (!TouchState.IsConnected)
             {
                 Position = (MouseState.Position.ToVector2() / _gameScale).ToPoint();
+                SelectionOccurring = MouseState.LeftButton == ButtonState.Pressed;
             }
             else if (TouchState.Count == 1)
             {
                 Position = (TouchState[0].Position / _gameScale).ToPoint();
+                SelectionOccurring = true;
+            }
+            else
+            {
+                SelectionOccurring = false;
             }
 
             if (GameStats.PlayerLoses)
@@ -97,14 +104,6 @@ namespace TowerDefense
 
             //HoveringContext = HoveringContext.None;
             //HoveredObject = null;
-
-            base.Update(gameTime);
-        }
-
-        public override void Draw(SpriteBatch batch)
-        {
-
-            batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * SpriteWidth, 0), new Point(SpriteWidth, SpriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
 
         private void HandleLeftClick(GameEngine gameEngine, GameMap gameMap)
@@ -210,9 +209,6 @@ namespace TowerDefense
             //        ResourceManager.SellSound.Play();
             //    }
             //}
-
-            UpdateTex(ResourceManager.DefaultCursor);
-            SelectionContext = SelectionContext.None;
         }
 
         internal bool MouseInGameBounds()
@@ -223,20 +219,6 @@ namespace TowerDefense
             return Position.Y > topY && Position.X > leftX &&
                         Position.Y < topY + (Constants.MapSize.Y * Constants.NodeSize.Y) &&
                         Position.X < leftX + (Constants.MapSize.X * Constants.NodeSize.X);
-        }
-
-        public void UpdateTex(Texture2D tex)
-        {
-            UpdateTex(tex, tex.Bounds.Height, tex.Bounds.Width, 0);
-        }
-
-        public void UpdateTex(Texture2D tex, int spriteHeight, int spriteWidth, int frameCount)
-        {
-            this.Tex = tex;
-            this.SpriteHeight = spriteHeight;
-            this.SpriteWidth = spriteWidth;
-            this.frameCount = frameCount;
-            this.currentFrame = 0;
         }
     }
 }

@@ -18,12 +18,12 @@ namespace TowerDefense
 
         }
 
-        internal void Update(GameTime gameTime, InputHandler mouse)
+        internal void Update(GameTime gameTime, InputHandler inputHandler)
         {
             delayedActions.RemoveAll(d => d.Update(gameTime));
             if (GameStats.AttackPhase)
             {
-                enemylist.RemoveAll(e => e.Update(gameTime));
+                enemylist.RemoveAll(e => e.Update(gameTime, inputHandler));
                 towerlist.ForEach(t =>
                 {
                     projectilelist = t.Attack(enemylist, projectilelist, gameTime.TotalGameTime.TotalSeconds, (d, p) =>
@@ -117,7 +117,6 @@ namespace TowerDefense
                     t.Position = mouse.Position;
                     mouse.SelectedObject = null;
                     mouse.SelectionContext = SelectionContext.None;
-                    mouse.UpdateTex(ResourceManager.DefaultCursor);
                     ResourceManager.WallSound.Play();
                 }
                 else

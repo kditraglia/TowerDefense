@@ -24,18 +24,6 @@ namespace TowerDefense
         CommandCard portalCard = new CommandCard("Portal", cost: "20", description: "Warps enemies");
         CommandCard cheeseCard = new CommandCard("Cheese", cost: "20", description: "Irresistible to enemies");
 
-        public override Color Color
-        {
-            get
-            {
-                if (portalsTo != null && portalsTo.Hovering)
-                {
-                    return Color.Green;
-                }
-                return base.Color;
-            }
-        }
-
         public Node(Point actualPos, Point simplePos, Texture2D tex) : base(tex, actualPos)
         {
             this.actualPos = actualPos;
@@ -46,11 +34,11 @@ namespace TowerDefense
             currentFrame = 0;
         }
 
-        public override bool Update(GameTime gameTime)
+        public override bool Update(GameTime gameTime, InputHandler inputHandler)
         {
             frameCount = portal ? 4 : 0;
             currentFrame = portal ? currentFrame : 0;
-            return base.Update(gameTime);
+            return base.Update(gameTime, inputHandler);
         }
 
         public override void Draw(SpriteBatch batch) 

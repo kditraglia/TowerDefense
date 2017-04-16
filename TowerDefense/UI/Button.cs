@@ -3,48 +3,64 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TowerDefense
 {
+    public enum ButtonType
+    {
+        GenericTowerButton,
+        CannonTowerButton,
+        BatteryTowerButton,
+        BlastTowerButton,
+        WallButton,
+        PortalButton,
+        CheeseButton,
+        StartButton,
+        UpgradeButton,
+        NothingButton
+    }
     class Button : GameObject
     {
-        public Button(Point position, Texture2D tex) : base(tex, position)
+        //This is sort of a hack to get the button to display the button item's stats given how I have that structured
+        GameObject instanceOfWhatThisButtonCreates;
+        public ButtonType ButtonType { get; set; }
+
+        public Button(Point position, Texture2D tex, ButtonType buttonType) : base(tex, position)
         {
-            //HoveringContext = hoveringContext;
-            //switch (hoveringContext)
-            //{
-            //    case HoveringContext.ButtonGenericTower:
-            //        instanceOfWhatThisButtonCreates = new GenericTower(position, tex);
-            //        break;
-            //    case HoveringContext.ButtonCannonTower:
-            //        instanceOfWhatThisButtonCreates = new CannonTower(position, tex);
-            //        break;
-            //    case HoveringContext.ButtonBatteryTower:
-            //        instanceOfWhatThisButtonCreates = new BatteryTower(position, tex);
-            //        break;
-            //    case HoveringContext.ButtonBlastTower:
-            //        instanceOfWhatThisButtonCreates = new BlastTower(position, tex);
-            //        break;
-            //    case HoveringContext.ButtonWall:
-            //        instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { wall = true };
-            //        break;
-
-            //Big hack, fix this
-            if (tex == ResourceManager.Portal)
+            ButtonType = buttonType;
+            switch (ButtonType)
             {
-                SpriteHeight = 32;
-                SpriteWidth = 32;
-                currentFrame = 0;
-                frameCount = 4;
+                case ButtonType.GenericTowerButton:
+                    instanceOfWhatThisButtonCreates = new GenericTower(position, tex);
+                    break;
+                case ButtonType.CannonTowerButton:
+                    instanceOfWhatThisButtonCreates = new CannonTower(position, tex);
+                    break;
+                case ButtonType.BatteryTowerButton:
+                    instanceOfWhatThisButtonCreates = new BatteryTower(position, tex);
+                    break;
+                case ButtonType.BlastTowerButton:
+                    instanceOfWhatThisButtonCreates = new BlastTower(position, tex);
+                    break;
+                case ButtonType.WallButton:
+                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { wall = true };
+                    break;
+                case ButtonType.PortalButton:
+                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { portal = true };
+                    SpriteHeight = 32;
+                    SpriteWidth = 32;
+                    currentFrame = 0;
+                    frameCount = 4;
+                    break;
+                case ButtonType.CheeseButton:
+                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { cheese = true };
+                    break;
+                default:
+                    break;
             }
-            //        instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { portal = true };
+        }
 
-            //        break;
-            //    case HoveringContext.ButtonCheese:
-            //        instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { cheese = true };
-            //        break;
-            //    case HoveringContext.ButtonUpgrade:
-            //        break;
-            //    default:
-            //        break;
-            //}
+        public override bool Update(GameTime gameTime, InputHandler inputHandler)
+        {
+
+            return base.Update(gameTime, inputHandler);
         }
 
         public override void Draw(SpriteBatch batch)
@@ -54,7 +70,7 @@ namespace TowerDefense
 
         public override void ShowStats(SpriteBatch batch)
         {
-            //instanceOfWhatThisButtonCreates?.ShowStats(batch);
+            instanceOfWhatThisButtonCreates?.ShowStats(batch);
         }
 
         public override Rectangle BoundingBox()
@@ -62,56 +78,35 @@ namespace TowerDefense
             return new Rectangle(Position.X - SpriteWidth / 2, Position.Y - SpriteHeight / 2, SpriteWidth, SpriteHeight);
         }
 
-        public override void HandleLeftClick(InputHandler mouse)
+        public void HandleLeftClick(InputHandler inputHandler)
         {
-            //switch (mouse.HoveringContext)
+            switch (inputHandler.SelectionContext)
+            {
+                case SelectionContext.PlacingTower:
+                    inputHandler.SelectedObject = instanceOfWhatThisButtonCreates;
+                    break;
+                case SelectionContext.PlacingWall:
+                    break;
+                case SelectionContext.PlacingPortalEntrance:
+                    break;
+                case SelectionContext.PlacingPortalExit:
+                    break;
+                case SelectionContext.PlacingCheese:
+
+                    break;
+                default:
+                    break;
+            }
+
+            //Tower t = mouse.SelectedObject as Tower;
+            //if (GameStats.Gold >= t.Cost)
             //{
-            //    case HoveringContext.ButtonGenericTower:
-            //        mouse.UpdateTex(mouse.HoveredObject.Tex);
-            //        mouse.SelectedObject = new GenericTower(mouse.Position, mouse.Tex);
-            //        mouse.SelectionContext = SelectionContext.PlacingTower;
-            //        break;
-            //    case HoveringContext.ButtonCannonTower:
-            //        mouse.UpdateTex(mouse.HoveredObject.Tex);
-            //        mouse.SelectedObject = new CannonTower(mouse.Position, mouse.Tex);
-            //        mouse.SelectionContext = SelectionContext.PlacingTower;
-            //        break;
-            //    case HoveringContext.ButtonBatteryTower:
-            //        mouse.UpdateTex(mouse.HoveredObject.Tex);
-            //        mouse.SelectedObject = new BatteryTower(mouse.Position, mouse.Tex);
-            //        mouse.SelectionContext = SelectionContext.PlacingTower;
-            //        break;
-            //    case HoveringContext.ButtonBlastTower:
-            //        mouse.UpdateTex(mouse.HoveredObject.Tex);
-            //        mouse.SelectedObject = new BlastTower(mouse.Position, mouse.Tex);
-            //        mouse.SelectionContext = SelectionContext.PlacingTower;
-            //        break;
-            //    case HoveringContext.ButtonWall:
-            //        mouse.UpdateTex(mouse.HoveredObject.Tex);
-            //        mouse.SelectionContext = SelectionContext.PlacingWall;
-            //        break;
-            //    case HoveringContext.ButtonPortal:
-            //        mouse.UpdateTex(mouse.HoveredObject.Tex, 32, 32, 4);
-            //        mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
-            //        break;
-            //    case HoveringContext.ButtonCheese:
-            //        mouse.UpdateTex(mouse.HoveredObject.Tex);
-            //        mouse.SelectionContext = SelectionContext.PlacingCheese;
-            //        break;
-            //    case HoveringContext.ButtonUpgrade:
-            //        Tower t = mouse.SelectedObject as Tower;
-            //        if (GameStats.Gold >= t.Cost)
-            //        {
-            //            GameStats.Gold = GameStats.Gold - t.Cost;
-            //            t.upgrade();
-            //        }
-            //        else
-            //        {
-            //            MessageLog.NotEnoughGold();
-            //        }
-            //        break;
-            //    default:
-            //        break;
+            //    GameStats.Gold = GameStats.Gold - t.Cost;
+            //    t.upgrade();
+            //}
+            //else
+            //{
+            //    MessageLog.NotEnoughGold();
             //}
         }
     }

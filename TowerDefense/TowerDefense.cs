@@ -12,9 +12,9 @@ namespace TowerDefense
     {
         GraphicsDeviceManager graphics;
         SpriteBatch batch;
-        InputHandler mouse;
         Viewport viewport;
 
+        InputHandler inputHandler;
         GameHUD gameHUD;
         GameEngine gameEngine;
         GameMap gameMap;
@@ -42,18 +42,18 @@ namespace TowerDefense
             ResourceManager.InitializeTextures(Content);
             float scaleX = (float)viewport.Width / Constants.GameSize.X;
             float scaleY = (float)viewport.Height / Constants.GameSize.Y;
-            mouse = new InputHandler(new Vector2(scaleX, scaleY));
-            gameHUD = new GameHUD();
+            inputHandler = new InputHandler(new Vector2(scaleX, scaleY));
             gameEngine = new GameEngine();
             gameMap = new GameMap();
+            gameHUD = new GameHUD(() => gameEngine.StartLevel(gameMap.GetBestPath()));
         }
 
         protected override void Update(GameTime gameTime)
         {
-            mouse.Update(gameTime, gameEngine, gameMap);
-            gameMap.Update(gameTime, mouse);
-            gameHUD.Update(gameTime, mouse);
-            gameEngine.Update(gameTime, mouse);
+            inputHandler.Update(gameTime, inputHandler);
+            gameMap.Update(gameTime, inputHandler);
+            gameHUD.Update(gameTime, inputHandler);
+            gameEngine.Update(gameTime, inputHandler);
             base.Update(gameTime);
         }
 
@@ -69,7 +69,6 @@ namespace TowerDefense
             gameMap.Draw(batch);
             gameEngine.Draw(batch);
             gameHUD.Draw(batch);
-            mouse.Draw(batch);
 
             batch.End();
 

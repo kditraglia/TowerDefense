@@ -58,7 +58,7 @@ namespace TowerDefense
             ResourceManager.DamagedSound.Play();
         }
 
-        public override bool Update(GameTime gameTime)
+        public override bool Update(GameTime gameTime, InputHandler inputHandler)
         {
             if (HP <= 0)
             {
@@ -100,7 +100,7 @@ namespace TowerDefense
                 }
             }
 
-            return base.Update(gameTime);
+            return base.Update(gameTime, inputHandler);
         }
 
         public override void ShowStats(SpriteBatch batch)

@@ -31,21 +31,19 @@ namespace TowerDefense
             });
         }
 
-        internal void Update(GameTime gameTime, InputHandler mouse)
+        internal void Update(GameTime gameTime, InputHandler inputHandler)
         {
-            _buttonList.ForEach(b => b.Update(gameTime));
+            _buttonList.ForEach(b => b.Update(gameTime, inputHandler));
 
             if (!GameStats.AttackPhase)
             {
-                //_buttonList.ForEach(b =>
-                //{
-                //    b.Hovering = b.BoundingBox().Contains(mouse.Position);
-                //    if (b.Hovering)
-                //    {
-                //        mouse.HoveredObject = b;
-                //        mouse.HoveringContext = b.HoveringContext;
-                //    }
-                //});
+                _buttonList.ForEach(b =>
+                {
+                    if (b.BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring)
+                    {
+                        inputHandler.SelectionContext = SelectionContext.PlacingTower;
+                    }
+                });
             }
         }
 
