@@ -16,54 +16,54 @@ namespace TowerDefense
 
         internal GameHUD()
         {
-            startButton = new Button(new Point(350 + 64, 36), ResourceManager.StartButton, HoveringContext.ButtonStart);
-            upgradeButton = new Button(new Point(Constants.GameSize.X - 160, (int)(Constants.GameSize.Y * .55f)), ResourceManager.UpgradeButton, HoveringContext.ButtonUpgrade);
+            startButton = new Button(new Point(350 + 64, 36), ResourceManager.StartButton);
+            upgradeButton = new Button(new Point(Constants.GameSize.X - 160, (int)(Constants.GameSize.Y * .55f)), ResourceManager.UpgradeButton);
 
             List<Button> buttonList = new List<Button>();
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
 
-            buttonList.Add(new Button(Point.Zero, ResourceManager.GenericTower, HoveringContext.ButtonGenericTower));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.CannonTower, HoveringContext.ButtonCannonTower));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.BatteryTower, HoveringContext.ButtonBatteryTower));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.BlastTower, HoveringContext.ButtonBlastTower));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.GenericTower));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.CannonTower));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.BatteryTower));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.BlastTower));
 
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
 
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Wall, HoveringContext.ButtonWall));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Portal, HoveringContext.ButtonPortal));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Cheese, HoveringContext.ButtonCheese));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Wall));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Portal));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Cheese));
 
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
-            buttonList.Add(new Button(Point.Zero, ResourceManager.Block, HoveringContext.None));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
+            buttonList.Add(new Button(Point.Zero, ResourceManager.Block));
 
             actionCard = new ActionCard(new Point(0, Constants.MapStart.Y), buttonList);
         }
 
-        internal void Update(GameTime gameTime, MouseHandler mouse)
+        internal void Update(GameTime gameTime, InputHandler mouse)
         {
             actionCard.Update(gameTime, mouse);
 
-            if (upgradeButton.BoundingBox().Contains(mouse.Position))
-            {
-                mouse.HoveredObject = upgradeButton;
-                mouse.HoveringContext = upgradeButton.HoveringContext;
-            }
-            else if (startButton.BoundingBox().Contains(mouse.Position))
-            {
-                mouse.HoveredObject = startButton;
-                mouse.HoveringContext = startButton.HoveringContext;
-            }
+            //if (upgradeButton.BoundingBox().Contains(mouse.Position))
+            //{
+            //    mouse.HoveredObject = upgradeButton;
+            //    mouse.HoveringContext = upgradeButton.HoveringContext;
+            //}
+            //else if (startButton.BoundingBox().Contains(mouse.Position))
+            //{
+            //    mouse.HoveredObject = startButton;
+            //    mouse.HoveringContext = startButton.HoveringContext;
+            //}
         }
 
         internal void Draw(SpriteBatch batch)

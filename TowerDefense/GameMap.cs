@@ -39,7 +39,7 @@ namespace TowerDefense
             }
         }
 
-        internal void Update(GameTime gameTime, MouseHandler mouse)
+        internal void Update(GameTime gameTime, InputHandler mouse)
         {
             for (int i = 0; i <= Constants.MapSize.X; i++)
             {
@@ -51,15 +51,15 @@ namespace TowerDefense
 
             if (!GameStats.AttackPhase)
             {
-                foreach (Node n in nodes)
-                {
-                    n.Hovering = n.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext != SelectionContext.PlacingTower;
-                    if (n.Hovering)
-                    {
-                        mouse.HoveredObject = n;
-                        mouse.HoveringContext = n.wall || n.portal || n.cheese ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
-                    }
-                }
+                //foreach (Node n in nodes)
+                //{
+                //    n.Hovering = n.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext != SelectionContext.PlacingTower;
+                //    if (n.Hovering)
+                //    {
+                //        mouse.HoveredObject = n;
+                //        mouse.HoveringContext = n.wall || n.portal || n.cheese ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
+                //    }
+                //}
             }
         }
 
@@ -79,7 +79,7 @@ namespace TowerDefense
             return PathFinding.findBestPath(nodes);
         }
 
-        internal bool CheckForPath(int x, int y, MouseHandler mouse, CheckForPathType type)
+        internal bool CheckForPath(int x, int y, InputHandler mouse, CheckForPathType type)
         {
             Node portaledTo = nodes[x, y].portalsTo;
 

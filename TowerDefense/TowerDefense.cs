@@ -12,23 +12,20 @@ namespace TowerDefense
     {
         GraphicsDeviceManager graphics;
         SpriteBatch batch;
-        MouseHandler mouse;
+        InputHandler mouse;
         Viewport viewport;
 
         GameHUD gameHUD;
         GameEngine gameEngine;
         GameMap gameMap;
 
-        Point VirtualSize { get; set; }
-
         public TowerDefense()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            VirtualSize = Constants.GameSize;
-            graphics.PreferredBackBufferWidth = VirtualSize.X;
-            graphics.PreferredBackBufferHeight = VirtualSize.Y;
+            graphics.PreferredBackBufferWidth = Constants.GameSize.X;
+            graphics.PreferredBackBufferHeight = Constants.GameSize.Y;
         }
 
 
@@ -43,8 +40,9 @@ namespace TowerDefense
         {
             batch = new SpriteBatch(GraphicsDevice);
             ResourceManager.InitializeTextures(Content);
-
-            mouse = new MouseHandler();
+            float scaleX = (float)viewport.Width / Constants.GameSize.X;
+            float scaleY = (float)viewport.Height / Constants.GameSize.Y;
+            mouse = new InputHandler(new Vector2(scaleX, scaleY));
             gameHUD = new GameHUD();
             gameEngine = new GameEngine();
             gameMap = new GameMap();
@@ -62,8 +60,8 @@ namespace TowerDefense
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.WhiteSmoke);
-            float scaleX = viewport.Width / VirtualSize.X;
-            float scaleY = viewport.Height / VirtualSize.Y;
+            float scaleX = (float)viewport.Width / Constants.GameSize.X;
+            float scaleY = (float)viewport.Height / Constants.GameSize.Y;
             Matrix scaleMatrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
 
             batch.Begin(transformMatrix: scaleMatrix);

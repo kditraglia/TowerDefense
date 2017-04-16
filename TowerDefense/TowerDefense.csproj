@@ -65,7 +65,7 @@
     <Compile Include="GameObjects\Towers\GenericTower.cs" />
     <Compile Include="GameObjects\Projectiles\LightningBolt.cs" />
     <Compile Include="UI\MessageLog.cs" />
-    <Compile Include="MouseHandler.cs" />
+    <Compile Include="InputHandler.cs" />
     <Compile Include="GameObjects\Node.cs" />
     <Compile Include="GameObjects\Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

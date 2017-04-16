@@ -28,7 +28,7 @@ namespace TowerDefense
         }
 
         public virtual void ShowStats(SpriteBatch batch) { }
-        public virtual void HandleLeftClick(MouseHandler mouse) { }
+        public virtual void HandleLeftClick(InputHandler mouse) { }
 
         public virtual bool Update(GameTime gameTime)
         {
