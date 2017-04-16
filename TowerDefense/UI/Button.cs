@@ -18,48 +18,45 @@ namespace TowerDefense
     }
     class Button : GameObject
     {
-        //This is sort of a hack to get the button to display the button item's stats given how I have that structured
-        GameObject instanceOfWhatThisButtonCreates;
         public ButtonType ButtonType { get; set; }
 
         public Button(Point position, Texture2D tex, ButtonType buttonType) : base(tex, position)
         {
             ButtonType = buttonType;
+
+            //Hack
+            if (buttonType == ButtonType.PortalButton)
+            {
+                SpriteHeight = 32;
+                SpriteWidth = 32;
+                currentFrame = 0;
+                frameCount = 4;
+            }
+        }
+
+        private GameObject CreateTowerInstance()
+        {
             switch (ButtonType)
             {
                 case ButtonType.GenericTowerButton:
-                    instanceOfWhatThisButtonCreates = new GenericTower(position, tex);
-                    break;
+                    return new GenericTower(Position, Tex);
                 case ButtonType.CannonTowerButton:
-                    instanceOfWhatThisButtonCreates = new CannonTower(position, tex);
-                    break;
+                    return new CannonTower(Position, Tex);
                 case ButtonType.BatteryTowerButton:
-                    instanceOfWhatThisButtonCreates = new BatteryTower(position, tex);
-                    break;
+                    return new BatteryTower(Position, Tex);
                 case ButtonType.BlastTowerButton:
-                    instanceOfWhatThisButtonCreates = new BlastTower(position, tex);
-                    break;
-                case ButtonType.WallButton:
-                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { wall = true };
-                    break;
-                case ButtonType.PortalButton:
-                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { portal = true };
-                    SpriteHeight = 32;
-                    SpriteWidth = 32;
-                    currentFrame = 0;
-                    frameCount = 4;
-                    break;
-                case ButtonType.CheeseButton:
-                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { cheese = true };
-                    break;
+                    return new BlastTower(Position, Tex);
                 default:
-                    break;
+                    return null;
             }
         }
 
         public override bool Update(GameTime gameTime, InputHandler inputHandler)
         {
-
+            if (BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring && !GameStats.AttackPhase)
+            {
+                HandleLeftClick(inputHandler);
+            }
             return base.Update(gameTime, inputHandler);
         }
 
@@ -70,7 +67,7 @@ namespace TowerDefense
 
         public override void ShowStats(SpriteBatch batch)
         {
-            instanceOfWhatThisButtonCreates?.ShowStats(batch);
+            //instanceOfWhatThisButtonCreates?.ShowStats(batch);
         }
 
         public override Rectangle BoundingBox()
@@ -80,21 +77,23 @@ namespace TowerDefense
 
         public void HandleLeftClick(InputHandler inputHandler)
         {
-            switch (inputHandler.SelectionContext)
+            switch (ButtonType)
             {
-                case SelectionContext.PlacingTower:
-                    inputHandler.SelectedObject = instanceOfWhatThisButtonCreates;
+                case ButtonType.GenericTowerButton:
+                case ButtonType.CannonTowerButton:
+                case ButtonType.BatteryTowerButton:
+                case ButtonType.BlastTowerButton:
+                    inputHandler.SelectionContext = SelectionContext.PlacingTower;
+                    inputHandler.SelectedObject = CreateTowerInstance();
                     break;
-                case SelectionContext.PlacingWall:
+                case ButtonType.WallButton:
+                    inputHandler.SelectionContext = SelectionContext.PlacingWall;
                     break;
-                case SelectionContext.PlacingPortalEntrance:
+                case ButtonType.PortalButton:
+                    inputHandler.SelectionContext = SelectionContext.PlacingPortalEntrance;
                     break;
-                case SelectionContext.PlacingPortalExit:
-                    break;
-                case SelectionContext.PlacingCheese:
-
-                    break;
-                default:
+                case ButtonType.CheeseButton:
+                    inputHandler.SelectionContext = SelectionContext.PlacingCheese;
                     break;
             }
 

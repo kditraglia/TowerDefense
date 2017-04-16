@@ -24,6 +24,8 @@ namespace TowerDefense
         CommandCard portalCard = new CommandCard("Portal", cost: "20", description: "Warps enemies");
         CommandCard cheeseCard = new CommandCard("Cheese", cost: "20", description: "Irresistible to enemies");
 
+        public bool IsEmpty { get { return !wall && !portal && !cheese; } }
+
         public Node(Point actualPos, Point simplePos, Texture2D tex) : base(tex, actualPos)
         {
             this.actualPos = actualPos;
@@ -38,6 +40,7 @@ namespace TowerDefense
         {
             frameCount = portal ? 4 : 0;
             currentFrame = portal ? currentFrame : 0;
+
             return base.Update(gameTime, inputHandler);
         }
 

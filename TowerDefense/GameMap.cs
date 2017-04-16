@@ -45,21 +45,89 @@ namespace TowerDefense
             {
                 for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
-                    nodes[i, j].Update(gameTime, inputHandler);
+                    Node n = nodes[i, j];
+                    n.Update(gameTime, inputHandler);
+                    if (n.BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring)
+                    {
+                        HandleInput(inputHandler, n);
+                    }
                 }
             }
+        }
 
+        private void HandleInput(InputHandler inputHandler, Node n)
+        {
             if (!GameStats.AttackPhase)
             {
-                //foreach (Node n in nodes)
-                //{
-                //    n.Hovering = n.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext != SelectionContext.PlacingTower;
-                //    if (n.Hovering)
-                //    {
-                //        mouse.HoveredObject = n;
-                //        mouse.HoveringContext = n.wall || n.portal || n.cheese ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
-                //    }
-                //}
+                if (!n.IsEmpty)
+                {
+                    return;
+                }
+                if (inputHandler.SelectionContext == SelectionContext.PlacingWall)
+                {
+                    if (!CheckForPath(n.simplePos.X, n.simplePos.Y, inputHandler, CheckForPathType.TogglingWall))
+                    {
+                        MessageLog.IllegalPosition();
+                    }
+                    else if (GameStats.Gold >= 1)
+                    {
+                        n.wall = true;
+                        n.UpdateTex(ResourceManager.Wall);
+                        GameStats.Gold = GameStats.Gold - 1;
+                        ResourceManager.WallSound.Play();
+                    }
+                    else
+                    {
+                        MessageLog.NotEnoughGold();
+                    }
+                }
+                else if (inputHandler.SelectionContext == SelectionContext.PlacingPortalEntrance)
+                {
+                    n.portal = true;
+                    n.UpdateTex(ResourceManager.Portal);
+                    inputHandler.PortalEntrance = n;
+                    inputHandler.SelectionContext = SelectionContext.PlacingPortalExit;
+                }
+                else if (inputHandler.SelectionContext == SelectionContext.PlacingPortalExit)
+                {
+                    Node portalExit = n;
+                    Node portalEntrance = inputHandler.PortalEntrance;
+                    if (!CheckForPath(portalExit.simplePos.X, portalExit.simplePos.Y, inputHandler, CheckForPathType.AddingPortal))
+                    {
+                        MessageLog.IllegalPosition();
+                    }
+                    else if (GameStats.Gold >= 20)
+                    {
+                        portalExit.portal = true;
+                        portalExit.UpdateTex(ResourceManager.Portal);
+                        portalExit.portalsTo = portalEntrance;
+                        portalEntrance.portalsTo = portalExit;
+                        inputHandler.SelectionContext = SelectionContext.PlacingPortalEntrance;
+                        GameStats.Gold = GameStats.Gold - 20;
+                    }
+                    else
+                    {
+                        MessageLog.NotEnoughGold();
+                    }
+                }
+                else if (inputHandler.SelectionContext == SelectionContext.PlacingCheese)
+                {
+                    if (!CheckForPath(n.simplePos.X, n.simplePos.Y, inputHandler, CheckForPathType.TogglingCheese))
+                    {
+                        MessageLog.IllegalPosition();
+                    }
+                    else if (GameStats.Gold >= 20)
+                    {
+                        n.cheese = true;
+                        n.UpdateTex(ResourceManager.Cheese);
+                        GameStats.Gold = GameStats.Gold - 20;
+                        ResourceManager.WallSound.Play();
+                    }
+                    else
+                    {
+                        MessageLog.NotEnoughGold();
+                    }
+                }
             }
         }
 

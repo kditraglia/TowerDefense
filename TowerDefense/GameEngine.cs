@@ -42,28 +42,10 @@ namespace TowerDefense
             }
             floatingTextList.RemoveAll(f => f.Update(gameTime));
 
-            //enemylist.ForEach(e =>
-            //{
-            //    e.Hovering = e.BoundingBox().Contains(mouse.Position);
-            //    if (e.Hovering)
-            //    {
-            //        mouse.HoveredObject = e;
-            //        mouse.HoveringContext = HoveringContext.Enemy;
-            //    }
-            //});
-
-            //if (!GameStats.AttackPhase)
-            //{
-            //    towerlist.ForEach(t =>
-            //    {
-            //        t.Hovering = t.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext == SelectionContext.None;
-            //        if (t.Hovering)
-            //        {
-            //            mouse.HoveredObject = t;
-            //            mouse.HoveringContext = HoveringContext.Tower;
-            //        }
-            //    });
-            //}
+            if (inputHandler.SelectionOccurring)
+            {
+                HandleLeftClick(inputHandler);
+            }
         }
 
         internal void Draw(SpriteBatch batch)
@@ -105,18 +87,18 @@ namespace TowerDefense
             }
         }
 
-        internal void HandleLeftClick(InputHandler mouse)
+        internal void HandleLeftClick(InputHandler inputHandler)
         {
-            if (mouse.SelectionContext == SelectionContext.PlacingTower && mouse.MouseInGameBounds())
+            if (inputHandler.SelectionContext == SelectionContext.PlacingTower && inputHandler.MouseInGameBounds())
             {
-                Tower t = mouse.SelectedObject as Tower;
+                Tower t = inputHandler.SelectedObject as Tower;
                 if (GameStats.Gold >= t.Cost)
                 {
                     GameStats.Gold = GameStats.Gold - t.Cost;
                     towerlist.Add(t);
-                    t.Position = mouse.Position;
-                    mouse.SelectedObject = null;
-                    mouse.SelectionContext = SelectionContext.None;
+                    t.Position = inputHandler.Position;
+                    inputHandler.SelectedObject = null;
+                    inputHandler.SelectionContext = SelectionContext.None;
                     ResourceManager.WallSound.Play();
                 }
                 else

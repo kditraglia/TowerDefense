@@ -34,17 +34,6 @@ namespace TowerDefense
         internal void Update(GameTime gameTime, InputHandler inputHandler)
         {
             _buttonList.ForEach(b => b.Update(gameTime, inputHandler));
-
-            if (!GameStats.AttackPhase)
-            {
-                _buttonList.ForEach(b =>
-                {
-                    if (b.BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring)
-                    {
-                        inputHandler.SelectionContext = SelectionContext.PlacingTower;
-                    }
-                });
-            }
         }
 
         internal void Draw(SpriteBatch batch)
