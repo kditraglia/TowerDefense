@@ -55,9 +55,10 @@ namespace TowerDefense
 
         public override bool Update(GameTime gameTime, InputHandler inputHandler)
         {
-            if (BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring && !GameStats.AttackPhase)
+            if (BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring && !inputHandler.SelectionHandled && !GameStats.AttackPhase)
             {
                 HandleInput(inputHandler);
+                inputHandler.SelectionHandled = true;
             }
             return base.Update(gameTime, inputHandler);
         }
