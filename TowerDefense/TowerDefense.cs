@@ -67,6 +67,7 @@ namespace TowerDefense
 
             batch.Begin(transformMatrix: scaleMatrix);
 
+            inputHandler.Draw(batch);
             gameMap.Draw(batch);
             gameEngine.Draw(batch);
             gameHUD.Draw(batch, inputHandler);

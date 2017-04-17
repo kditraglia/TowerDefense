@@ -70,7 +70,7 @@ namespace TowerDefense
 
         public override void ShowStats(SpriteBatch batch)
         {
-            //instanceOfWhatThisButtonCreates?.ShowStats(batch);
+            
         }
 
         public override Rectangle BoundingBox()
@@ -80,13 +80,13 @@ namespace TowerDefense
 
         public void HandleInput(InputHandler inputHandler)
         {
+            inputHandler.CancelSelection();
             switch (ButtonType)
             {
                 case ButtonType.GenericTowerButton:
                 case ButtonType.CannonTowerButton:
                 case ButtonType.BatteryTowerButton:
                 case ButtonType.BlastTowerButton:
-                    inputHandler.CancelSelection();
                     inputHandler.SelectionContext = SelectionContext.PlacingTower;
                     inputHandler.SelectedObject = CreateTowerInstance();
                     break;
