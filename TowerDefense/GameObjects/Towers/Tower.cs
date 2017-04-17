@@ -7,6 +7,7 @@ namespace TowerDefense
 {
     abstract class Tower : GameObject
     {
+        public string Name { get; set; }
         public int Cost { get; set; }
         public CommandCard CommandCard { get; set; }
         private bool sold = false;

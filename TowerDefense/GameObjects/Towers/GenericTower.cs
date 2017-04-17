@@ -10,7 +10,6 @@ namespace TowerDefense
 {
     class GenericTower: Tower
     {
-        public string name = "Immunization Tower";
         public int damage = 20;
         public float attackspeed = 1.0f;
         public int range = 200;
@@ -20,7 +19,8 @@ namespace TowerDefense
         public GenericTower(Point position, Texture2D tex) : base(tex, position)
         {
             Cost = 10;
-            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
+            Name = "Generic Tower";
+            CommandCard = new CommandCard(Name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc)
@@ -43,7 +43,7 @@ namespace TowerDefense
             damage = damage * 2;
             range = range + 50;
             Cost = Cost * 2;
-            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
+            CommandCard = new CommandCard(Name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
     }
 }

@@ -80,23 +80,26 @@ namespace TowerDefense
 
         public void HandleInput(InputHandler inputHandler)
         {
-            inputHandler.CancelSelection();
             switch (ButtonType)
             {
                 case ButtonType.GenericTowerButton:
                 case ButtonType.CannonTowerButton:
                 case ButtonType.BatteryTowerButton:
                 case ButtonType.BlastTowerButton:
+                    inputHandler.CancelSelection();
                     inputHandler.SelectionContext = SelectionContext.PlacingTower;
                     inputHandler.SelectedObject = CreateTowerInstance();
                     break;
                 case ButtonType.WallButton:
+                    inputHandler.CancelSelection();
                     inputHandler.SelectionContext = SelectionContext.PlacingWall;
                     break;
                 case ButtonType.PortalButton:
+                    inputHandler.CancelSelection();
                     inputHandler.SelectionContext = SelectionContext.PlacingPortalEntrance;
                     break;
                 case ButtonType.CheeseButton:
+                    inputHandler.CancelSelection();
                     inputHandler.SelectionContext = SelectionContext.PlacingCheese;
                     break;
                 case ButtonType.SellButton:

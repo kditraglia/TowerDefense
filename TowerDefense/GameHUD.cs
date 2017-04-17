@@ -49,7 +49,7 @@ namespace TowerDefense
             buttonList.Add(new Button(Point.Zero, ResourceManager.Block, ButtonType.NothingButton));
 
             constructionCard = new ConstructionCard(new Point(0, Constants.MapStart.Y), buttonList);
-            actionCard = new ActionCard(new Point(Constants.MapEnd.X + 100, Constants.GameSize.Y - 100));
+            actionCard = new ActionCard(new Point(Constants.MapEnd.X + 100, Constants.GameSize.Y - 200));
         }
 
         internal void Update(GameTime gameTime, InputHandler inputHandler)

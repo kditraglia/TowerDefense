@@ -7,7 +7,6 @@ namespace TowerDefense
 {
     class BatteryTower: Tower
     {
-        public string name = "Bug Zapper";
         public int damage = 5;
         public float attackspeed = 1.0f;
         public int range = 100;
@@ -17,7 +16,8 @@ namespace TowerDefense
         public BatteryTower(Point position, Texture2D tex) : base(tex, position)
         {
             Cost = 15;
-            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
+            Name = "Battery Tower";
+            CommandCard = new CommandCard(Name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc)
@@ -47,7 +47,7 @@ namespace TowerDefense
             damage = damage * 2;
             attackspeed = attackspeed / 1.25f;
             Cost = Cost * 2;
-            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
+            CommandCard = new CommandCard(Name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
     }
 }

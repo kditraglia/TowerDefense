@@ -8,7 +8,6 @@ namespace TowerDefense
 {
     class CannonTower: Tower
     {
-        public string name = "Malaria Net";
         public int damage = 18;
         public float attackspeed = 2.0f;
         public int areaofeffect = 50;
@@ -19,7 +18,8 @@ namespace TowerDefense
         public CannonTower(Point position, Texture2D tex) : base (tex, position)
         {
             Cost = 15;
-            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
+            Name = "Cannon Tower";
+            CommandCard = new CommandCard(Name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc)
@@ -41,7 +41,7 @@ namespace TowerDefense
             damage = damage * 2;
             areaofeffect = areaofeffect + 50;
             Cost = Cost * 2;
-            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
+            CommandCard = new CommandCard(Name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
     }
 }
