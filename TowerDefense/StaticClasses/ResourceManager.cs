@@ -11,6 +11,8 @@ namespace TowerDefense
 
         public static Texture2D StartButton { get; private set; }
         public static Texture2D UpgradeButton { get; private set; }
+        public static Texture2D SellButton { get; private set; }
+        public static Texture2D CancelButton { get; private set; }
         public static Texture2D Enemy { get; private set; }
         public static Texture2D GenericTower { get; private set; }
         public static Texture2D CannonTower { get; private set; }
@@ -42,6 +44,8 @@ namespace TowerDefense
             BoldFont = content.Load<SpriteFont>("bold");
             StartButton = content.Load<Texture2D>("start");
             UpgradeButton = content.Load<Texture2D>("upgrade");
+            SellButton = content.Load<Texture2D>("sell");
+            CancelButton = content.Load<Texture2D>("cancel");
             Enemy = content.Load<Texture2D>("vampire");
             GenericTower = content.Load<Texture2D>("generic tower");
             CannonTower = content.Load<Texture2D>("cannon tower");
