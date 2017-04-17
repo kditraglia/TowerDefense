@@ -15,6 +15,7 @@ namespace TowerDefense
         StartButton,
         UpgradeButton,
         SellButton,
+        CancelButton,
         NothingButton
     }
     class Button : GameObject
@@ -56,7 +57,7 @@ namespace TowerDefense
         {
             if (BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring && !GameStats.AttackPhase)
             {
-                HandleLeftClick(inputHandler);
+                HandleInput(inputHandler);
             }
             return base.Update(gameTime, inputHandler);
         }
@@ -76,7 +77,7 @@ namespace TowerDefense
             return new Rectangle(Position.X - SpriteWidth / 2, Position.Y - SpriteHeight / 2, SpriteWidth, SpriteHeight);
         }
 
-        public void HandleLeftClick(InputHandler inputHandler)
+        public void HandleInput(InputHandler inputHandler)
         {
             switch (ButtonType)
             {
@@ -84,6 +85,7 @@ namespace TowerDefense
                 case ButtonType.CannonTowerButton:
                 case ButtonType.BatteryTowerButton:
                 case ButtonType.BlastTowerButton:
+                    inputHandler.CancelSelection();
                     inputHandler.SelectionContext = SelectionContext.PlacingTower;
                     inputHandler.SelectedObject = CreateTowerInstance();
                     break;
@@ -96,18 +98,68 @@ namespace TowerDefense
                 case ButtonType.CheeseButton:
                     inputHandler.SelectionContext = SelectionContext.PlacingCheese;
                     break;
+                case ButtonType.SellButton:
+                    {
+                        if (inputHandler.SelectionContext == SelectionContext.TowerSelected)
+                        {
+                            Tower t = inputHandler.SelectedObject as Tower;
+                            t.Sell();
+                            inputHandler.CancelSelection();
+                        }
+                    }
+                    break;
+                case ButtonType.UpgradeButton:
+                    {
+                        Tower t = inputHandler.SelectedObject as Tower;
+                        if (GameStats.Gold >= t.Cost)
+                        {
+                            GameStats.Gold = GameStats.Gold - t.Cost;
+                            t.upgrade();
+                        }
+                        else
+                        {
+                            MessageLog.NotEnoughGold();
+                        }
+                    }
+                    break;
+                case ButtonType.CancelButton:
+                    inputHandler.CancelSelection();
+                    break;
             }
+        }
 
-            //Tower t = mouse.SelectedObject as Tower;
-            //if (GameStats.Gold >= t.Cost)
+        private void commentedCode()
+        {
+            //if (inputHandler.SelectionContext == SelectionContext.TowerSelected)
             //{
-            //    GameStats.Gold = GameStats.Gold - t.Cost;
-            //    t.upgrade();
-            //}
-            //else
-            //{
-            //    MessageLog.NotEnoughGold();
+            //    Node n = inputHandler.SelectedObject as Node;
+            //    if (n.wall && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, this, CheckForPathType.TogglingWall))
+            //    {
+            //        GameStats.Gold = GameStats.Gold + 1;
+            //        n.wall = false;
+            //        n.defaultSet();
+            //        ResourceManager.SellSound.Play();
+            //    }
+            //    else if (n.portal && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, this, CheckForPathType.RemovingPortal))
+            //    {
+            //        n.portal = false;
+            //        n.defaultSet();
+            //        n.portalsTo.portal = false;
+            //        n.portalsTo.portalsTo = null;
+            //        n.portalsTo.defaultSet();
+            //        n.portalsTo = null;
+            //        GameStats.Gold = GameStats.Gold + 20;
+            //        ResourceManager.SellSound.Play();
+            //    }
+            //    else if (n.cheese && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, this, CheckForPathType.TogglingCheese))
+            //    {
+            //        GameStats.Gold = GameStats.Gold + 20;
+            //        n.cheese = false;
+            //        n.defaultSet();
+            //        ResourceManager.SellSound.Play();
+            //    }
             //}
         }
+
     }
 }

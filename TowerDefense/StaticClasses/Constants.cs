@@ -10,5 +10,6 @@ namespace TowerDefense
         public static Point GameSize = new Point(1020, 800);
         public static Point MapStart = new Point(148, 64);
         public static Point NodeSize = new Point(32, 32);
+        public static Point MapEnd = new Point(660, 64);
     }
 }

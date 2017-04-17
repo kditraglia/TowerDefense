@@ -57,6 +57,16 @@ namespace TowerDefense
             }
         }
 
+        internal void CancelSelection()
+        {
+            if (SelectedObject != null)
+            {
+                SelectedObject.Selected = false;
+            }
+            SelectedObject = null;
+            SelectionContext = SelectionContext.None;
+        }
+
         private void HandleRightClick(GameEngine gameEngine, GameMap gameMap)
         {
             //gameEngine.HandleRightClick(this);
@@ -66,35 +76,6 @@ namespace TowerDefense
             //    PortalEntrance.portal = false;
             //    PortalEntrance.defaultSet();
             //    PortalEntrance = null;
-            //}
-            //else if (HoveringContext == HoveringContext.FilledNode && SelectionContext == SelectionContext.None)
-            //{
-            //    Node n = HoveredObject as Node;
-            //    if (n.wall && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, this, CheckForPathType.TogglingWall))
-            //    {
-            //        GameStats.Gold = GameStats.Gold + 1;
-            //        n.wall = false;
-            //        n.defaultSet();
-            //        ResourceManager.SellSound.Play();
-            //    }
-            //    else if (n.portal && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, this, CheckForPathType.RemovingPortal))
-            //    {
-            //        n.portal = false;
-            //        n.defaultSet();
-            //        n.portalsTo.portal = false;
-            //        n.portalsTo.portalsTo = null;
-            //        n.portalsTo.defaultSet();
-            //        n.portalsTo = null;
-            //        GameStats.Gold = GameStats.Gold + 20;
-            //        ResourceManager.SellSound.Play();
-            //    }
-            //    else if (n.cheese && gameMap.CheckForPath(n.simplePos.X, n.simplePos.Y, this, CheckForPathType.TogglingCheese))
-            //    {
-            //        GameStats.Gold = GameStats.Gold + 20;
-            //        n.cheese = false;
-            //        n.defaultSet();
-            //        ResourceManager.SellSound.Play();
-            //    }
             //}
         }
 

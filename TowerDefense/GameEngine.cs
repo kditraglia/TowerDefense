@@ -43,7 +43,7 @@ namespace TowerDefense
             }
 
             floatingTextList.RemoveAll(f => f.Update(gameTime));
-
+            towerlist.RemoveAll(t => t.Update(gameTime, inputHandler));
             if (inputHandler.SelectionOccurring && !inputHandler.SelectionHandled)
             {
                 HandleInput(inputHandler);
@@ -99,8 +99,7 @@ namespace TowerDefense
                     GameStats.Gold = GameStats.Gold - t.Cost;
                     towerlist.Add(t);
                     t.Position = inputHandler.Position;
-                    inputHandler.SelectedObject = null;
-                    inputHandler.SelectionContext = SelectionContext.None;
+                    inputHandler.CancelSelection();
                     ResourceManager.WallSound.Play();
                 }
                 else
@@ -114,32 +113,13 @@ namespace TowerDefense
                 {
                     if (t.BoundingBox().Contains(inputHandler.Position))
                     {
+                        inputHandler.CancelSelection();
                         inputHandler.SelectionContext = SelectionContext.TowerSelected;
-                        if (inputHandler.SelectedObject != null)
-                        {
-                            inputHandler.SelectedObject.Selected = false;
-                        }
                         t.Selected = true;
                         inputHandler.SelectedObject = t;
                     }
                 });
             }
-        }
-
-        internal void HandleRightClick(InputHandler mouse)
-        {
-            //if (mouse.SelectionContext == SelectionContext.TowerSelected)
-            //{
-            //    Tower t = mouse.SelectedObject as Tower;
-            //    t.Selected = false;
-            //}
-            //else if (mouse.HoveringContext == HoveringContext.Tower && mouse.SelectionContext == SelectionContext.None)
-            //{
-            //    Tower t = mouse.HoveredObject as Tower;
-            //    GameStats.Gold = GameStats.Gold + t.Cost;
-            //    towerlist.Remove(t);
-            //    ResourceManager.SellSound.Play();
-            //}
         }
     }
 }

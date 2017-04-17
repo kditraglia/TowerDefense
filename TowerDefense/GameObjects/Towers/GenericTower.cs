@@ -43,6 +43,7 @@ namespace TowerDefense
             damage = damage * 2;
             range = range + 50;
             Cost = Cost * 2;
+            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
     }
 }

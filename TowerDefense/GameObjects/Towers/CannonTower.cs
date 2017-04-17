@@ -41,7 +41,7 @@ namespace TowerDefense
             damage = damage * 2;
             areaofeffect = areaofeffect + 50;
             Cost = Cost * 2;
-
+            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
     }
 }
