@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace TowerDefense
 {
-    class ActionCard
+    class ConstructionCard
     {
         List<Button> _buttonList = new List<Button>();
         Point _position;
 
-        internal ActionCard(Point position, List<Button> buttonList)
+        internal ConstructionCard(Point position, List<Button> buttonList)
         {
             _position = position;
             _buttonList = buttonList;

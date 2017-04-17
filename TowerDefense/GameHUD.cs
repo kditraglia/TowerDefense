@@ -13,7 +13,7 @@ namespace TowerDefense
         Button startButton;
         Button upgradeButton;
         Button sellButton;
-        ActionCard actionCard;
+        ConstructionCard actionCard;
 
         Action _startGame;
 
@@ -51,7 +51,7 @@ namespace TowerDefense
             buttonList.Add(new Button(Point.Zero, ResourceManager.Block, ButtonType.NothingButton));
             buttonList.Add(new Button(Point.Zero, ResourceManager.Block, ButtonType.NothingButton));
 
-            actionCard = new ActionCard(new Point(0, Constants.MapStart.Y), buttonList);
+            actionCard = new ConstructionCard(new Point(0, Constants.MapStart.Y), buttonList);
         }
 
         internal void Update(GameTime gameTime, InputHandler inputHandler)
