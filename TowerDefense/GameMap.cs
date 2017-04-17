@@ -39,25 +39,101 @@ namespace TowerDefense
             }
         }
 
-        internal void Update(GameTime gameTime, MouseHandler mouse)
+        internal void Update(GameTime gameTime, InputHandler inputHandler)
         {
             for (int i = 0; i <= Constants.MapSize.X; i++)
             {
                 for (int j = 0; j <= Constants.MapSize.Y; j++)
                 {
-                    nodes[i, j].Update(gameTime);
+                    Node n = nodes[i, j];
+                    n.Update(gameTime, inputHandler);
+                    if (n.BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring)
+                    {
+                        HandleInput(inputHandler, n);
+                    }
                 }
             }
+        }
 
+        private void HandleInput(InputHandler inputHandler, Node n)
+        {
             if (!GameStats.AttackPhase)
             {
-                foreach (Node n in nodes)
+                if (!n.IsEmpty && inputHandler.SelectionContext == SelectionContext.None)
                 {
-                    n.Hovering = n.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext != SelectionContext.PlacingTower;
-                    if (n.Hovering)
+                    inputHandler.SelectionContext = SelectionContext.NodeSelected;
+                    inputHandler.SelectedObject = n;
+                    n.Selected = true;
+                    return;
+                }
+                if (!n.IsEmpty)
+                {
+                    return;
+                }
+                if (inputHandler.SelectionContext == SelectionContext.PlacingWall)
+                {
+                    if (!CheckForPath(n.simplePos.X, n.simplePos.Y, inputHandler, CheckForPathType.TogglingWall))
                     {
-                        mouse.HoveredObject = n;
-                        mouse.HoveringContext = n.wall || n.portal || n.cheese ? HoveringContext.FilledNode : HoveringContext.EmptyNode;
+                        MessageLog.IllegalPosition();
+                    }
+                    else if (GameStats.Gold >= 1)
+                    {
+                        n.wall = true;
+                        n.UpdateTex(ResourceManager.Wall);
+                        GameStats.Gold = GameStats.Gold - 1;
+                        ResourceManager.WallSound.Play();
+                        inputHandler.SelectionHandled = true;
+                    }
+                    else
+                    {
+                        MessageLog.NotEnoughGold();
+                    }
+                }
+                else if (inputHandler.SelectionContext == SelectionContext.PlacingPortalEntrance)
+                {
+                    n.portal = true;
+                    n.UpdateTex(ResourceManager.Portal);
+                    inputHandler.PortalEntrance = n;
+                    inputHandler.SelectionContext = SelectionContext.PlacingPortalExit;
+                }
+                else if (inputHandler.SelectionContext == SelectionContext.PlacingPortalExit)
+                {
+                    Node portalExit = n;
+                    Node portalEntrance = inputHandler.PortalEntrance;
+                    if (!CheckForPath(portalExit.simplePos.X, portalExit.simplePos.Y, inputHandler, CheckForPathType.AddingPortal))
+                    {
+                        MessageLog.IllegalPosition();
+                    }
+                    else if (GameStats.Gold >= 20)
+                    {
+                        portalExit.portal = true;
+                        portalExit.UpdateTex(ResourceManager.Portal);
+                        portalExit.portalsTo = portalEntrance;
+                        portalEntrance.portalsTo = portalExit;
+                        inputHandler.SelectionContext = SelectionContext.PlacingPortalEntrance;
+                        GameStats.Gold = GameStats.Gold - 20;
+                    }
+                    else
+                    {
+                        MessageLog.NotEnoughGold();
+                    }
+                }
+                else if (inputHandler.SelectionContext == SelectionContext.PlacingCheese)
+                {
+                    if (!CheckForPath(n.simplePos.X, n.simplePos.Y, inputHandler, CheckForPathType.TogglingCheese))
+                    {
+                        MessageLog.IllegalPosition();
+                    }
+                    else if (GameStats.Gold >= 20)
+                    {
+                        n.cheese = true;
+                        n.UpdateTex(ResourceManager.Cheese);
+                        GameStats.Gold = GameStats.Gold - 20;
+                        ResourceManager.WallSound.Play();
+                    }
+                    else
+                    {
+                        MessageLog.NotEnoughGold();
                     }
                 }
             }
@@ -79,7 +155,7 @@ namespace TowerDefense
             return PathFinding.findBestPath(nodes);
         }
 
-        internal bool CheckForPath(int x, int y, MouseHandler mouse, CheckForPathType type)
+        internal bool CheckForPath(int x, int y, InputHandler mouse, CheckForPathType type)
         {
             Node portaledTo = nodes[x, y].portalsTo;
 

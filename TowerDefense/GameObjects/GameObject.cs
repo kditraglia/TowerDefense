@@ -8,9 +8,8 @@ namespace TowerDefense
         public Texture2D Tex { get; set; }
         public Point Position { get; set; }
 
-        public bool Hovering { get; set; }
         public bool Selected { get; set; }
-        public virtual Color Color { get { return Hovering || Selected ? Color.Green : Color.White; } }
+        public virtual Color Color { get { return Selected ? Color.Green : Color.White; } }
 
         internal int SpriteHeight { get; set; }
         internal int SpriteWidth { get; set; }
@@ -27,10 +26,9 @@ namespace TowerDefense
             SpriteWidth = tex.Bounds.Width;
         }
 
-        public virtual void ShowStats(SpriteBatch batch, Viewport viewport) { }
-        public virtual void HandleLeftClick(MouseHandler mouse) { }
+        public virtual void ShowStats(SpriteBatch batch) { }
 
-        public virtual bool Update(GameTime gameTime)
+        public virtual bool Update(GameTime gameTime, InputHandler inputHandler)
         {
             frameDuration += gameTime.ElapsedGameTime.Milliseconds;
             if (frameDuration > frameTotalDuration && frameCount != 0)

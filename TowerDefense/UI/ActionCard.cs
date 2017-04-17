@@ -10,55 +10,65 @@ namespace TowerDefense
 {
     class ActionCard
     {
-        List<Button> _buttonList = new List<Button>();
-        Point _position;
+        List<Button> buttonList = new List<Button>();
+        Point position;
+        string actionContext = "";
 
-        internal ActionCard(Point position, List<Button> buttonList)
+        internal ActionCard(Point position)
         {
-            _position = position;
-            _buttonList = buttonList;
-
-            Point _tempPos = _position + new Point(10 + 32, 10 + 32);
-            _buttonList.ForEach(b =>
-            {
-                b.Position = _tempPos;
-                _tempPos.X += 64;
-                if (_tempPos.X >= 64 * 2)
-                {
-                    _tempPos.X = _position.X + 10 + 32;
-                    _tempPos.Y += 64;
-                }
-            });
+            this.position = position;
         }
 
-        internal void Update(GameTime gameTime, MouseHandler mouse)
+        internal void Update(GameTime gameTime, InputHandler inputHandler)
         {
-            _buttonList.ForEach(b => b.Update(gameTime));
-
-            if (!GameStats.AttackPhase)
+            buttonList.Clear();
+            switch(inputHandler.SelectionContext)
             {
-                _buttonList.ForEach(b =>
-                {
-                    b.Hovering = b.BoundingBox().Contains(mouse.Position);
-                    if (b.Hovering)
-                    {
-                        mouse.HoveredObject = b;
-                        mouse.HoveringContext = b.HoveringContext;
-                    }
-                });
+                case SelectionContext.PlacingTower:
+                    buttonList.Add(new Button(position + new Point(0, 100), ResourceManager.CancelButton, ButtonType.CancelButton));
+                    actionContext = string.Format("Placing a {0}.", (inputHandler.SelectedObject as Tower).Name);
+                    break;
+                case SelectionContext.TowerSelected:
+                    buttonList.Add(new Button(position + new Point(0, 100), ResourceManager.CancelButton, ButtonType.CancelButton));
+                    buttonList.Add(new Button(position + new Point(80, 100), ResourceManager.SellButton, ButtonType.SellButton));
+                    buttonList.Add(new Button(position + new Point(160, 100), ResourceManager.UpgradeButton, ButtonType.UpgradeButton));
+                    
+                    actionContext = string.Format("{0} selected.", (inputHandler.SelectedObject as Tower).Name);
+                    break;
+                case SelectionContext.NodeSelected:
+                    buttonList.Add(new Button(position + new Point(0, 100), ResourceManager.CancelButton, ButtonType.CancelButton));
+                    buttonList.Add(new Button(position + new Point(80, 100), ResourceManager.SellButton, ButtonType.SellButton));
+
+                    Node n = inputHandler.SelectedObject as Node;
+                    actionContext = string.Format("{0} selected.", n.wall ? "wall" : n.portal ? "portal" : "cheese");
+                    break;
+                case SelectionContext.PlacingWall:
+                    buttonList.Add(new Button(position + new Point(0, 100), ResourceManager.CancelButton, ButtonType.CancelButton));
+                    actionContext = string.Format("Placing wall.");
+                    break;
+                case SelectionContext.PlacingPortalEntrance:
+                    buttonList.Add(new Button(position + new Point(0, 100), ResourceManager.CancelButton, ButtonType.CancelButton));
+                    actionContext = string.Format("Placing portal entrance.");
+                    break;
+                case SelectionContext.PlacingPortalExit:
+                    buttonList.Add(new Button(position + new Point(0, 100), ResourceManager.CancelButton, ButtonType.CancelButton));
+                    actionContext = string.Format("Placing portal exit.");
+                    break;
+                case SelectionContext.PlacingCheese:
+                    buttonList.Add(new Button(position + new Point(0, 100), ResourceManager.CancelButton, ButtonType.CancelButton));
+                    actionContext = string.Format("Placing cheese.");
+                    break;
+                default:
+                    actionContext = "";
+                    break;
             }
+            buttonList.ForEach(b => b.Update(gameTime, inputHandler));
         }
 
         internal void Draw(SpriteBatch batch)
         {
-            batch.Draw(ResourceManager.Block, new Rectangle(_position, new Point(Constants.MapStart.X, 500)), Color.DarkKhaki);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X + 74, _position.Y, 1, 500), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10, Constants.MapStart.X, 1), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10 + 64, Constants.MapStart.X, 1), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10 + 128, Constants.MapStart.X, 1), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10 + 192, Constants.MapStart.X, 1), Color.Black);
-            batch.Draw(ResourceManager.Block, new Rectangle(_position.X, _position.Y + 10 + 256, Constants.MapStart.X, 1), Color.Black);
-            _buttonList.ForEach(b => b.Draw(batch));
+            batch.DrawString(ResourceManager.GameFont, actionContext, position.ToVector2(), Color.Black, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
+            buttonList.ForEach(b => b.Draw(batch));
         }
     }
 }

@@ -12,31 +12,24 @@ namespace TowerDefense
     {
         GraphicsDeviceManager graphics;
         SpriteBatch batch;
-        MouseHandler mouse;
-        Viewport viewport;
 
+        InputHandler inputHandler;
         GameHUD gameHUD;
         GameEngine gameEngine;
         GameMap gameMap;
-
-        public Vector2 VirtualSize { get; set; }
 
         public TowerDefense()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            VirtualSize = new Vector2(1020, 800);
-
-            graphics.PreferredBackBufferWidth = 1020;
-            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = Constants.GameSize.X;
+            graphics.PreferredBackBufferHeight = Constants.GameSize.Y;
         }
 
 
         protected override void Initialize()
         {
-            viewport = graphics.GraphicsDevice.Viewport;
-            
             base.Initialize();
         }
 
@@ -45,34 +38,37 @@ namespace TowerDefense
             batch = new SpriteBatch(GraphicsDevice);
             ResourceManager.InitializeTextures(Content);
 
-            mouse = new MouseHandler(Point.Zero, ResourceManager.DefaultCursor);
-            gameHUD = new GameHUD(viewport, mouse);
+            inputHandler = new InputHandler();
             gameEngine = new GameEngine();
             gameMap = new GameMap();
+            gameHUD = new GameHUD(() => gameEngine.StartLevel(gameMap.GetBestPath()));
         }
 
         protected override void Update(GameTime gameTime)
         {
-            mouse.Update(gameTime, gameEngine, gameMap);
-            gameMap.Update(gameTime, mouse);
-            gameHUD.Update(gameTime, mouse);
-            gameEngine.Update(gameTime, mouse);
+            float scaleX = (float)graphics.GraphicsDevice.Viewport.Width / Constants.GameSize.X;
+            float scaleY = (float)graphics.GraphicsDevice.Viewport.Height / Constants.GameSize.Y;
+
+            inputHandler.Update(gameTime, new Vector2(scaleX, scaleY));
+            gameMap.Update(gameTime, inputHandler);
+            gameHUD.Update(gameTime, inputHandler);
+            gameEngine.Update(gameTime, inputHandler);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.WhiteSmoke);
-            var scaleX = viewport.Width / VirtualSize.X;
-            var scaleY = viewport.Height / VirtualSize.Y;
-            var scaleMatrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
+            float scaleX = (float)graphics.GraphicsDevice.Viewport.Width / Constants.GameSize.X;
+            float scaleY = (float)graphics.GraphicsDevice.Viewport.Height / Constants.GameSize.Y;
+            Matrix scaleMatrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
 
             batch.Begin(transformMatrix: scaleMatrix);
 
+            inputHandler.Draw(batch);
             gameMap.Draw(batch);
             gameEngine.Draw(batch);
             gameHUD.Draw(batch);
-            mouse.Draw(batch);
 
             batch.End();
 

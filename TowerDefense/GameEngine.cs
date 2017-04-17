@@ -18,12 +18,12 @@ namespace TowerDefense
 
         }
 
-        internal void Update(GameTime gameTime, MouseHandler mouse)
+        internal void Update(GameTime gameTime, InputHandler inputHandler)
         {
             delayedActions.RemoveAll(d => d.Update(gameTime));
             if (GameStats.AttackPhase)
             {
-                enemylist.RemoveAll(e => e.Update(gameTime));
+                enemylist.RemoveAll(e => e.Update(gameTime, inputHandler));
                 towerlist.ForEach(t =>
                 {
                     projectilelist = t.Attack(enemylist, projectilelist, gameTime.TotalGameTime.TotalSeconds, (d, p) =>
@@ -32,37 +32,21 @@ namespace TowerDefense
                     });
                 });
                 projectilelist.RemoveAll(p => p.Move());
-            }
-            if (enemylist.Count == 0 && delayedActions.Count == 0 && GameStats.AttackPhase)
-            {
-                GameStats.AttackPhase = false;
-                projectilelist.Clear();
-                MessageLog.LevelComplete(GameStats.Level * 2 + (int)(GameStats.Gold * .05f), GameStats.Level);
-                GameStats.Gold = GameStats.Gold + (GameStats.Level * 2 + (int)(GameStats.Gold * .05f));
-            }
-            floatingTextList.RemoveAll(f => f.Update(gameTime));
 
-            enemylist.ForEach(e =>
-            {
-                e.Hovering = e.BoundingBox().Contains(mouse.Position);
-                if (e.Hovering)
+                if (enemylist.Count == 0 && delayedActions.Count == 0)
                 {
-                    mouse.HoveredObject = e;
-                    mouse.HoveringContext = HoveringContext.Enemy;
+                    GameStats.AttackPhase = false;
+                    projectilelist.Clear();
+                    MessageLog.LevelComplete(GameStats.Level * 2 + (int)(GameStats.Gold * .05f), GameStats.Level);
+                    GameStats.Gold = GameStats.Gold + (GameStats.Level * 2 + (int)(GameStats.Gold * .05f));
                 }
-            });
+            }
 
-            if (!GameStats.AttackPhase)
+            floatingTextList.RemoveAll(f => f.Update(gameTime));
+            towerlist.RemoveAll(t => t.Update(gameTime, inputHandler));
+            if (inputHandler.SelectionOccurring && !inputHandler.SelectionHandled)
             {
-                towerlist.ForEach(t =>
-                {
-                    t.Hovering = t.BoundingBox().Contains(mouse.Position) && mouse.SelectionContext == SelectionContext.None;
-                    if (t.Hovering)
-                    {
-                        mouse.HoveredObject = t;
-                        mouse.HoveringContext = HoveringContext.Tower;
-                    }
-                });
+                HandleInput(inputHandler);
             }
         }
 
@@ -105,19 +89,17 @@ namespace TowerDefense
             }
         }
 
-        internal void HandleLeftClick(MouseHandler mouse)
+        internal void HandleInput(InputHandler inputHandler)
         {
-            if (mouse.SelectionContext == SelectionContext.PlacingTower && mouse.MouseInGameBounds())
+            if (inputHandler.SelectionContext == SelectionContext.PlacingTower && inputHandler.SelectionInGameBounds())
             {
-                Tower t = mouse.SelectedObject as Tower;
+                Tower t = inputHandler.SelectedObject as Tower;
                 if (GameStats.Gold >= t.Cost)
                 {
                     GameStats.Gold = GameStats.Gold - t.Cost;
                     towerlist.Add(t);
-                    t.Position = mouse.Position;
-                    mouse.SelectedObject = null;
-                    mouse.SelectionContext = SelectionContext.None;
-                    mouse.UpdateTex(ResourceManager.DefaultCursor);
+                    t.Position = inputHandler.Position;
+                    inputHandler.CancelSelection();
                     ResourceManager.WallSound.Play();
                 }
                 else
@@ -125,21 +107,18 @@ namespace TowerDefense
                     MessageLog.NotEnoughGold();
                 }
             }
-        }
-
-        internal void HandleRightClick(MouseHandler mouse)
-        {
-            if (mouse.SelectionContext == SelectionContext.TowerSelected)
+            else
             {
-                Tower t = mouse.SelectedObject as Tower;
-                t.Selected = false;
-            }
-            else if (mouse.HoveringContext == HoveringContext.Tower && mouse.SelectionContext == SelectionContext.None)
-            {
-                Tower t = mouse.HoveredObject as Tower;
-                GameStats.Gold = GameStats.Gold + t.Cost;
-                towerlist.Remove(t);
-                ResourceManager.SellSound.Play();
+                towerlist.ForEach(t =>
+                {
+                    if (t.BoundingBox().Contains(inputHandler.Position))
+                    {
+                        inputHandler.CancelSelection();
+                        inputHandler.SelectionContext = SelectionContext.TowerSelected;
+                        t.Selected = true;
+                        inputHandler.SelectedObject = t;
+                    }
+                });
             }
         }
     }

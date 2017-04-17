@@ -11,11 +11,11 @@ namespace TowerDefense
     {
         static String string1 = "";
 
-        public static void Draw(SpriteBatch batch, SpriteFont font, Viewport viewport)
+        public static void Draw(SpriteBatch batch, SpriteFont font)
         {
             int stringlength1 = (int)font.MeasureString(string1).X + 10;
             int stringlength2 = (int)font.MeasureString(string1).Y + 10;
-            batch.DrawString(font, string1, new Vector2(viewport.Width - stringlength1, viewport.Height - stringlength2), Color.Black,
+            batch.DrawString(font, string1, new Vector2(Constants.GameSize.X - stringlength1, Constants.GameSize.Y - stringlength2), Color.Black,
                 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
         }
 

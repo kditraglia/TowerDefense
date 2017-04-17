@@ -7,28 +7,37 @@ namespace TowerDefense
 {
     abstract class Tower : GameObject
     {
+        public string Name { get; set; }
         public int Cost { get; set; }
         public CommandCard CommandCard { get; set; }
+        private bool sold = false;
+
         public Tower(Texture2D tex, Point position) : base(tex, position) { }
 
         public abstract List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc);
-        public override void HandleLeftClick(MouseHandler mouse)
+
+        public override bool Update(GameTime gameTime, InputHandler inputHandler)
         {
-            switch (mouse.HoveringContext)
+            bool retVal = base.Update(gameTime, inputHandler);
+
+            if (sold)
             {
-                case HoveringContext.Tower:
-                    Tower t = mouse.HoveredObject as Tower;
-                    mouse.SelectedObject = t;
-                    mouse.SelectionContext = SelectionContext.TowerSelected;
-                    t.Selected = true;
-                    break;
+                return true;
             }
+            return retVal;
         }
 
-        public override void ShowStats(SpriteBatch batch, Viewport viewport)
+        internal void Sell()
         {
-            int Y = (int)(viewport.Height * .2f);
-            int X = viewport.Width;
+            GameStats.Gold = GameStats.Gold + Cost;
+            sold = true;
+            ResourceManager.SellSound.Play();
+        }
+
+        public override void ShowStats(SpriteBatch batch)
+        {
+            int Y = 200;
+            int X = 1020;
 
             CommandCard.Draw(new Point(X, Y), batch);
         }

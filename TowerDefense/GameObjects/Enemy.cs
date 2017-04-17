@@ -58,7 +58,7 @@ namespace TowerDefense
             ResourceManager.DamagedSound.Play();
         }
 
-        public override bool Update(GameTime gameTime)
+        public override bool Update(GameTime gameTime, InputHandler inputHandler)
         {
             if (HP <= 0)
             {
@@ -95,19 +95,18 @@ namespace TowerDefense
                     GameStats.PlayerLoses = true;
                     MessageLog.GameOver();
 
-                    //Travel behind Africa banner
                     //TODO not this
                     currentDest = new Point(400, 736);
                 }
             }
 
-            return base.Update(gameTime);
+            return base.Update(gameTime, inputHandler);
         }
 
-        public override void ShowStats(SpriteBatch batch, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch)
         {
-            int Y = (int)(viewport.Height * .2f);
-            int X = viewport.Width;
+            int Y = (int)(Constants.GameSize.Y * .2f);
+            int X = Constants.GameSize.X;
 
             commandCard.Draw(new Point(X, Y), batch);
         }

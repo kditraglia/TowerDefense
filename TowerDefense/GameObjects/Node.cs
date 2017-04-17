@@ -24,11 +24,12 @@ namespace TowerDefense
         CommandCard portalCard = new CommandCard("Portal", cost: "20", description: "Warps enemies");
         CommandCard cheeseCard = new CommandCard("Cheese", cost: "20", description: "Irresistible to enemies");
 
+        public bool IsEmpty { get { return !wall && !portal && !cheese; } }
         public override Color Color
         {
             get
             {
-                if (portalsTo != null && portalsTo.Hovering)
+                if (portalsTo != null && portalsTo.Selected)
                 {
                     return Color.Green;
                 }
@@ -46,11 +47,12 @@ namespace TowerDefense
             currentFrame = 0;
         }
 
-        public override bool Update(GameTime gameTime)
+        public override bool Update(GameTime gameTime, InputHandler inputHandler)
         {
             frameCount = portal ? 4 : 0;
             currentFrame = portal ? currentFrame : 0;
-            return base.Update(gameTime);
+
+            return base.Update(gameTime, inputHandler);
         }
 
         public override void Draw(SpriteBatch batch) 
@@ -60,6 +62,17 @@ namespace TowerDefense
             {
                 batch.Draw(tex2, Position.ToVector2(), new Rectangle(new Point(currentFrame * SpriteWidth, 0), new Point(SpriteWidth, SpriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             }
+        }
+        internal void Sell()
+        {
+            GameStats.Gold = GameStats.Gold + (wall ? 1 : 20);
+            wall = false;
+            portal = false;
+            portalsTo?.defaultSet();
+            portalsTo = null;
+            cheese = false;
+            defaultSet();
+            ResourceManager.SellSound.Play();
         }
         public void UpdateTex(Texture2D tex)
         {
@@ -103,10 +116,10 @@ namespace TowerDefense
             return neighbors;
         }
 
-        public override void ShowStats(SpriteBatch batch, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch)
         {
-            int Y = (int)(viewport.Height * .2f);
-            int X = viewport.Width;
+            int Y = (int)(Constants.GameSize.Y * .2f);
+            int X = Constants.GameSize.X;
 
             if (wall)
             {

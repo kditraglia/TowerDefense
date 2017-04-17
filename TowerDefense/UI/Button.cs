@@ -3,47 +3,64 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TowerDefense
 {
+    public enum ButtonType
+    {
+        GenericTowerButton,
+        CannonTowerButton,
+        BatteryTowerButton,
+        BlastTowerButton,
+        WallButton,
+        PortalButton,
+        CheeseButton,
+        StartButton,
+        UpgradeButton,
+        SellButton,
+        CancelButton,
+        NothingButton
+    }
     class Button : GameObject
     {
-        //This is sort of a hack to get the button to display the button item's stats given how I have that structured
-        GameObject instanceOfWhatThisButtonCreates;
-        public HoveringContext HoveringContext { get; set; }
+        public ButtonType ButtonType { get; set; }
 
-        public Button(Point position, Texture2D tex, HoveringContext hoveringContext) : base(tex, position)
+        public Button(Point position, Texture2D tex, ButtonType buttonType) : base(tex, position)
         {
-            HoveringContext = hoveringContext;
-            switch (hoveringContext)
+            ButtonType = buttonType;
+
+            //Hack
+            if (buttonType == ButtonType.PortalButton)
             {
-                case HoveringContext.ButtonGenericTower:
-                    instanceOfWhatThisButtonCreates = new GenericTower(position, tex);
-                    break;
-                case HoveringContext.ButtonCannonTower:
-                    instanceOfWhatThisButtonCreates = new CannonTower(position, tex);
-                    break;
-                case HoveringContext.ButtonBatteryTower:
-                    instanceOfWhatThisButtonCreates = new BatteryTower(position, tex);
-                    break;
-                case HoveringContext.ButtonBlastTower:
-                    instanceOfWhatThisButtonCreates = new BlastTower(position, tex);
-                    break;
-                case HoveringContext.ButtonWall:
-                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { wall = true };
-                    break;
-                case HoveringContext.ButtonPortal:
-                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { portal = true };
-                    SpriteHeight = 32;
-                    SpriteWidth = 32;
-                    currentFrame = 0;
-                    frameCount = 4;
-                    break;
-                case HoveringContext.ButtonCheese:
-                    instanceOfWhatThisButtonCreates = new Node(Point.Zero, Point.Zero, tex) { cheese = true };
-                    break;
-                case HoveringContext.ButtonUpgrade:
-                    break;
-                default:
-                    break;
+                SpriteHeight = 32;
+                SpriteWidth = 32;
+                currentFrame = 0;
+                frameCount = 4;
             }
+        }
+
+        private GameObject CreateTowerInstance()
+        {
+            switch (ButtonType)
+            {
+                case ButtonType.GenericTowerButton:
+                    return new GenericTower(Position, Tex);
+                case ButtonType.CannonTowerButton:
+                    return new CannonTower(Position, Tex);
+                case ButtonType.BatteryTowerButton:
+                    return new BatteryTower(Position, Tex);
+                case ButtonType.BlastTowerButton:
+                    return new BlastTower(Position, Tex);
+                default:
+                    return null;
+            }
+        }
+
+        public override bool Update(GameTime gameTime, InputHandler inputHandler)
+        {
+            if (BoundingBox().Contains(inputHandler.Position) && inputHandler.SelectionOccurring && !inputHandler.SelectionHandled && !GameStats.AttackPhase)
+            {
+                HandleInput(inputHandler);
+                inputHandler.SelectionHandled = true;
+            }
+            return base.Update(gameTime, inputHandler);
         }
 
         public override void Draw(SpriteBatch batch)
@@ -51,9 +68,9 @@ namespace TowerDefense
             batch.Draw(Tex, Position.ToVector2(), new Rectangle(new Point(currentFrame * SpriteWidth, 0), new Point(SpriteWidth, SpriteHeight)), Color, 0, new Vector2(SpriteWidth / 2, SpriteHeight / 2), 1, SpriteEffects.None, 0);
         }
 
-        public override void ShowStats(SpriteBatch batch, Viewport viewport)
+        public override void ShowStats(SpriteBatch batch)
         {
-            instanceOfWhatThisButtonCreates?.ShowStats(batch, viewport);
+            
         }
 
         public override Rectangle BoundingBox()
@@ -61,55 +78,62 @@ namespace TowerDefense
             return new Rectangle(Position.X - SpriteWidth / 2, Position.Y - SpriteHeight / 2, SpriteWidth, SpriteHeight);
         }
 
-        public override void HandleLeftClick(MouseHandler mouse)
+        public void HandleInput(InputHandler inputHandler)
         {
-            switch (mouse.HoveringContext)
+            switch (ButtonType)
             {
-                case HoveringContext.ButtonGenericTower:
-                    mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectedObject = new GenericTower(mouse.Position, mouse.Tex);
-                    mouse.SelectionContext = SelectionContext.PlacingTower;
+                case ButtonType.GenericTowerButton:
+                case ButtonType.CannonTowerButton:
+                case ButtonType.BatteryTowerButton:
+                case ButtonType.BlastTowerButton:
+                    inputHandler.CancelSelection();
+                    inputHandler.SelectionContext = SelectionContext.PlacingTower;
+                    inputHandler.SelectedObject = CreateTowerInstance();
                     break;
-                case HoveringContext.ButtonCannonTower:
-                    mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectedObject = new CannonTower(mouse.Position, mouse.Tex);
-                    mouse.SelectionContext = SelectionContext.PlacingTower;
+                case ButtonType.WallButton:
+                    inputHandler.CancelSelection();
+                    inputHandler.SelectionContext = SelectionContext.PlacingWall;
                     break;
-                case HoveringContext.ButtonBatteryTower:
-                    mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectedObject = new BatteryTower(mouse.Position, mouse.Tex);
-                    mouse.SelectionContext = SelectionContext.PlacingTower;
+                case ButtonType.PortalButton:
+                    inputHandler.CancelSelection();
+                    inputHandler.SelectionContext = SelectionContext.PlacingPortalEntrance;
                     break;
-                case HoveringContext.ButtonBlastTower:
-                    mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectedObject = new BlastTower(mouse.Position, mouse.Tex);
-                    mouse.SelectionContext = SelectionContext.PlacingTower;
+                case ButtonType.CheeseButton:
+                    inputHandler.CancelSelection();
+                    inputHandler.SelectionContext = SelectionContext.PlacingCheese;
                     break;
-                case HoveringContext.ButtonWall:
-                    mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectionContext = SelectionContext.PlacingWall;
-                    break;
-                case HoveringContext.ButtonPortal:
-                    mouse.UpdateTex(mouse.HoveredObject.Tex, 32, 32, 4);
-                    mouse.SelectionContext = SelectionContext.PlacingPortalEntrance;
-                    break;
-                case HoveringContext.ButtonCheese:
-                    mouse.UpdateTex(mouse.HoveredObject.Tex);
-                    mouse.SelectionContext = SelectionContext.PlacingCheese;
-                    break;
-                case HoveringContext.ButtonUpgrade:
-                    Tower t = mouse.SelectedObject as Tower;
-                    if (GameStats.Gold >= t.Cost)
+                case ButtonType.SellButton:
                     {
-                        GameStats.Gold = GameStats.Gold - t.Cost;
-                        t.upgrade();
-                    }
-                    else
-                    {
-                        MessageLog.NotEnoughGold();
+                        if (inputHandler.SelectionContext == SelectionContext.TowerSelected)
+                        {
+                            Tower t = inputHandler.SelectedObject as Tower;
+                            t.Sell();
+                            inputHandler.CancelSelection();
+                        }
+                        if (inputHandler.SelectionContext == SelectionContext.NodeSelected)
+                        {
+                            Node n = inputHandler.SelectedObject as Node;
+                            n.Sell();
+                            inputHandler.CancelSelection();
+                        }
                     }
                     break;
-                default:
+                case ButtonType.UpgradeButton:
+                    {
+                        Tower t = inputHandler.SelectedObject as Tower;
+                        if (GameStats.Gold >= t.Cost)
+                        {
+                            GameStats.Gold = GameStats.Gold - t.Cost;
+                            t.upgrade();
+                        }
+                        else
+                        {
+                            MessageLog.NotEnoughGold();
+                        }
+                    }
+                    break;
+                case ButtonType.CancelButton:
+                    inputHandler.CancelSelection();
                     break;
             }
         }

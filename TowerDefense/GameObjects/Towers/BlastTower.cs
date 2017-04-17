@@ -8,7 +8,6 @@ namespace TowerDefense
 {
     class BlastTower: Tower
     {
-        public string name = "Education Tower";
         public int damage = 10;
         public float attackspeed = 2.0f;
         public int range = 500;
@@ -19,7 +18,8 @@ namespace TowerDefense
         public BlastTower(Point position, Texture2D tex) : base(tex, position)
         {
             Cost = 15;
-            CommandCard = new CommandCard(name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
+            Name = "Blast Tower";
+            CommandCard = new CommandCard(Name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
 
         public override List<Projectile> Attack(List<Enemy> enemylist, List<Projectile> projectilelist, double elapsedTime, Action<int, Point> damageFunc)
@@ -43,6 +43,7 @@ namespace TowerDefense
             damage = damage * 2;
             areaofeffect = areaofeffect + 20;
             Cost = Cost * 2;
+            CommandCard = new CommandCard(Name, damage.ToString(), attackspeed.ToString(), range.ToString(), Cost.ToString(), description);
         }
     }
 }
