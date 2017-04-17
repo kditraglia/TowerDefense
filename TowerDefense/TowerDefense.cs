@@ -60,10 +60,10 @@ namespace TowerDefense
             GraphicsDevice.Clear(Color.WhiteSmoke);
             batch.Begin(transformMatrix: Matrix.CreateScale(new Vector3(gameScale, 1.0f)));
 
-            inputHandler.Draw(batch);
             gameMap.Draw(batch);
             gameEngine.Draw(batch);
             gameHUD.Draw(batch);
+            inputHandler.Draw(batch);
 
             batch.End();
 

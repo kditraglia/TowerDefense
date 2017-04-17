@@ -41,6 +41,10 @@ namespace TowerDefense
             {
                 Position = (mouseState.Position.ToVector2() / gameScale).ToPoint();
                 SelectionOccurring = mouseState.LeftButton == ButtonState.Pressed;
+                if (mouseState.LeftButton == ButtonState.Released)
+                {
+                    SelectionHandled = false;
+                }
             }
             else if (touchState.Count == 1)
             {
@@ -57,6 +61,10 @@ namespace TowerDefense
         public void Draw(SpriteBatch batch)
         {
             SelectedObject?.ShowStats(batch);
+            if (!touchState.IsConnected)
+            {
+                batch.Draw(ResourceManager.DefaultCursor, Position.ToVector2(), Color.White);
+            }
         }
 
         internal void CancelSelection()
