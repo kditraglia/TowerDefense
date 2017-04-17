@@ -29,15 +29,10 @@ namespace TowerDefense
         //I need to hold a reference for when you place the other side to link them together
         public Node PortalEntrance { get; set; }
 
-        private Vector2 gameScale;
         private MouseState mouseState;
         private TouchCollection touchState;
 
-        public InputHandler(Vector2 gameScale)
-        {
-            this.gameScale = gameScale;
-        }
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Vector2 gameScale)
         {
             mouseState = Mouse.GetState();
             touchState = TouchPanel.GetState();

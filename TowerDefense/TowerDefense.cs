@@ -12,7 +12,6 @@ namespace TowerDefense
     {
         GraphicsDeviceManager graphics;
         SpriteBatch batch;
-        Viewport viewport;
 
         InputHandler inputHandler;
         GameHUD gameHUD;
@@ -31,8 +30,6 @@ namespace TowerDefense
 
         protected override void Initialize()
         {
-            viewport = graphics.GraphicsDevice.Viewport;
-            
             base.Initialize();
         }
 
@@ -40,10 +37,8 @@ namespace TowerDefense
         {
             batch = new SpriteBatch(GraphicsDevice);
             ResourceManager.InitializeTextures(Content);
-            float scaleX = (float)viewport.Width / Constants.GameSize.X;
-            float scaleY = (float)viewport.Height / Constants.GameSize.Y;
 
-            inputHandler = new InputHandler(new Vector2(scaleX, scaleY));
+            inputHandler = new InputHandler();
             gameEngine = new GameEngine();
             gameMap = new GameMap();
             gameHUD = new GameHUD(() => gameEngine.StartLevel(gameMap.GetBestPath()));
@@ -51,7 +46,10 @@ namespace TowerDefense
 
         protected override void Update(GameTime gameTime)
         {
-            inputHandler.Update(gameTime);
+            float scaleX = (float)graphics.GraphicsDevice.Viewport.Width / Constants.GameSize.X;
+            float scaleY = (float)graphics.GraphicsDevice.Viewport.Height / Constants.GameSize.Y;
+
+            inputHandler.Update(gameTime, new Vector2(scaleX, scaleY));
             gameMap.Update(gameTime, inputHandler);
             gameHUD.Update(gameTime, inputHandler);
             gameEngine.Update(gameTime, inputHandler);
@@ -61,8 +59,8 @@ namespace TowerDefense
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.WhiteSmoke);
-            float scaleX = (float)viewport.Width / Constants.GameSize.X;
-            float scaleY = (float)viewport.Height / Constants.GameSize.Y;
+            float scaleX = (float)graphics.GraphicsDevice.Viewport.Width / Constants.GameSize.X;
+            float scaleY = (float)graphics.GraphicsDevice.Viewport.Height / Constants.GameSize.Y;
             Matrix scaleMatrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
 
             batch.Begin(transformMatrix: scaleMatrix);
