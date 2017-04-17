@@ -70,7 +70,7 @@ namespace TowerDefense
             inputHandler.Draw(batch);
             gameMap.Draw(batch);
             gameEngine.Draw(batch);
-            gameHUD.Draw(batch, inputHandler);
+            gameHUD.Draw(batch);
 
             batch.End();
 

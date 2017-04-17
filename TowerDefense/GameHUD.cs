@@ -66,16 +66,11 @@ namespace TowerDefense
             }
         }
 
-        internal void Draw(SpriteBatch batch, InputHandler inputHandler)
+        internal void Draw(SpriteBatch batch)
         {
             startButton.Draw(batch);
             constructionCard.Draw(batch);
             actionCard.Draw(batch);
-            if (inputHandler.SelectionContext == SelectionContext.TowerSelected)
-            {
-                Tower t = inputHandler.SelectedObject as Tower;
-                t?.ShowStats(batch);
-            }
 
             batch.DrawString(ResourceManager.GameFont, "GOLD - " + GameStats.Gold + " $", new Vector2(Constants.GameSize.X * .8f, Constants.GameSize.Y * .1f), Color.Black, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
             MessageLog.Draw(batch, ResourceManager.GameFont);
