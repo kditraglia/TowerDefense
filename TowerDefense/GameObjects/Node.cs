@@ -25,6 +25,17 @@ namespace TowerDefense
         CommandCard cheeseCard = new CommandCard("Cheese", cost: "20", description: "Irresistible to enemies");
 
         public bool IsEmpty { get { return !wall && !portal && !cheese; } }
+        public override Color Color
+        {
+            get
+            {
+                if (portalsTo != null && portalsTo.Selected)
+                {
+                    return Color.Green;
+                }
+                return base.Color;
+            }
+        }
 
         public Node(Point actualPos, Point simplePos, Texture2D tex) : base(tex, actualPos)
         {
@@ -51,6 +62,17 @@ namespace TowerDefense
             {
                 batch.Draw(tex2, Position.ToVector2(), new Rectangle(new Point(currentFrame * SpriteWidth, 0), new Point(SpriteWidth, SpriteHeight)), Color, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             }
+        }
+        internal void Sell()
+        {
+            GameStats.Gold = GameStats.Gold + (wall ? 1 : 20);
+            wall = false;
+            portal = false;
+            portalsTo?.defaultSet();
+            portalsTo = null;
+            cheese = false;
+            defaultSet();
+            ResourceManager.SellSound.Play();
         }
         public void UpdateTex(Texture2D tex)
         {

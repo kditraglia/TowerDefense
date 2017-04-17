@@ -59,6 +59,13 @@ namespace TowerDefense
         {
             if (!GameStats.AttackPhase)
             {
+                if (!n.IsEmpty && inputHandler.SelectionContext == SelectionContext.None)
+                {
+                    inputHandler.SelectionContext = SelectionContext.NodeSelected;
+                    inputHandler.SelectedObject = n;
+                    n.Selected = true;
+                    return;
+                }
                 if (!n.IsEmpty)
                 {
                     return;

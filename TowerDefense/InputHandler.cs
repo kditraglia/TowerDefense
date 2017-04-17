@@ -13,7 +13,8 @@ namespace TowerDefense
         PlacingPortalEntrance,
         PlacingPortalExit,
         PlacingCheese,
-        TowerSelected
+        TowerSelected,
+        NodeSelected
     }
 
     class InputHandler
@@ -28,27 +29,27 @@ namespace TowerDefense
         //I need to hold a reference for when you place the other side to link them together
         public Node PortalEntrance { get; set; }
 
-        private Vector2 _gameScale;
-        private MouseState _mouseState;
-        private TouchCollection _touchState;
+        private Vector2 gameScale;
+        private MouseState mouseState;
+        private TouchCollection touchState;
 
         public InputHandler(Vector2 gameScale)
         {
-            _gameScale = gameScale;
+            this.gameScale = gameScale;
         }
         public void Update(GameTime gameTime)
         {
-            _mouseState = Mouse.GetState();
-            _touchState = TouchPanel.GetState();
+            mouseState = Mouse.GetState();
+            touchState = TouchPanel.GetState();
 
-            if (!_touchState.IsConnected)
+            if (!touchState.IsConnected)
             {
-                Position = (_mouseState.Position.ToVector2() / _gameScale).ToPoint();
-                SelectionOccurring = _mouseState.LeftButton == ButtonState.Pressed;
+                Position = (mouseState.Position.ToVector2() / gameScale).ToPoint();
+                SelectionOccurring = mouseState.LeftButton == ButtonState.Pressed;
             }
-            else if (_touchState.Count == 1)
+            else if (touchState.Count == 1)
             {
-                Position = (_touchState[0].Position / _gameScale).ToPoint();
+                Position = (touchState[0].Position / gameScale).ToPoint();
                 SelectionOccurring = true;
             }
             else
