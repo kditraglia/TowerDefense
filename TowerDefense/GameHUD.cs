@@ -60,6 +60,7 @@ namespace TowerDefense
             {
                 if (startButton.BoundingBox().Contains(inputHandler.Position) && !GameStats.AttackPhase)
                 {
+                    inputHandler.CancelSelection();
                     startGame();
                 }
             }

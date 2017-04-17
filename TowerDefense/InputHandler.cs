@@ -69,20 +69,14 @@ namespace TowerDefense
             {
                 SelectedObject.Selected = false;
             }
+            if (SelectionContext == SelectionContext.PlacingPortalExit)
+            {
+                PortalEntrance.portal = false;
+                PortalEntrance.defaultSet();
+                PortalEntrance = null;
+            }
             SelectedObject = null;
             SelectionContext = SelectionContext.None;
-        }
-
-        private void HandleRightClick(GameEngine gameEngine, GameMap gameMap)
-        {
-            //gameEngine.HandleRightClick(this);
-
-            //if (SelectionContext == SelectionContext.PlacingPortalExit)
-            //{
-            //    PortalEntrance.portal = false;
-            //    PortalEntrance.defaultSet();
-            //    PortalEntrance = null;
-            //}
         }
 
         internal bool SelectionInGameBounds()
