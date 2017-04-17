@@ -63,7 +63,7 @@ namespace TowerDefense
             LightningSound = content.Load<SoundEffect>("battery attack");
             BlastSound = content.Load<SoundEffect>("blast attack");
             DamagedSound = content.Load<SoundEffect>("damaged");
-            SellSound = content.Load<SoundEffect>("sell");
+            SellSound = content.Load<SoundEffect>("sellsound");
             WallSound = content.Load<SoundEffect>("wallsound");
             PortalSound = content.Load<SoundEffect>("portalsound");
         }

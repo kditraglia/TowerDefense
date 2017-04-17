@@ -12,6 +12,7 @@ namespace TowerDefense
     {
         Button startButton;
         Button upgradeButton;
+        Button sellButton;
         ActionCard actionCard;
 
         Action _startGame;
@@ -70,21 +71,17 @@ namespace TowerDefense
             }
         }
 
-        internal void Draw(SpriteBatch batch)
+        internal void Draw(SpriteBatch batch, InputHandler inputHandler)
         {
             startButton.Draw(batch);
             actionCard.Draw(batch);
 
-            //if (mouse.SelectionContext == SelectionContext.TowerSelected)
-            //{
-            //    Tower t = mouse.SelectedObject as Tower;
-            //    t?.ShowStats(batch);
-            //    upgradeButton.Draw(batch);
-            //}
-            //if (mouse.HoveringContext != HoveringContext.None)
-            //{
-            //    mouse.HoveredObject?.ShowStats(batch);
-            //}
+            if (inputHandler.SelectionContext == SelectionContext.TowerSelected)
+            {
+                Tower t = inputHandler.SelectedObject as Tower;
+                t?.ShowStats(batch);
+                upgradeButton.Draw(batch);
+            }
 
             batch.DrawString(ResourceManager.GameFont, "GOLD - " + GameStats.Gold + " $", new Vector2(Constants.GameSize.X * .8f, Constants.GameSize.Y * .1f), Color.Black, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.5f);
             MessageLog.Draw(batch, ResourceManager.GameFont);

@@ -75,6 +75,7 @@ namespace TowerDefense
                         n.UpdateTex(ResourceManager.Wall);
                         GameStats.Gold = GameStats.Gold - 1;
                         ResourceManager.WallSound.Play();
+                        inputHandler.SelectionHandled = true;
                     }
                     else
                     {

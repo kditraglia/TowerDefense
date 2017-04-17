@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
@@ -19,9 +18,8 @@ namespace TowerDefense
     class InputHandler
     {
         public Point Position { get; set; }
-        public MouseState MouseState { get; set; }
-        public TouchCollection TouchState { get; set; }
         public bool SelectionOccurring { get; set; }
+        public bool SelectionHandled { get; set; }
         public GameObject SelectedObject { get; set; }
         public SelectionContext SelectionContext { get; set; }
 
@@ -30,50 +28,45 @@ namespace TowerDefense
         public Node PortalEntrance { get; set; }
 
         private Vector2 _gameScale;
+        private MouseState _mouseState;
+        private TouchCollection _touchState;
 
         public InputHandler(Vector2 gameScale)
         {
             _gameScale = gameScale;
         }
-        public void Update(GameTime gameTime, InputHandler inputHandler)
+        public void Update(GameTime gameTime)
         {
-            MouseState = Mouse.GetState();
-            TouchState = TouchPanel.GetState();
+            _mouseState = Mouse.GetState();
+            _touchState = TouchPanel.GetState();
 
-            if (!TouchState.IsConnected)
+            if (!_touchState.IsConnected)
             {
-                Position = (MouseState.Position.ToVector2() / _gameScale).ToPoint();
-                SelectionOccurring = MouseState.LeftButton == ButtonState.Pressed;
+                Position = (_mouseState.Position.ToVector2() / _gameScale).ToPoint();
+                SelectionOccurring = _mouseState.LeftButton == ButtonState.Pressed;
             }
-            else if (TouchState.Count == 1)
+            else if (_touchState.Count == 1)
             {
-                Position = (TouchState[0].Position / _gameScale).ToPoint();
+                Position = (_touchState[0].Position / _gameScale).ToPoint();
                 SelectionOccurring = true;
             }
             else
             {
                 SelectionOccurring = false;
+                SelectionHandled = false;
             }
-        }
-
-        private void HandleLeftClick(GameEngine gameEngine, GameMap gameMap)
-        {
-            //gameEngine.HandleLeftClick(this);
-
-
-
         }
 
         private void HandleRightClick(GameEngine gameEngine, GameMap gameMap)
         {
-            gameEngine.HandleRightClick(this);
+            //gameEngine.HandleRightClick(this);
 
-            if (SelectionContext == SelectionContext.PlacingPortalExit)
-            {
-                PortalEntrance.portal = false;
-                PortalEntrance.defaultSet();
-                PortalEntrance = null;
-            }
+            //if (SelectionContext == SelectionContext.PlacingPortalExit)
+            //{
+            //    PortalEntrance.portal = false;
+            //    PortalEntrance.defaultSet();
+            //    PortalEntrance = null;
+            //}
             //else if (HoveringContext == HoveringContext.FilledNode && SelectionContext == SelectionContext.None)
             //{
             //    Node n = HoveredObject as Node;
@@ -105,7 +98,7 @@ namespace TowerDefense
             //}
         }
 
-        internal bool MouseInGameBounds()
+        internal bool SelectionInGameBounds()
         {
             int topY = Constants.MapStart.Y;
             int leftX = Constants.MapStart.X;

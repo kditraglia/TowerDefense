@@ -42,6 +42,7 @@ namespace TowerDefense
             ResourceManager.InitializeTextures(Content);
             float scaleX = (float)viewport.Width / Constants.GameSize.X;
             float scaleY = (float)viewport.Height / Constants.GameSize.Y;
+
             inputHandler = new InputHandler(new Vector2(scaleX, scaleY));
             gameEngine = new GameEngine();
             gameMap = new GameMap();
@@ -50,7 +51,7 @@ namespace TowerDefense
 
         protected override void Update(GameTime gameTime)
         {
-            inputHandler.Update(gameTime, inputHandler);
+            inputHandler.Update(gameTime);
             gameMap.Update(gameTime, inputHandler);
             gameHUD.Update(gameTime, inputHandler);
             gameEngine.Update(gameTime, inputHandler);
@@ -68,7 +69,7 @@ namespace TowerDefense
 
             gameMap.Draw(batch);
             gameEngine.Draw(batch);
-            gameHUD.Draw(batch);
+            gameHUD.Draw(batch, inputHandler);
 
             batch.End();
 

@@ -14,6 +14,7 @@ namespace TowerDefense
         CheeseButton,
         StartButton,
         UpgradeButton,
+        SellButton,
         NothingButton
     }
     class Button : GameObject
